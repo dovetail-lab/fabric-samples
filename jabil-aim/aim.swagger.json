@@ -1,0 +1,1360 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Jabil AIM blockchain service",
+    "version": "v1.0.0"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "host": "52.156.98.96:7091",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/v1/agreementhistory/{AgreementID}": {
+      "get": {
+        "summary": "GetAgreementHistory: retrieves history of a specified agreement even after deletion from current state",
+        "operationId": "AimService_GetAgreementHistory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AgreementHistory"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "AgreementID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/agreements": {
+      "get": {
+        "summary": "QueryAllAgreements: retrieves all agreements defined in the system",
+        "operationId": "AimService_QueryAllAgreements",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AgreementList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "user",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "PrimaryOnly",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/agreements/{AgreementID}": {
+      "get": {
+        "summary": "GetAgreement: retrieves current state of an agreement of specified AgreementID",
+        "operationId": "AimService_GetAgreement",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Agreement"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "AgreementID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/bulkloads/{BulkLoadID}": {
+      "get": {
+        "summary": "GetBulkLoad: retrieves info of a specified bulk-load",
+        "operationId": "AimService_GetBulkLoad",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1BulkLoad"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "BulkLoadID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/calculatemonthlypurchase/{user}/{SupplierID}/{Year}/{Month}": {
+      "post": {
+        "summary": "CalculateMonthlyPurchase: sums up reconciled purchase amounts of a specified supplier for a year and month.",
+        "operationId": "AimService_CalculateMonthlyPurchase",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1MonthlyPurchase"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "SupplierID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Year",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Month",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/calculaterebate/{SupplierID}/{Year}/{Sequence}": {
+      "get": {
+        "summary": "CalculateRebate: calculate rebate amount for a specified supplier in a year and sequence of quarter or semi-year depending on the payout frequency",
+        "operationId": "AimService_CalculateRebate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Rebate"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "SupplierID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Year",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Sequence",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "AgreementID",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/deleteagreement/{user}/{AgreementID}": {
+      "delete": {
+        "summary": "DeleteAgreement: deletes the current state of a specified agreement",
+        "operationId": "AimService_DeleteAgreement",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Agreement"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "AgreementID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/deletepurchase/{user}/{PurchaseOrderNbr}/{ManufacturerPartNbr}": {
+      "delete": {
+        "summary": "DeletePurchase: deletes the current state of a specified purchase",
+        "operationId": "AimService_DeletePurchase",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Purchase"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "PurchaseOrderNbr",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "ManufacturerPartNbr",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/deletesupplier/{user}/{SupplierID}": {
+      "delete": {
+        "summary": "DeleteSupplier: deletes the current state of a specified supplier",
+        "operationId": "AimService_DeleteSupplier",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Supplier"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "SupplierID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/monthlypurchases/{SupplierID}/{Year}": {
+      "get": {
+        "summary": "GetMonthlyPurchases: retrieves monthly total purchase amount of a specified supplier and year",
+        "operationId": "AimService_GetMonthlyPurchases",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1MonthlyPurchaseList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "SupplierID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Year",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/purchases/{SupplierID}/{Year}/{Month}/{VerifiedBy}": {
+      "get": {
+        "summary": "GetPurchasesPerSupplier: retrieves all PO items of a specified supplier that are verified by 'jabil' or SupplierID or 'BOTH'",
+        "operationId": "AimService_GetPurchasesPerSupplier",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1PurchaseList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "SupplierID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Year",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Month",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "VerifiedBy",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/putagreement/{user}": {
+      "post": {
+        "summary": "PutAgreement: creates or updates the current state of an agreement",
+        "operationId": "AimService_PutAgreement",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Agreement"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1Agreement"
+            }
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/putbulkload/{user}": {
+      "post": {
+        "summary": "PutBulkLoad: creates a bulk-load record, which is referenced by PO items",
+        "operationId": "AimService_PutBulkLoad",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1BulkLoad"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1BulkLoad"
+            }
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/putmonthlypurchase/{user}": {
+      "post": {
+        "summary": "PutMonthlyPurchase: creates or updates a monthly purchase amount of a previous year, \n  which can be used for growth-based bonus calculation",
+        "operationId": "AimService_PutMonthlyPurchase",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1MonthlyPurchase"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1MonthlyPurchase"
+            }
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/putpurchases/{user}": {
+      "post": {
+        "summary": "PutPurchases: creates or updates a list of PO items, by either bulk-load or user edit",
+        "operationId": "AimService_PutPurchases",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1PurchaseList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PutPurchasesRequestPurchaseBatch"
+            }
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/putsupplier/{user}": {
+      "post": {
+        "summary": "PutSupplier: creates or updates the current state of a supplier",
+        "operationId": "AimService_PutSupplier",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Supplier"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1Supplier"
+            }
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/reconciliationhistory/{PurchaseOrderNbr}/{ManufacturePartNbr}": {
+      "get": {
+        "summary": "GetReconciliationHistory: retrieves reconciliation history of a PO item of specified PO and MPN",
+        "operationId": "AimService_GetReconciliationHistory",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ReconciliationHistory"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "PurchaseOrderNbr",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "ManufacturePartNbr",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/suppliers": {
+      "get": {
+        "summary": "QueryAllSuppliers: retrieves all suppliers defined in the system",
+        "operationId": "AimService_QueryAllSuppliers",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SupplierList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+          "name": "user",
+          "in": "query",
+          "required": false,
+          "type": "string"
+        }],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/suppliers/{SupplierID}": {
+      "get": {
+        "summary": "GetSupplier: retrieves current state of a supplier of specified SupplierID",
+        "operationId": "AimService_GetSupplier",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1Supplier"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "SupplierID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    },
+    "/v1/suppliers/{SupplierID}/agreements": {
+      "get": {
+        "summary": "GetSupplierAgreements: retrieves all agreements of a specified supplier",
+        "operationId": "AimService_GetSupplierAgreements",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1AgreementList"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [{
+            "name": "SupplierID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "user",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "AimService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AgreementGrowthTerm": {
+      "type": "object",
+      "properties": {
+        "MinSaleGrowth": {
+          "type": "number",
+          "format": "float"
+        },
+        "BonusPct": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "AgreementHistoryAgreementState": {
+      "type": "object",
+      "properties": {
+        "txID": {
+          "type": "string"
+        },
+        "txTime": {
+          "type": "string"
+        },
+        "isDeleted": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "value": {
+          "$ref": "#/definitions/v1Agreement"
+        }
+      }
+    },
+    "AgreementListAgreementKV": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/v1Agreement"
+        }
+      }
+    },
+    "AgreementStandardTerm": {
+      "type": "object",
+      "properties": {
+        "MinSaleAmt": {
+          "type": "number",
+          "format": "float"
+        },
+        "BonusPct": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "MonthlyPurchaseListMonthlyPurchaseKV": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/v1MonthlyPurchase"
+        }
+      }
+    },
+    "PurchaseListPurchaseKV": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/v1Purchase"
+        }
+      }
+    },
+    "PutPurchasesRequestPurchaseBatch": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Purchase"
+          }
+        }
+      }
+    },
+    "ReconciliationHistoryPurchaseState": {
+      "type": "object",
+      "properties": {
+        "txID": {
+          "type": "string"
+        },
+        "txTime": {
+          "type": "string"
+        },
+        "isDeleted": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "value": {
+          "$ref": "#/definitions/v1Purchase"
+        }
+      }
+    },
+    "SupplierListSupplierKV": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "$ref": "#/definitions/v1Supplier"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1AddressType": {
+      "type": "object",
+      "properties": {
+        "Street1": {
+          "type": "string"
+        },
+        "Street2": {
+          "type": "string"
+        },
+        "Street3": {
+          "type": "string"
+        },
+        "Street4": {
+          "type": "string"
+        },
+        "CityOrMunicipality": {
+          "type": "string"
+        },
+        "StateOrProvince": {
+          "type": "string"
+        },
+        "CountyOrSubdivision": {
+          "type": "string"
+        },
+        "ZipOrPostcode": {
+          "type": "string"
+        },
+        "Country": {
+          "type": "string"
+        }
+      },
+      "description": "Address data structure used by Supplier",
+      "title": "AddressType"
+    },
+    "v1Agreement": {
+      "type": "object",
+      "properties": {
+        "AgreementID": {
+          "type": "string",
+          "description": "Required."
+        },
+        "SupplierID": {
+          "type": "string",
+          "description": "Required."
+        },
+        "IsPrimary": {
+          "type": "boolean",
+          "format": "boolean",
+          "title": "Required. only one primary agreement per supplier in a specified time period"
+        },
+        "FullName": {
+          "type": "string"
+        },
+        "ShortName": {
+          "type": "string"
+        },
+        "Status": {
+          "type": "string"
+        },
+        "SignatureDate": {
+          "type": "string"
+        },
+        "SignedBy": {
+          "type": "string",
+          "title": "Required. must be one of 'jabil', SupplierID, or 'BOTH'. It can be primary only after signed by 'BOTH'"
+        },
+        "ReferenceID": {
+          "type": "string",
+          "title": "Reference to signed agreement PDF filename and content hash"
+        },
+        "ReferenceHash": {
+          "type": "string"
+        },
+        "StartDate": {
+          "type": "string",
+          "title": "Required. start and end time period when the agreement is effective"
+        },
+        "EndDate": {
+          "type": "string",
+          "description": "Required."
+        },
+        "CollectionFrequency": {
+          "type": "string",
+          "title": "Required. must be one of the frequency: 'QUARTERLY', 'SEMI-ANNUALLY' or 'ANNUALLY'"
+        },
+        "Type": {
+          "type": "string",
+          "title": "Required. must be one of the term type: 'FIXED_RATE', 'STARDARD_STEP' or 'BASELINE_GROWTH'"
+        },
+        "GrowthTerms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AgreementGrowthTerm"
+          },
+          "title": "Required for type of 'BASELINE_GROWTH'"
+        },
+        "StandardTerms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AgreementStandardTerm"
+          },
+          "title": "Required for types of 'FIXED_RATE' or 'STARDARD_STEP'"
+        },
+        "DocType": {
+          "type": "string",
+          "description": "Output only.",
+          "readOnly": true
+        }
+      },
+      "description": "It is uniquely identified by AgreementID.\nThis demo will support 3 types of agreement terms, e.g.,\n\n \"Type\": \"BASELINE_GROWTH\",\n \"GrowthTerms\": [\n     {\n         \"MinSaleGrowth\": 1.1,\n         \"BonusPct\": 0.1\n     },\n     {\n         \"MinSaleGrowth\": 1.2,\n         \"BonusPct\": 0.05\n     }\n ]\nor,\n \"Type\": \"STARDARD_STEP\",\n \"StandardTerms\": [\n     {\n         \"MinSaleAmt\": 10000,\n         \"BonusPct\": 0.1\n     },\n     {\n         \"MinSaleAmt\": 20000,\n         \"BonusPct\": 0.05\n     }\n ]\nor,\n \"Type\": \"FIXED_RATE\",\n \"StandardTerms\": [\n     {\n         \"MinSaleAmt\": 10000,\n         \"BonusPct\": 0.1\n     }\n ]",
+      "title": "Agreement"
+    },
+    "v1AgreementHistory": {
+      "type": "object",
+      "properties": {
+        "states": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AgreementHistoryAgreementState"
+          }
+        }
+      }
+    },
+    "v1AgreementList": {
+      "type": "object",
+      "properties": {
+        "agreements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AgreementListAgreementKV"
+          }
+        }
+      }
+    },
+    "v1BulkLoad": {
+      "type": "object",
+      "properties": {
+        "BulkLoadID": {
+          "type": "string",
+          "description": "Required."
+        },
+        "ReferenceFile": {
+          "type": "string"
+        },
+        "ReferenceHash": {
+          "type": "string"
+        },
+        "LoadedBy": {
+          "type": "string",
+          "title": "Required. LoadedBy must be either SupplierID or 'jabil'"
+        },
+        "DocType": {
+          "type": "string",
+          "description": "Output only.",
+          "readOnly": true
+        }
+      },
+      "description": "bulk-load tracking with reference to the bulk xls filename and content hash",
+      "title": "BulkLoad"
+    },
+    "v1MonthlyPurchase": {
+      "type": "object",
+      "properties": {
+        "SupplierID": {
+          "type": "string",
+          "description": "Required."
+        },
+        "Year": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Required."
+        },
+        "Month": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Required."
+        },
+        "PurchaseAmt": {
+          "type": "number",
+          "format": "float",
+          "description": "Required."
+        },
+        "DocType": {
+          "type": "string",
+          "description": "Output only.",
+          "readOnly": true
+        }
+      },
+      "description": "monthly total purchase amount in the previous year, can be initialized by Jabil user, or \n  calculated by the system after 1 month of production",
+      "title": "MonthlyPurchase"
+    },
+    "v1MonthlyPurchaseList": {
+      "type": "object",
+      "properties": {
+        "summary": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MonthlyPurchaseListMonthlyPurchaseKV"
+          }
+        }
+      }
+    },
+    "v1Purchase": {
+      "type": "object",
+      "properties": {
+        "PurchaseOrderNbr": {
+          "type": "string",
+          "description": "Required."
+        },
+        "SupplierID": {
+          "type": "string",
+          "description": "Required."
+        },
+        "PurchaseOrderStatus": {
+          "type": "string"
+        },
+        "DocumentID": {
+          "type": "string",
+          "description": "Required."
+        },
+        "DocumentDate": {
+          "type": "string",
+          "description": "Required."
+        },
+        "ShipDate": {
+          "type": "string"
+        },
+        "ManufacturerPartNbr": {
+          "type": "string",
+          "description": "Required."
+        },
+        "SupplierPartNbr": {
+          "type": "string"
+        },
+        "JabilPartNbr": {
+          "type": "string"
+        },
+        "Currency": {
+          "type": "string"
+        },
+        "ShippedQty": {
+          "type": "number",
+          "format": "float"
+        },
+        "UnitPrice": {
+          "type": "number",
+          "format": "float"
+        },
+        "SalePriceLocalAmt": {
+          "type": "number",
+          "format": "float"
+        },
+        "SalePriceUSD": {
+          "type": "number",
+          "format": "float",
+          "description": "Required."
+        },
+        "ReturnQty": {
+          "type": "number",
+          "format": "float"
+        },
+        "ReturnUSD": {
+          "type": "number",
+          "format": "float"
+        },
+        "ReturnReason": {
+          "type": "string"
+        },
+        "VerifiedBy": {
+          "type": "string",
+          "title": "Required. must be one of 'jabil', SupplierID, or 'BOTH'; it tracks the reconciliation workflow"
+        },
+        "SupplierBulkLoadID": {
+          "type": "string",
+          "title": "reference to the last supplier bulk-load that updated this PO item"
+        },
+        "JabilBulkLoadID": {
+          "type": "string",
+          "title": "reference to the last Jabil bulk-load that updated this PO item"
+        },
+        "Year": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Output only.",
+          "readOnly": true
+        },
+        "Month": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Output only.",
+          "readOnly": true
+        },
+        "DocType": {
+          "type": "string",
+          "description": "Output only.",
+          "readOnly": true
+        }
+      },
+      "description": "PO item is uniquely identified by combination of 'PurchaseOrderNbr' and 'ManufacturerPartNbr'\n'SalePriceUSD' is counted in bonus calculation only if VerifiedBy='BOTH'",
+      "title": "Purchase"
+    },
+    "v1PurchaseList": {
+      "type": "object",
+      "properties": {
+        "purchases": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PurchaseListPurchaseKV"
+          }
+        }
+      }
+    },
+    "v1Rebate": {
+      "type": "object",
+      "properties": {
+        "RebateAmt": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "v1ReconciliationHistory": {
+      "type": "object",
+      "properties": {
+        "states": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReconciliationHistoryPurchaseState"
+          }
+        }
+      }
+    },
+    "v1Supplier": {
+      "type": "object",
+      "properties": {
+        "SupplierID": {
+          "type": "string",
+          "description": "Required."
+        },
+        "TenantID": {
+          "type": "string"
+        },
+        "GlobalCode": {
+          "type": "string"
+        },
+        "FullName": {
+          "type": "string"
+        },
+        "ShortName": {
+          "type": "string"
+        },
+        "Description": {
+          "type": "string"
+        },
+        "Region": {
+          "type": "string"
+        },
+        "Commodity": {
+          "type": "string"
+        },
+        "HighLevelCommodity": {
+          "type": "string"
+        },
+        "Address": {
+          "$ref": "#/definitions/v1AddressType"
+        },
+        "WebsiteURL": {
+          "type": "string"
+        },
+        "TickerSymbol": {
+          "type": "string"
+        },
+        "DocType": {
+          "type": "string",
+          "description": "Output only.",
+          "readOnly": true
+        }
+      },
+      "description": "Supplier is uniquely identified SupplierID",
+      "title": "Supplier"
+    },
+    "v1SupplierList": {
+      "type": "object",
+      "properties": {
+        "suppliers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SupplierListSupplierKV"
+          }
+        }
+      }
+    }
+  }
+}

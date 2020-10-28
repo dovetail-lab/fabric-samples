@@ -1,0 +1,563 @@
+{
+    "imports": [
+        "github.com/project-flogo/flow",
+        "github.com/dovetail-lab/fabric-chaincode/activity/cid",
+        "github.com/dovetail-lab/fabric-chaincode/activity/get",
+        "github.com/dovetail-lab/fabric-chaincode/activity/delete",
+        "github.com/dovetail-lab/fabric-chaincode/activity/getbycompositekey",
+        "github.com/dovetail-lab/fabric-chaincode/activity/gethistory",
+        "github.com/dovetail-lab/fabric-chaincode/activity/getrange",
+        "github.com/dovetail-lab/fabric-chaincode/activity/put",
+        "github.com/dovetail-lab/fabric-chaincode/activity/putall",
+        "github.com/dovetail-lab/fabric-chaincode/activity/setevent",
+        "github.com/dovetail-lab/fabric-chaincode/activity/invokechaincode",
+        "github.com/dovetail-lab/fabric-chaincode/activity/endorsement",
+        "github.com/dovetail-lab/fabric-chaincode/activity/query",
+        "github.com/project-flogo/contrib/activity/actreturn",
+        "github.com/dovetail-lab/fabric-chaincode/trigger/transaction",
+        "github.com/project-flogo/contrib/function/array"
+    ],
+    "name": "all_fabric",
+    "description": "",
+    "version": "2.0.0",
+    "type": "flogo:app",
+    "appModel": "1.1.1",
+    "feVersion": "2.10.0",
+    "triggers": [
+        {
+            "ref": "#transaction",
+            "name": "fabric-transaction",
+            "description": "This trigger executes a Hyperledger Fabric transaction",
+            "settings": {},
+            "id": "FabricTransaction",
+            "handlers": [
+                {
+                    "description": "",
+                    "settings": {
+                        "name": "createIOU",
+                        "validation": false
+                    },
+                    "action": {
+                        "ref": "github.com/project-flogo/flow",
+                        "settings": {
+                            "flowURI": "res://flow:sample"
+                        },
+                        "input": {
+                            "parameters": "=$.parameters",
+                            "transient": "=$.transient",
+                            "txID": "=$.txID",
+                            "txTime": "=$.txTime"
+                        },
+                        "output": {
+                            "status": "=$.status",
+                            "message": "=$.message",
+                            "returns": {
+                                "mapping": {
+                                    "@foreach($.returns, returns)": {
+                                        "key": "=$loop.key",
+                                        "value": "=$loop.value"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "reply": {
+                        "message": ""
+                    },
+                    "schemas": {
+                        "reply": {
+                            "returns": "schema://IOUMap"
+                        },
+                        "output": {
+                            "parameters": "schema://IOU",
+                            "transient": {
+                                "type": "json",
+                                "value": "{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"properties\":{\"account\":{\"type\":\"string\"},\"balance\":{\"type\":\"number\"}}}",
+                                "fe_metadata": "{\n    \"account\": \"\",\n    \"balance\": 0\n}"
+                            }
+                        }
+                    },
+                    "name": "sample"
+                }
+            ]
+        }
+    ],
+    "resources": [
+        {
+            "id": "flow:sample",
+            "data": {
+                "name": "sample",
+                "description": "",
+                "links": [
+                    {
+                        "id": 1,
+                        "from": "Cid",
+                        "to": "Get",
+                        "type": "default"
+                    },
+                    {
+                        "id": 2,
+                        "from": "Get",
+                        "to": "Delete",
+                        "type": "default"
+                    },
+                    {
+                        "id": 3,
+                        "from": "Delete",
+                        "to": "GetByCompositeKey",
+                        "type": "default"
+                    },
+                    {
+                        "id": 4,
+                        "from": "GetByCompositeKey",
+                        "to": "GetHistory",
+                        "type": "default"
+                    },
+                    {
+                        "id": 5,
+                        "from": "GetHistory",
+                        "to": "GetRange",
+                        "type": "default"
+                    },
+                    {
+                        "id": 6,
+                        "from": "GetRange",
+                        "to": "Put",
+                        "type": "default"
+                    },
+                    {
+                        "id": 7,
+                        "from": "Put",
+                        "to": "PutAll",
+                        "type": "default"
+                    },
+                    {
+                        "id": 8,
+                        "from": "PutAll",
+                        "to": "SetEvent",
+                        "type": "default"
+                    },
+                    {
+                        "id": 9,
+                        "from": "SetEvent",
+                        "to": "InvokeChaincode",
+                        "type": "default"
+                    },
+                    {
+                        "id": 10,
+                        "from": "InvokeChaincode",
+                        "to": "EndorsementPolicy",
+                        "type": "default"
+                    },
+                    {
+                        "id": 11,
+                        "from": "EndorsementPolicy",
+                        "to": "Query",
+                        "type": "default"
+                    },
+                    {
+                        "id": 12,
+                        "from": "Query",
+                        "to": "Return",
+                        "type": "default"
+                    }
+                ],
+                "tasks": [
+                    {
+                        "id": "Cid",
+                        "name": "Cid",
+                        "description": "This activity returns requesting client ID",
+                        "activity": {
+                            "ref": "#cid",
+                            "schemas": {
+                                "output": {
+                                    "attrs": "schema://ClientCert"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "id": "Get",
+                        "name": "Get",
+                        "description": "This activity fetches data by key from fabric ledger",
+                        "activity": {
+                            "ref": "#get",
+                            "input": {
+                                "key": "mykey",
+                                "privateCollection": "=$property[\"Collections.Org1Collection\"]"
+                            },
+                            "schemas": {
+                                "output": {
+                                    "result": "schema://IOU"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "id": "Delete",
+                        "name": "Delete",
+                        "description": "This activity deletes data from fabric world state",
+                        "activity": {
+                            "ref": "#delete",
+                            "input": {
+                                "key": "mykey",
+                                "privateCollection": "=$property[\"Collections.Org1Collection\"]",
+                                "keysOnly": false,
+                                "compositeKeys": "=$property[\"CompositeKeys.IOUKeys\"]"
+                            },
+                            "schemas": {
+                                "output": {
+                                    "result": "schema://IOU"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "id": "GetByCompositeKey",
+                        "name": "GetByCompositeKey",
+                        "description": "This activity fetches data by composite-key from fabric ledger",
+                        "activity": {
+                            "ref": "#getbycompositekey",
+                            "input": {
+                                "keyName": "=$property[\"CompositeKeys.IssuerKey\"]",
+                                "usePagination": false,
+                                "pageSize": 0,
+                                "start": "",
+                                "privateCollection": "=$property[\"Collections.Org1Collection\"]",
+                                "attributes": {
+                                    "mapping": {
+                                        "issuer": "foo"
+                                    }
+                                }
+                            },
+                            "schemas": {
+                                "input": {
+                                    "attributes": {
+                                        "type": "json",
+                                        "value": "{\"type\":\"object\",\"properties\":{\"issuer\":{\"type\":\"string\"}},\"required\":[]}",
+                                        "fe_metadata": "[{\"parameterName\":\"issuer\",\"type\":\"string\"}]"
+                                    }
+                                },
+                                "output": {
+                                    "result": "schema://IOU"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "id": "GetHistory",
+                        "name": "GetHistory",
+                        "description": "This activity fetches history of a key from fabric ledger",
+                        "activity": {
+                            "ref": "#gethistory",
+                            "input": {
+                                "key": "mykey"
+                            },
+                            "schemas": {
+                                "output": {
+                                    "result": "schema://IOU"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "id": "GetRange",
+                        "name": "GetRange",
+                        "description": "This activity fetches data by range of keys from fabric ledger",
+                        "activity": {
+                            "ref": "#getrange",
+                            "input": {
+                                "startKey": "start",
+                                "endKey": "end",
+                                "usePagination": false,
+                                "pageSize": 0,
+                                "start": "",
+                                "privateCollection": "=$property[\"Collections.Org1Collection\"]"
+                            },
+                            "schemas": {
+                                "output": {
+                                    "result": "schema://IOU"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "id": "Put",
+                        "name": "Put",
+                        "description": "This activity stores data to fabric ledger",
+                        "activity": {
+                            "ref": "#put",
+                            "input": {
+                                "key": "mykey",
+                                "privateCollection": "=$property[\"Collections.Org1Collection\"]",
+                                "compositeKeys": "=$property[\"CompositeKeys.IOUKeys\"]",
+                                "data": {
+                                    "mapping": {
+                                        "iid": "mykey"
+                                    }
+                                }
+                            },
+                            "schemas": {
+                                "input": {
+                                    "data": "schema://IOU"
+                                },
+                                "output": {
+                                    "result": {
+                                        "type": "json",
+                                        "value": "{\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"iid\": {\n            \"type\": \"string\"\n        },\n        \"issuer\": {\n            \"type\": \"string\"\n        },\n        \"amount\": {\n            \"type\": \"number\"\n        },\n        \"currency\": {\n            \"type\": \"string\"\n        },\n        \"owner\": {\n            \"type\": \"string\"\n        }\n    }\n}",
+                                        "fe_metadata": "{\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"iid\": {\n            \"type\": \"string\"\n        },\n        \"issuer\": {\n            \"type\": \"string\"\n        },\n        \"amount\": {\n            \"type\": \"number\"\n        },\n        \"currency\": {\n            \"type\": \"string\"\n        },\n        \"owner\": {\n            \"type\": \"string\"\n        }\n    }\n}"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "id": "PutAll",
+                        "name": "PutAll",
+                        "description": "This activity stores multiple records in fabric ledger",
+                        "activity": {
+                            "ref": "#putall",
+                            "input": {
+                                "privateCollection": "=$property[\"Collections.Org1Collection\"]",
+                                "compositeKeys": "=$property[\"CompositeKeys.IOUKeys\"]",
+                                "data": {
+                                    "mapping": [
+                                        {
+                                            "key": "mykey",
+                                            "value": {
+                                                "iid": "mykey"
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            "schemas": {
+                                "input": {
+                                    "data": "schema://IOU"
+                                },
+                                "output": {
+                                    "result": {
+                                        "type": "json",
+                                        "value": "{\n  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n  \"type\": \"array\",\n  \"items\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"key\": {\n        \"type\": \"string\"\n      },\n      \"value\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"iid\": {\n            \"type\": \"string\"\n          },\n          \"issuer\": {\n            \"type\": \"string\"\n          },\n          \"amount\": {\n            \"type\": \"number\"\n          },\n          \"currency\": {\n            \"type\": \"string\"\n          },\n          \"owner\": {\n            \"type\": \"string\"\n          }\n        }\n      }\n    }\n  }\n}",
+                                        "fe_metadata": "{\n  \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n  \"type\": \"array\",\n  \"items\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"key\": {\n        \"type\": \"string\"\n      },\n      \"value\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"iid\": {\n            \"type\": \"string\"\n          },\n          \"issuer\": {\n            \"type\": \"string\"\n          },\n          \"amount\": {\n            \"type\": \"number\"\n          },\n          \"currency\": {\n            \"type\": \"string\"\n          },\n          \"owner\": {\n            \"type\": \"string\"\n          }\n        }\n      }\n    }\n  }\n}"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "id": "SetEvent",
+                        "name": "SetEvent",
+                        "description": "This activity sets an event on a fabric block",
+                        "activity": {
+                            "ref": "#setevent",
+                            "input": {
+                                "name": "alert"
+                            },
+                            "schemas": {
+                                "input": {
+                                    "payload": "schema://AlertEvent"
+                                },
+                                "output": {
+                                    "result": {
+                                        "type": "json",
+                                        "value": "{\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"name\": {\n            \"type\": \"string\"\n        },\n        \"message\": {\n            \"type\": \"string\"\n        },\n        \"level\": {\n            \"type\": \"number\"\n        }\n    }\n}",
+                                        "fe_metadata": "{\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"name\": {\n            \"type\": \"string\"\n        },\n        \"message\": {\n            \"type\": \"string\"\n        },\n        \"level\": {\n            \"type\": \"number\"\n        }\n    }\n}"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "id": "InvokeChaincode",
+                        "name": "InvokeChaincode",
+                        "description": "This activity invokes a chaincode function on a fabric channel",
+                        "activity": {
+                            "ref": "#invokechaincode",
+                            "input": {
+                                "chaincodeName": "",
+                                "channelID": "",
+                                "transactionName": ""
+                            },
+                            "schemas": {
+                                "input": {
+                                    "parameters": {
+                                        "type": "json",
+                                        "value": "{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"properties\":{\"param1\":{\"type\":\"string\"},\"param2\":{\"type\":\"string\"}}}",
+                                        "fe_metadata": "{\n    \"param1\": \"\",\n    \"param2\": \"\"\n}"
+                                    }
+                                },
+                                "output": {
+                                    "result": "schema://AlertEvent"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "id": "EndorsementPolicy",
+                        "name": "EndorsementPolicy",
+                        "description": "This activity manages state-based endorsement policy for fabric",
+                        "activity": {
+                            "ref": "#endorsement",
+                            "input": {
+                                "key": "",
+                                "operation": "ADD",
+                                "role": "MEMBER",
+                                "organizations": "Org1",
+                                "policy": "",
+                                "isPrivate": false,
+                                "collection": ""
+                            }
+                        }
+                    },
+                    {
+                        "id": "Query",
+                        "name": "Query",
+                        "description": "This activity fetches data by rich query on fabric Couch DB",
+                        "activity": {
+                            "ref": "#query",
+                            "input": {
+                                "query": "{\n    \"selector\": {\n        \"issuer\": \"foo\",\n        \"owner\": \"$owner\"\n    }\n}",
+                                "usePagination": false,
+                                "pageSize": 0,
+                                "start": "",
+                                "privateCollection": "",
+                                "queryParams": {
+                                    "mapping": {
+                                        "owner": "=$flow.parameters.owner"
+                                    }
+                                }
+                            },
+                            "schemas": {
+                                "input": {
+                                    "queryParams": {
+                                        "type": "json",
+                                        "value": "{\"type\":\"object\",\"properties\":{\"owner\":{\"type\":\"string\"}},\"required\":[]}",
+                                        "fe_metadata": "[{\"parameterName\":\"owner\",\"type\":\"string\"}]"
+                                    }
+                                },
+                                "output": {
+                                    "result": "schema://IOU"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "id": "Return",
+                        "name": "Return",
+                        "description": "Simple Return Activity",
+                        "activity": {
+                            "ref": "#actreturn",
+                            "settings": {
+                                "mappings": {
+                                    "status": "=$activity[PutAll].code",
+                                    "message": "=$activity[PutAll].message",
+                                    "returns": {
+                                        "mapping": {
+                                            "@foreach($activity[PutAll].result, returns)": {
+                                                "key": "=$loop.key",
+                                                "value": "=$loop.value"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "metadata": {
+                    "input": [
+                        {
+                            "name": "parameters",
+                            "type": "object",
+                            "schema": {
+                                "type": "json",
+                                "value": "{\"iid\":{\"type\":\"string\"},\"issuer\":{\"type\":\"string\"},\"amount\":{\"type\":\"number\"},\"currency\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}"
+                            }
+                        },
+                        {
+                            "name": "transient",
+                            "type": "object",
+                            "schema": {
+                                "type": "json",
+                                "value": "{\"account\":{\"type\":\"string\"},\"balance\":{\"type\":\"number\"}}"
+                            }
+                        },
+                        {
+                            "name": "txID",
+                            "type": "string"
+                        },
+                        {
+                            "name": "txTime",
+                            "type": "string"
+                        }
+                    ],
+                    "output": [
+                        {
+                            "name": "status",
+                            "type": "float64"
+                        },
+                        {
+                            "name": "message",
+                            "type": "string"
+                        },
+                        {
+                            "name": "returns",
+                            "type": "array",
+                            "schema": {
+                                "type": "json",
+                                "value": "{\"type\":\"object\",\"properties\":{\"key\":{\"type\":\"string\"},\"value\":{\"type\":\"object\",\"properties\":{\"iid\":{\"type\":\"string\"},\"issuer\":{\"type\":\"string\"},\"amount\":{\"type\":\"number\"},\"currency\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}}}"
+                            }
+                        }
+                    ],
+                    "fe_metadata": {
+                        "input": "{\"type\":\"object\",\"title\":\"FabricTransaction\",\"properties\":{\"parameters\":{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"properties\":{\"iid\":{\"type\":\"string\"},\"issuer\":{\"type\":\"string\"},\"amount\":{\"type\":\"number\"},\"currency\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}},\"transient\":{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"object\",\"properties\":{\"account\":{\"type\":\"string\"},\"balance\":{\"type\":\"number\"}}},\"txID\":{\"type\":\"string\",\"required\":false},\"txTime\":{\"type\":\"string\",\"required\":false}}}",
+                        "output": "{\"type\":\"object\",\"title\":\"Inputs\",\"properties\":{\"status\":{\"type\":\"number\",\"required\":false},\"message\":{\"type\":\"string\",\"required\":false},\"returns\":{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"key\":{\"type\":\"string\"},\"value\":{\"type\":\"object\",\"properties\":{\"iid\":{\"type\":\"string\"},\"issuer\":{\"type\":\"string\"},\"amount\":{\"type\":\"number\"},\"currency\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}}}}},\"required\":[]}"
+                    }
+                }
+            }
+        }
+    ],
+    "properties": [
+        {
+            "name": "Collections.Org1Collection",
+            "type": "string",
+            "value": "Org1Collection"
+        },
+        {
+            "name": "CompositeKeys.IOUKeys",
+            "type": "string",
+            "value": "IOUKey=issuer,iid;OwnerKey=owner,iid"
+        },
+        {
+            "name": "CompositeKeys.IssuerKey",
+            "type": "string",
+            "value": "IssuerKey=issuer,iid"
+        }
+    ],
+    "schemas": {
+        "IOU": {
+            "type": "json",
+            "value": "{\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"iid\": {\n            \"type\": \"string\"\n        },\n        \"issuer\": {\n            \"type\": \"string\"\n        },\n        \"amount\": {\n            \"type\": \"number\"\n        },\n        \"currency\": {\n            \"type\": \"string\"\n        },\n        \"owner\": {\n            \"type\": \"string\"\n        }\n    }\n}",
+            "fe_metadata": "{\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"iid\": {\n            \"type\": \"string\"\n        },\n        \"issuer\": {\n            \"type\": \"string\"\n        },\n        \"amount\": {\n            \"type\": \"number\"\n        },\n        \"currency\": {\n            \"type\": \"string\"\n        },\n        \"owner\": {\n            \"type\": \"string\"\n        }\n    }\n}"
+        },
+        "IOUMap": {
+            "type": "json",
+            "value": "{\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"array\",\n    \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n            \"key\": {\n                \"type\": \"string\"\n            },\n            \"value\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"iid\": {\n                        \"type\": \"string\"\n                    },\n                    \"issuer\": {\n                        \"type\": \"string\"\n                    },\n                    \"amount\": {\n                        \"type\": \"number\"\n                    },\n                    \"currency\": {\n                        \"type\": \"string\"\n                    },\n                    \"owner\": {\n                        \"type\": \"string\"\n                    }\n                }\n            }\n        }\n    }\n}",
+            "fe_metadata": "{\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"array\",\n    \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n            \"key\": {\n                \"type\": \"string\"\n            },\n            \"value\": {\n                \"type\": \"object\",\n                \"properties\": {\n                    \"iid\": {\n                        \"type\": \"string\"\n                    },\n                    \"issuer\": {\n                        \"type\": \"string\"\n                    },\n                    \"amount\": {\n                        \"type\": \"number\"\n                    },\n                    \"currency\": {\n                        \"type\": \"string\"\n                    },\n                    \"owner\": {\n                        \"type\": \"string\"\n                    }\n                }\n            }\n        }\n    }\n}"
+        },
+        "ClientCert": {
+            "type": "json",
+            "value": "{\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"name\": {\n            \"type\": \"string\"\n        },\n        \"role\": {\n            \"type\": \"string\"\n        },\n        \"org\": {\n            \"type\": \"string\"\n        }\n    }\n}",
+            "fe_metadata": "{\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"name\": {\n            \"type\": \"string\"\n        },\n        \"role\": {\n            \"type\": \"string\"\n        },\n        \"org\": {\n            \"type\": \"string\"\n        }\n    }\n}"
+        },
+        "AlertEvent": {
+            "type": "json",
+            "value": "{\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"name\": {\n            \"type\": \"string\"\n        },\n        \"message\": {\n            \"type\": \"string\"\n        },\n        \"level\": {\n            \"type\": \"number\"\n        }\n    }\n}",
+            "fe_metadata": "{\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"name\": {\n            \"type\": \"string\"\n        },\n        \"message\": {\n            \"type\": \"string\"\n        },\n        \"level\": {\n            \"type\": \"number\"\n        }\n    }\n}"
+        }
+    },
+    "connections": {},
+    "contrib": "W3sicmVmIjoiZ2l0aHViLmNvbS9USUJDT1NvZnR3YXJlL2RvdmV0YWlsLWNvbnRyaWIvaHlwZXJsZWRnZXItZmFicmljL2ZhYnJpYyIsInMzbG9jYXRpb24iOiJ7VVNFUklEfS9mYWJyaWMifV0=",
+    "fe_metadata": "UEsDBAoAAAAIAAGXVFGrqSRGFQAAABMAAAAIAAAAYXBwLmpzb26rViopykxPTy1yy8kvL1ayio6tBQBQSwECFAAKAAAACAABl1RRq6kkRhUAAAATAAAACAAAAAAAAAAAAAAAAAAAAAAAYXBwLmpzb25QSwUGAAAAAAEAAQA2AAAAOwAAAAAA"
+}

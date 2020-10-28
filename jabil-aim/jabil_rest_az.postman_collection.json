@@ -1,0 +1,981 @@
+{
+	"info": {
+		"_postman_id": "5c0192f8-3e8e-422e-8f34-3bacb56eda8d",
+		"name": "jabil_rest_az",
+		"description": "REST API to test Jabil AIM demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01-create supplier 1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"SupplierID\": \"intel\",\n  \"TenantID\": \"demo\",\n  \"GlobalCode\": \"s1\",\n  \"FullName\": \"Intel Corporation\",\n  \"ShortName\": \"intel\",\n  \"Description\": \"s1\",\n  \"Region\": \"West\",\n  \"Commodity\": \"demo\",\n  \"HighLevelCommodity\": \"demo\",\n  \"Address\": {\n    \"Street1\": \"2200 Mission College Blvd.\",\n    \"Street2\": \"NA\",\n    \"Street3\": \"NA\",\n    \"Street4\": \"NA\",\n    \"CityOrMunicipality\": \"Santa Clara\",\n    \"StateOrProvince\": \"CA\",\n    \"CountyOrSubdivision\": \"NA\",\n    \"ZipOrPostcode\": \"95052\",\n    \"Country\": \"USA\"\n  },\n  \"WebsiteURL\": \"https://www.intel.com\",\n  \"TickerSymbol\": \"INTC\"\n}"
+				},
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/putsupplier/jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"putsupplier",
+						"jack"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02-create supplier 2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"SupplierID\": \"apple\",\n  \"TenantID\": \"demo\",\n  \"GlobalCode\": \"s2\",\n  \"FullName\": \"Apple Inc.\",\n  \"ShortName\": \"apple\",\n  \"Description\": \"s2\",\n  \"Region\": \"West\",\n  \"Commodity\": \"demo\",\n  \"HighLevelCommodity\": \"demo\",\n  \"Address\": {\n    \"Street1\": \"One Apple Park Way\",\n    \"Street2\": \"NA\",\n    \"Street3\": \"NA\",\n    \"Street4\": \"NA\",\n    \"CityOrMunicipality\": \"Cupertino\",\n    \"StateOrProvince\": \"CA\",\n    \"CountyOrSubdivision\": \"NA\",\n    \"ZipOrPostcode\": \"95014\",\n    \"Country\": \"USA\"\n  },\n  \"WebsiteURL\": \"https://www.apple.com\",\n  \"TickerSymbol\": \"AAPL\"\n}"
+				},
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/putsupplier/jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"putsupplier",
+						"jack"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "03-get supplier 1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/suppliers/intel?user=jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"suppliers",
+						"intel"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "jack"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04-get all suppliers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/suppliers?user=jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"suppliers"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "jack"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "05-create agreement a1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"AgreementID\": \"a1\",\n  \"SupplierID\": \"intel\",\n  \"IsPrimary\": true,\n  \"FullName\": \"demo aggreement a1\",\n  \"ShortName\": \"a1\",\n  \"Status\": \"\",\n  \"SignatureDate\": \"2020-04-15\",\n  \"SignedBy\": \"jabil\",\n  \"ReferenceID\": \"\",\n  \"ReferenceHash\": \"\",\n  \"StartDate\": \"2020-01-01\",\n  \"EndDate\": \"2020-12-31\",\n  \"CollectionFrequency\": \"QUARTERLY\",\n  \"Type\": \"BASELINE_GROWTH\",\n  \"GrowthTerms\": [\n    {\n      \"MinSaleGrowth\": 1.1,\n      \"BonusPct\": 0.1\n    },\n    {\n      \"MinSaleGrowth\": 1.2,\n      \"BonusPct\": 0.05\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/putagreement/jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"putagreement",
+						"jack"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "06-approve agreement a1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"AgreementID\": \"a1\",\n  \"SupplierID\": \"intel\",\n  \"IsPrimary\": true,\n  \"FullName\": \"demo aggreement a1\",\n  \"ShortName\": \"a1\",\n  \"Status\": \"\",\n  \"SignatureDate\": \"2020-04-15\",\n  \"SignedBy\": \"intel\",\n  \"ReferenceID\": \"\",\n  \"ReferenceHash\": \"\",\n  \"StartDate\": \"2020-01-01\",\n  \"EndDate\": \"2020-12-31\",\n  \"CollectionFrequency\": \"QUARTERLY\",\n  \"Type\": \"BASELINE_GROWTH\",\n  \"GrowthTerms\": [\n    {\n      \"MinSaleGrowth\": 1.1,\n      \"BonusPct\": 0.1\n    },\n    {\n      \"MinSaleGrowth\": 1.2,\n      \"BonusPct\": 0.05\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/putagreement/iris",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"putagreement",
+						"iris"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "07-create agreement a2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"AgreementID\": \"a2\",\n  \"SupplierID\": \"intel\",\n  \"IsPrimary\": true,\n  \"FullName\": \"demo aggreement a2\",\n  \"ShortName\": \"a2\",\n  \"Status\": \"\",\n  \"SignatureDate\": \"2020-04-15\",\n  \"SignedBy\": \"jabil\",\n  \"ReferenceID\": \"\",\n  \"ReferenceHash\": \"\",\n  \"StartDate\": \"2020-01-01\",\n  \"EndDate\": \"2020-12-31\",\n  \"CollectionFrequency\": \"QUARTERLY\",\n  \"Type\": \"STANDARD_STEP\",\n  \"StandardTerms\": [\n    {\n      \"MinSaleAmt\": 10000,\n      \"BonusPct\": 0.1\n    },\n    {\n      \"MinSaleAmt\": 20000,\n      \"BonusPct\": 0.05\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/putagreement/jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"putagreement",
+						"jack"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "08-update agreement a2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"AgreementID\": \"a2\",\n  \"SupplierID\": \"intel\",\n  \"IsPrimary\": true,\n  \"FullName\": \"demo aggreement a2\",\n  \"ShortName\": \"a2\",\n  \"Status\": \"\",\n  \"SignatureDate\": \"2020-04-15\",\n  \"SignedBy\": \"intel\",\n  \"ReferenceID\": \"\",\n  \"ReferenceHash\": \"\",\n  \"StartDate\": \"2020-01-01\",\n  \"EndDate\": \"2020-12-31\",\n  \"CollectionFrequency\": \"QUARTERLY\",\n  \"Type\": \"STANDARD_STEP\",\n  \"StandardTerms\": [\n    {\n      \"MinSaleAmt\": 10000,\n      \"BonusPct\": 0.1\n    },\n    {\n      \"MinSaleAmt\": 25000,\n      \"BonusPct\": 0.05\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/putagreement/iris",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"putagreement",
+						"iris"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "09-approve agreement a2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"AgreementID\": \"a2\",\n  \"SupplierID\": \"intel\",\n  \"IsPrimary\": true,\n  \"FullName\": \"demo aggreement a2\",\n  \"ShortName\": \"a2\",\n  \"Status\": \"\",\n  \"SignatureDate\": \"2020-04-15\",\n  \"SignedBy\": \"jabil\",\n  \"ReferenceID\": \"\",\n  \"ReferenceHash\": \"\",\n  \"StartDate\": \"2020-01-01\",\n  \"EndDate\": \"2020-12-31\",\n  \"CollectionFrequency\": \"QUARTERLY\",\n  \"Type\": \"STANDARD_STEP\",\n  \"StandardTerms\": [\n    {\n      \"MinSaleAmt\": 10000,\n      \"BonusPct\": 0.1\n    },\n    {\n      \"MinSaleAmt\": 25000,\n      \"BonusPct\": 0.05\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/putagreement/jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"putagreement",
+						"jack"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "10-get agreement history a2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/agreementhistory/a2?user=jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"agreementhistory",
+						"a2"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "jack"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "11-get agreement a1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/agreements/a1?user=iris",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"agreements",
+						"a1"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "iris"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "12-query all agreements",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/agreements?user=jack&PrimaryOnly=true",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"agreements"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "jack"
+						},
+						{
+							"key": "PrimaryOnly",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "13-get agreements of supplier s1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/suppliers/intel/agreements?user=jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"suppliers",
+						"intel",
+						"agreements"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "jack"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "14-create bulk load",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"BulkLoadID\": \"load1\",\n  \"ReferenceFile\": \"load1.xls\",\n  \"ReferenceHash\": \"3c9671d402d991c0f238b4641fa4caad9096d033\",\n  \"LoadedBy\": \"jabil\"\n}"
+				},
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/putbulkload/jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"putbulkload",
+						"jack"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "15-get bulkload",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/bulkloads/load1?user=jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"bulkloads",
+						"load1"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "jack"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "16-create monthly purchase 1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"SupplierID\": \"intel\",\n  \"Year\": 2020,\n  \"Month\": 1,\n  \"PurchaseAmt\": 15000\n}"
+				},
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/putmonthlypurchase/jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"putmonthlypurchase",
+						"jack"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "17-create monthly purchase 2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"SupplierID\": \"intel\",\n  \"Year\": 2020,\n  \"Month\": 2,\n  \"PurchaseAmt\": 25000\n}"
+				},
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/putmonthlypurchase/jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"putmonthlypurchase",
+						"jack"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "18-get monthly purchases",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/monthlypurchases/intel/2020?user=jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"monthlypurchases",
+						"intel",
+						"2020"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "jack"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "19-put purchases 1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"items\": [\n    {\n      \"PurchaseOrderNbr\": \"po-1\",\n      \"SupplierID\": \"intel\",\n      \"PurchaseOrderStatus\": \"PAID\",\n      \"DocumentID\": \"po-1\",\n      \"DocumentDate\": \"2020-03-01\",\n      \"ShipDate\": \"2020-03-01\",\n      \"ManufacturerPartNbr\": \"item-1\",\n      \"SupplierPartNbr\": \"i-1\",\n      \"JabilPartNbr\": \"j-1\",\n      \"Currency\": \"USD\",\n      \"ShippedQty\": 100,\n      \"UnitPrice\": 10,\n      \"SalePriceLocalAmt\": 1000,\n      \"SalePriceUSD\": 1000,\n      \"ReturnQty\": 0,\n      \"ReturnUSD\": 0,\n      \"ReturnReason\": \"\",\n      \"VerifiedBy\": \"jabil\",\n      \"SupplierBulkLoadID\": \"\",\n      \"JabilBulkLoadID\": \"load1\"\n    },\n    {\n      \"PurchaseOrderNbr\": \"po-1\",\n      \"SupplierID\": \"intel\",\n      \"PurchaseOrderStatus\": \"PAID\",\n      \"DocumentID\": \"po-1\",\n      \"DocumentDate\": \"2020-03-01\",\n      \"ShipDate\": \"2020-03-01\",\n      \"ManufacturerPartNbr\": \"item-2\",\n      \"SupplierPartNbr\": \"i-2\",\n      \"JabilPartNbr\": \"j-2\",\n      \"Currency\": \"USD\",\n      \"ShippedQty\": 100,\n      \"UnitPrice\": 20,\n      \"SalePriceLocalAmt\": 2000,\n      \"SalePriceUSD\": 2000,\n      \"ReturnQty\": 0,\n      \"ReturnUSD\": 0,\n      \"ReturnReason\": \"\",\n      \"VerifiedBy\": \"jabil\",\n      \"SupplierBulkLoadID\": \"\",\n      \"JabilBulkLoadID\": \"load1\"\n    },\n    {\n      \"PurchaseOrderNbr\": \"po-1\",\n      \"SupplierID\": \"intel\",\n      \"PurchaseOrderStatus\": \"PAID\",\n      \"DocumentID\": \"po-1\",\n      \"DocumentDate\": \"2020-03-01\",\n      \"ShipDate\": \"2020-03-01\",\n      \"ManufacturerPartNbr\": \"item-3\",\n      \"SupplierPartNbr\": \"i-3\",\n      \"JabilPartNbr\": \"j-3\",\n      \"Currency\": \"USD\",\n      \"ShippedQty\": 100,\n      \"UnitPrice\": 30,\n      \"SalePriceLocalAmt\": 3000,\n      \"SalePriceUSD\": 3000,\n      \"ReturnQty\": 0,\n      \"ReturnUSD\": 0,\n      \"ReturnReason\": \"\",\n      \"VerifiedBy\": \"jabil\",\n      \"SupplierBulkLoadID\": \"\",\n      \"JabilBulkLoadID\": \"load1\"\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/putpurchases/jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"putpurchases",
+						"jack"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "20-put purchases 2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"items\": [\n    {\n      \"PurchaseOrderNbr\": \"po-2\",\n      \"SupplierID\": \"intel\",\n      \"PurchaseOrderStatus\": \"PAID\",\n      \"DocumentID\": \"po-2\",\n      \"DocumentDate\": \"2020-03-10\",\n      \"ShipDate\": \"2020-03-10\",\n      \"ManufacturerPartNbr\": \"item-1\",\n      \"SupplierPartNbr\": \"i-1\",\n      \"JabilPartNbr\": \"j-1\",\n      \"Currency\": \"USD\",\n      \"ShippedQty\": 50,\n      \"UnitPrice\": 10,\n      \"SalePriceLocalAmt\": 500,\n      \"SalePriceUSD\": 500,\n      \"ReturnQty\": 0,\n      \"ReturnUSD\": 0,\n      \"ReturnReason\": \"\",\n      \"VerifiedBy\": \"jabil\",\n      \"SupplierBulkLoadID\": \"\",\n      \"JabilBulkLoadID\": \"load1\"\n    },\n    {\n      \"PurchaseOrderNbr\": \"po-2\",\n      \"SupplierID\": \"intel\",\n      \"PurchaseOrderStatus\": \"PAID\",\n      \"DocumentID\": \"po-2\",\n      \"DocumentDate\": \"2020-03-10\",\n      \"ShipDate\": \"2020-03-10\",\n      \"ManufacturerPartNbr\": \"item-2\",\n      \"SupplierPartNbr\": \"i-2\",\n      \"JabilPartNbr\": \"j-2\",\n      \"Currency\": \"USD\",\n      \"ShippedQty\": 50,\n      \"UnitPrice\": 20,\n      \"SalePriceLocalAmt\": 1000,\n      \"SalePriceUSD\": 1000,\n      \"ReturnQty\": 0,\n      \"ReturnUSD\": 0,\n      \"ReturnReason\": \"\",\n      \"VerifiedBy\": \"jabil\",\n      \"SupplierBulkLoadID\": \"\",\n      \"JabilBulkLoadID\": \"load1\"\n    },\n    {\n      \"PurchaseOrderNbr\": \"po-2\",\n      \"SupplierID\": \"intel\",\n      \"PurchaseOrderStatus\": \"PAID\",\n      \"DocumentID\": \"po-2\",\n      \"DocumentDate\": \"2020-03-10\",\n      \"ShipDate\": \"2020-03-10\",\n      \"ManufacturerPartNbr\": \"item-3\",\n      \"SupplierPartNbr\": \"i-3\",\n      \"JabilPartNbr\": \"j-3\",\n      \"Currency\": \"USD\",\n      \"ShippedQty\": 50,\n      \"UnitPrice\": 30,\n      \"SalePriceLocalAmt\": 1500,\n      \"SalePriceUSD\": 1500,\n      \"ReturnQty\": 0,\n      \"ReturnUSD\": 0,\n      \"ReturnReason\": \"\",\n      \"VerifiedBy\": \"jabil\",\n      \"SupplierBulkLoadID\": \"\",\n      \"JabilBulkLoadID\": \"load1\"\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/putpurchases/jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"putpurchases",
+						"jack"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "21-reconcile purchases",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"items\": [\n    {\n      \"PurchaseOrderNbr\": \"po-1\",\n      \"SupplierID\": \"intel\",\n      \"PurchaseOrderStatus\": \"PAID\",\n      \"DocumentID\": \"po-1\",\n      \"DocumentDate\": \"2020-03-01\",\n      \"ShipDate\": \"2020-03-01\",\n      \"ManufacturerPartNbr\": \"item-1\",\n      \"SupplierPartNbr\": \"i-1\",\n      \"JabilPartNbr\": \"j-1\",\n      \"Currency\": \"USD\",\n      \"ShippedQty\": 100,\n      \"UnitPrice\": 10,\n      \"SalePriceLocalAmt\": 1000,\n      \"SalePriceUSD\": 1000,\n      \"ReturnQty\": 0,\n      \"ReturnUSD\": 0,\n      \"ReturnReason\": \"\",\n      \"VerifiedBy\": \"intel\",\n      \"SupplierBulkLoadID\": \"\",\n      \"JabilBulkLoadID\": \"load1\"\n    },\n    {\n      \"PurchaseOrderNbr\": \"po-1\",\n      \"SupplierID\": \"intel\",\n      \"PurchaseOrderStatus\": \"PAID\",\n      \"DocumentID\": \"po-1\",\n      \"DocumentDate\": \"2020-03-01\",\n      \"ShipDate\": \"2020-03-01\",\n      \"ManufacturerPartNbr\": \"item-2\",\n      \"SupplierPartNbr\": \"i-2\",\n      \"JabilPartNbr\": \"j-2\",\n      \"Currency\": \"USD\",\n      \"ShippedQty\": 100,\n      \"UnitPrice\": 20,\n      \"SalePriceLocalAmt\": 2000,\n      \"SalePriceUSD\": 2000,\n      \"ReturnQty\": 0,\n      \"ReturnUSD\": 0,\n      \"ReturnReason\": \"\",\n      \"VerifiedBy\": \"intel\",\n      \"SupplierBulkLoadID\": \"\",\n      \"JabilBulkLoadID\": \"load1\"\n    },\n    {\n      \"PurchaseOrderNbr\": \"po-2\",\n      \"SupplierID\": \"intel\",\n      \"PurchaseOrderStatus\": \"PAID\",\n      \"DocumentID\": \"po-2\",\n      \"DocumentDate\": \"2020-03-10\",\n      \"ShipDate\": \"2020-03-10\",\n      \"ManufacturerPartNbr\": \"item-3\",\n      \"SupplierPartNbr\": \"i-3\",\n      \"JabilPartNbr\": \"j-3\",\n      \"Currency\": \"USD\",\n      \"ShippedQty\": 50,\n      \"UnitPrice\": 30,\n      \"SalePriceLocalAmt\": 1500,\n      \"SalePriceUSD\": 1500,\n      \"ReturnQty\": 0,\n      \"ReturnUSD\": 0,\n      \"ReturnReason\": \"\",\n      \"VerifiedBy\": \"intel\",\n      \"SupplierBulkLoadID\": \"\",\n      \"JabilBulkLoadID\": \"load1\"\n    }\n  ]\n}"
+				},
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/putpurchases/iris",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"putpurchases",
+						"iris"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "22-get supplier purchases",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/purchases/intel/2020/3/BOTH?user=jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"purchases",
+						"intel",
+						"2020",
+						"3",
+						"BOTH"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "jack"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "23-get reconciliation history",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/reconciliationhistory/po-1/item-2?user=jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"reconciliationhistory",
+						"po-1",
+						"item-2"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "jack"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "24-caculate monthly purchase",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/calculatemonthlypurchase/jack/intel/2020/3",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"calculatemonthlypurchase",
+						"jack",
+						"intel",
+						"2020",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "25-delete aggrement",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/deleteagreement/jack/a1",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"deleteagreement",
+						"jack",
+						"a1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "26-delete supplier",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/deletesupplier/jack/apple",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"deletesupplier",
+						"jack",
+						"apple"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "27-create supplier 3",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"SupplierID\": \"nxp\",\n  \"TenantID\": \"demo\",\n  \"GlobalCode\": \"s3\",\n  \"FullName\": \"NXP USA Inc.\",\n  \"ShortName\": \"nxp\",\n  \"Description\": \"s3\",\n  \"Region\": \"Central\",\n  \"Commodity\": \"demo\",\n  \"HighLevelCommodity\": \"demo\",\n  \"Address\": {\n    \"Street1\": \"6501 William Cannon Drive West\",\n    \"Street2\": \"NA\",\n    \"Street3\": \"NA\",\n    \"Street4\": \"NA\",\n    \"CityOrMunicipality\": \"Austin\",\n    \"StateOrProvince\": \"TX\",\n    \"CountyOrSubdivision\": \"NA\",\n    \"ZipOrPostcode\": \"78735\",\n    \"Country\": \"USA\"\n  },\n  \"WebsiteURL\": \"https://www.nxp.com\",\n  \"TickerSymbol\": \"NXPI\"\n}"
+				},
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/putsupplier/jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"putsupplier",
+						"jack"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "28-create supplier 4",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"SupplierID\": \"hitachi\",\n  \"TenantID\": \"demo\",\n  \"GlobalCode\": \"s4\",\n  \"FullName\": \"Hitachi America, Ltd.\",\n  \"ShortName\": \"hitachi\",\n  \"Description\": \"s4\",\n  \"Region\": \"West\",\n  \"Commodity\": \"demo\",\n  \"HighLevelCommodity\": \"demo\",\n  \"Address\": {\n    \"Street1\": \"2535 Augustine Dr\",\n    \"Street2\": \"NA\",\n    \"Street3\": \"NA\",\n    \"Street4\": \"NA\",\n    \"CityOrMunicipality\": \"Santa Clara\",\n    \"StateOrProvince\": \"CA\",\n    \"CountyOrSubdivision\": \"NA\",\n    \"ZipOrPostcode\": \"95054\",\n    \"Country\": \"USA\"\n  },\n  \"WebsiteURL\": \"https://www.hitachi.us/\",\n  \"TickerSymbol\": \"HTHIY\"\n}"
+				},
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/putsupplier/jack",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"putsupplier",
+						"jack"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "29-calculate rebate",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"SupplierID\": \"hitachi\",\n  \"TenantID\": \"demo\",\n  \"GlobalCode\": \"s4\",\n  \"FullName\": \"Hitachi America, Ltd.\",\n  \"Description\": \"s4\",\n  \"Region\": \"West\",\n  \"Commodity\": \"demo\",\n  \"HighLevelCommodity\": \"demo\",\n  \"Address\": {\n    \"Street1\": \"2535 Augustine Dr\",\n    \"Street2\": \"\",\n    \"Street3\": \"\",\n    \"Street4\": \"\",\n    \"CityOrMunicipality\": \"Santa Clara\",\n    \"StateOrProvince\": \"CA\",\n    \"CountyOrSubdivision\": \"\",\n    \"ZipOrPostcode\": \"95054\",\n    \"Country\": \"USA\"\n  },\n  \"WebsiteURL\": \"https://www.hitachi.us/\",\n  \"TickerSymbol\": \"HTHIY\"\n}"
+				},
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/calculaterebate/intel/2020/1?user=jack&AgreementID=a2",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"calculaterebate",
+						"intel",
+						"2020",
+						"1"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "jack"
+						},
+						{
+							"key": "AgreementID",
+							"value": "a2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "30-delete purchase",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://52.143.91.17:7091/v1/deletepurchase/jack/po-1/item-3",
+					"protocol": "http",
+					"host": [
+						"52",
+						"143",
+						"91",
+						"17"
+					],
+					"port": "7091",
+					"path": [
+						"v1",
+						"deletepurchase",
+						"jack",
+						"po-1",
+						"item-3"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

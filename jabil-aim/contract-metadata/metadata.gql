@@ -1,0 +1,166 @@
+schema {
+	query: Query
+	mutation: Mutation
+}
+type Query {
+	QueryAllAgreements(PrimaryOnly: Boolean): [AgreementKV]
+	GetSupplierAgreements(SupplierID: String): [AgreementKV]
+	GetAgreementHistory(AgreementID: String): [AgreementHistory]
+	GetBulkLoad(BulkLoadID: String): BulkLoad
+	GetReconciliationHistory(PurchaseOrderNbr: String, ManufacturePartNbr: String): [ReconciliationHistory]
+	QueryAllSuppliers(): [SupplierKV]
+	GetAgreement(AgreementID: String): Agreement
+	GetSupplier(SupplierID: String): Supplier
+	CalculateRebate(Year: Float, Sequence: Float, SupplierID: String, AgreementID: String): Rebate
+	GetMonthlyPurchases(SupplierID: String, Year: Float): [MonthlyPurchaseKV]
+	GetPurchasesPerSupplier(Year: Float, Month: Float, SupplierID: String, VerifiedBy: String): [PurchaseKV]
+}
+type Mutation {
+	DeleteSupplier(SupplierID: String): Supplier
+	PutMonthlyPurchase(summary: MonthlyPurchase): MonthlyPurchase
+	PutBulkLoad(bulkLoad: BulkLoad): BulkLoad
+	CalculateMonthlyPurchase(Year: Float, Month: Float, SupplierID: String): MonthlyPurchase
+	DeleteAgreement(AgreementID: String): Agreement
+	DeletePurchase(PurchaseOrderNbr: String, ManufacturerPartNbr: String): Purchase
+	PutPurchases(purchases: [Purchase]): [PurchaseKV]
+	PutSupplier(supplier: Supplier): Supplier
+	PutAgreement(agreement: Agreement): Agreement
+}
+type PurchaseKV {
+	key: String
+	value: Purchase
+}
+
+type Agreement {
+	IsPrimary: Boolean
+	SignatureDate: String
+	CollectionFrequency: String
+	Type: String
+	FullName: String
+	SignedBy: String
+	ReferenceID: String
+	ReferenceHash: String
+	SupplierID: String
+	StartDate: String
+	DocType: String
+	StandardTerms: [StandardTerm]
+	AgreementID: String
+	ShortName: String
+	Status: String
+	EndDate: String
+	GrowthTerms: [GrowthTerm]
+}
+
+type MonthlyPurchaseKV {
+	key: String
+	value: MonthlyPurchase
+}
+
+type Supplier {
+	Commodity: String
+	HighLevelCommodity: String
+	TickerSymbol: String
+	DocType: String
+	SupplierID: String
+	Region: String
+	FullName: String
+	ShortName: String
+	Description: String
+	Address: AddressType
+	WebsiteURL: String
+	TenantID: String
+	GlobalCode: String
+}
+
+type MonthlyPurchase {
+	Month: Float
+	PurchaseAmt: Float
+	DocType: String
+	SupplierID: String
+	Year: Float
+}
+
+type AgreementHistory {
+	txID: String
+	txTime: String
+	isDeleted: Boolean
+	value: Agreement
+}
+
+type AddressType {
+	Street1: String
+	CountyOrSubdivision: String
+	ZipOrPostcode: String
+	Country: String
+	Street2: String
+	Street3: String
+	Street4: String
+	CityOrMunicipality: String
+	StateOrProvince: String
+}
+
+type AgreementKV {
+	key: String
+	value: Agreement
+}
+
+type SupplierKV {
+	value: Supplier
+	key: String
+}
+
+type GrowthTerm {
+	MinSaleGrowth: Float
+	BonusPct: Float
+}
+
+type ReconciliationHistory {
+	txID: String
+	txTime: String
+	isDeleted: Boolean
+	value: Purchase
+}
+
+type BulkLoad {
+	LoadedBy: String
+	DocType: String
+	BulkLoadID: String
+	ReferenceFile: String
+	ReferenceHash: String
+}
+
+type Rebate {
+	RebateAmt: Float
+}
+
+type Purchase {
+	ReturnReason: String
+	VerifiedBy: String
+	Year: Float
+	DocumentDate: String
+	ShipDate: String
+	ManufacturerPartNbr: String
+	SupplierPartNbr: String
+	ShippedQty: Float
+	Month: Float
+	DocType: String
+	SupplierID: String
+	SalePriceLocalAmt: Float
+	ReturnUSD: Float
+	SupplierBulkLoadID: String
+	SalePriceUSD: Float
+	PurchaseOrderNbr: String
+	PurchaseOrderStatus: String
+	JabilPartNbr: String
+	Currency: String
+	UnitPrice: Float
+	DocumentID: String
+	ReturnQty: Float
+	JabilBulkLoadID: String
+}
+
+type StandardTerm {
+	MinSaleAmt: Float
+	BonusPct: Float
+}
+

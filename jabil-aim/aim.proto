@@ -1,0 +1,489 @@
+syntax = "proto3";
+
+package jabil.aim.v1;
+
+import "google/api/annotations.proto";
+
+service AimService {
+	// GetSupplier: retrieves current state of a supplier of specified SupplierID
+	rpc GetSupplier(GetSupplierRequest) returns (Supplier) {
+        option (google.api.http) = {
+            get: "/v1/suppliers/{SupplierID}"
+        };      
+    }
+	// QueryAllSuppliers: retrieves all suppliers defined in the system
+	rpc QueryAllSuppliers(QueryAllSuppliersRequest) returns (SupplierList) {
+        option (google.api.http) = {
+            get: "/v1/suppliers"
+        };
+    }
+	// GetAgreement: retrieves current state of an agreement of specified AgreementID
+	rpc GetAgreement(GetAgreementRequest) returns (Agreement) {
+        option (google.api.http) = {
+            get: "/v1/agreements/{AgreementID}"
+        };
+    }
+	// GetAgreementHistory: retrieves history of a specified agreement even after deletion from current state
+	rpc GetAgreementHistory(GetAgreementHistoryRequest) returns (AgreementHistory) {
+        option (google.api.http) = {
+            get: "/v1/agreementhistory/{AgreementID}"
+        };
+    }
+	// GetSupplierAgreements: retrieves all agreements of a specified supplier
+	rpc GetSupplierAgreements(GetSupplierAgreementsRequest) returns (AgreementList) {
+        option (google.api.http) = {
+            get: "/v1/suppliers/{SupplierID}/agreements"
+        };
+    }
+	// QueryAllAgreements: retrieves all agreements defined in the system
+	rpc QueryAllAgreements(QueryAllAgreementsRequest) returns (AgreementList) {
+        option (google.api.http) = {
+            get: "/v1/agreements"
+        };
+    }
+	// GetPurchasesPerSupplier: retrieves all PO items of a specified supplier that are verified by 'jabil' or SupplierID or 'BOTH'
+	rpc GetPurchasesPerSupplier(GetPurchasesPerSupplierRequest) returns (PurchaseList) {
+        option (google.api.http) = {
+            get: "/v1/purchases/{SupplierID}/{Year}/{Month}/{VerifiedBy}"
+        };
+    }
+	// GetReconciliationHistory: retrieves reconciliation history of a PO item of specified PO and MPN
+	rpc GetReconciliationHistory(GetReconciliationHistoryRequest) returns (ReconciliationHistory) {
+        option (google.api.http) = {
+            get: "/v1/reconciliationhistory/{PurchaseOrderNbr}/{ManufacturePartNbr}"
+        };
+    }
+	// GetBulkLoad: retrieves info of a specified bulk-load
+	rpc GetBulkLoad(GetBulkLoadRequest) returns (BulkLoad) {
+        option (google.api.http) = {
+            get: "/v1/bulkloads/{BulkLoadID}"
+        };
+    }
+	// GetMonthlyPurchases: retrieves monthly total purchase amount of a specified supplier and year
+	rpc GetMonthlyPurchases(GetMonthlyPurchasesRequest) returns (MonthlyPurchaseList) {
+        option (google.api.http) = {
+            get: "/v1/monthlypurchases/{SupplierID}/{Year}"
+        };
+	}
+	
+	// PutSupplier: creates or updates the current state of a supplier
+	rpc PutSupplier(PutSupplierRequest) returns (Supplier) {
+        option (google.api.http) = {
+			post: "/v1/putsupplier/{user}"
+			body: "supplier"
+        };
+	}
+	// DeleteSupplier: deletes the current state of a specified supplier
+	rpc DeleteSupplier(DeleteSupplierRequest) returns (Supplier) {
+        option (google.api.http) = {
+			delete: "/v1/deletesupplier/{user}/{SupplierID}"
+        };
+	}
+	// PutAgreement: creates or updates the current state of an agreement
+	rpc PutAgreement(PutAgreementRequest) returns (Agreement) {
+        option (google.api.http) = {
+			post: "/v1/putagreement/{user}"
+			body: "agreement"
+        };
+	}
+	// DeleteAgreement: deletes the current state of a specified agreement
+	rpc DeleteAgreement(DeleteAgreementRequest) returns (Agreement) {
+        option (google.api.http) = {
+			delete: "/v1/deleteagreement/{user}/{AgreementID}"
+        };
+	}
+	// PutPurchases: creates or updates a list of PO items, by either bulk-load or user edit
+	rpc PutPurchases(PutPurchasesRequest) returns (PurchaseList) {
+        option (google.api.http) = {
+			post: "/v1/putpurchases/{user}"
+			body: "purchases"
+        };
+	}
+	// DeletePurchase: deletes the current state of a specified purchase
+	rpc DeletePurchase(DeletePurchaseRequest) returns (Purchase) {
+        option (google.api.http) = {
+			delete: "/v1/deletepurchase/{user}/{PurchaseOrderNbr}/{ManufacturerPartNbr}"
+        };
+	}
+	// PutBulkLoad: creates a bulk-load record, which is referenced by PO items
+	rpc PutBulkLoad(PutBulkLoadRequest) returns (BulkLoad) {
+        option (google.api.http) = {
+			post: "/v1/putbulkload/{user}"
+			body: "bulkLoad"
+        };
+	}
+	// PutMonthlyPurchase: creates or updates a monthly purchase amount of a previous year, 
+	//   which can be used for growth-based bonus calculation
+	rpc PutMonthlyPurchase(PutMonthlyPurchaseRequest) returns (MonthlyPurchase) {
+        option (google.api.http) = {
+			post: "/v1/putmonthlypurchase/{user}"
+			body: "summary"
+        };
+	}
+	// CalculateMonthlyPurchase: sums up reconciled purchase amounts of a specified supplier for a year and month.
+	rpc CalculateMonthlyPurchase(CalculateMonthlyPurchaseRequest) returns (MonthlyPurchase) {
+        option (google.api.http) = {
+			post: "/v1/calculatemonthlypurchase/{user}/{SupplierID}/{Year}/{Month}"
+        };
+	}
+	// CalculateRebate: calculate rebate amount for a specified supplier in a year and sequence of quarter or semi-year depending on the payout frequency
+	rpc CalculateRebate(CalculateRebateRequest) returns (Rebate) {
+        option (google.api.http) = {
+			get: "/v1/calculaterebate/{SupplierID}/{Year}/{Sequence}"
+        };
+	}
+}
+
+message GetSupplierRequest {
+    string user = 1;
+    string SupplierID = 2;
+}
+
+message QueryAllSuppliersRequest {
+    string user = 1;
+}
+
+message GetAgreementRequest {
+    string user = 1;
+    string AgreementID = 2;
+}
+
+message GetAgreementHistoryRequest {
+    string user = 1;
+    string AgreementID = 2;
+}
+
+message GetSupplierAgreementsRequest {
+    string user = 1;
+    string SupplierID = 2;
+}
+
+message QueryAllAgreementsRequest {
+    string user = 1;
+    bool PrimaryOnly = 2;
+}
+
+message GetPurchasesPerSupplierRequest {
+    string user = 1;
+    string SupplierID = 2;
+    string VerifiedBy = 3;
+    int32 Year = 4;
+    int32 Month = 5;
+}
+
+message GetReconciliationHistoryRequest {
+    string user = 1;
+    string PurchaseOrderNbr = 2;
+    string ManufacturePartNbr = 3;
+}
+
+message GetBulkLoadRequest {
+    string user = 1;
+    string BulkLoadID = 2;
+}
+
+message GetMonthlyPurchasesRequest {
+    string user = 1;
+    string SupplierID = 2;
+    int32 Year = 3;
+}
+
+message PutSupplierRequest {
+	string user = 1;
+	Supplier supplier = 2;
+}
+
+message DeleteSupplierRequest {
+	string user = 1;
+	string SupplierID = 2;
+}
+
+message PutAgreementRequest {
+	string user = 1;
+	Agreement agreement = 2;
+}
+
+message DeleteAgreementRequest {
+	string user = 1;
+	string AgreementID = 2;
+}
+
+message PutPurchasesRequest {
+	message PurchaseBatch {
+		repeated Purchase items = 1;
+	}
+	string user = 1;
+	PurchaseBatch purchases = 2;
+}
+
+message DeletePurchaseRequest {
+	string user = 1;
+	string PurchaseOrderNbr = 2;
+	string ManufacturerPartNbr = 3;
+}
+
+message PutBulkLoadRequest {
+	string user = 1;
+	BulkLoad bulkLoad = 2;
+}
+
+message PutMonthlyPurchaseRequest {
+	string user = 1;
+	MonthlyPurchase summary = 2;
+}
+
+message CalculateMonthlyPurchaseRequest {
+	string user = 1; 
+	string SupplierID = 2;
+	int32 Year = 3;
+	int32 Month = 4;
+}
+
+message CalculateRebateRequest {
+    string user = 1;
+    string SupplierID = 2;
+    string AgreementID = 3;
+    int32 Year = 4;
+    int32 Sequence = 5;
+}
+
+// AddressType
+//
+// Address data structure used by Supplier
+message AddressType {
+	string Street1 = 1;
+	string Street2 = 2;
+	string Street3 = 3;
+	string Street4 = 4;
+	string CityOrMunicipality = 5;
+	string StateOrProvince = 6;
+	string CountyOrSubdivision = 7;
+	string ZipOrPostcode = 8;
+	string Country = 9;
+}
+
+// Supplier
+//
+// Supplier is uniquely identified SupplierID
+message Supplier {
+	// Required.
+	string SupplierID = 1;
+	string TenantID = 2;
+	string GlobalCode = 3;
+	string FullName = 4;
+	string ShortName = 5;
+	string Description = 6;
+	string Region = 7;
+	string Commodity = 8;
+	string HighLevelCommodity = 9;
+	AddressType Address = 10;
+	string WebsiteURL = 11;
+	string TickerSymbol = 12;
+	// Output only.
+	string DocType = 13;
+}
+
+message SupplierList {
+    message SupplierKV {
+        string key = 1;
+        Supplier value = 2;
+    }
+    repeated SupplierKV suppliers = 1;
+}
+
+// Agreement
+//
+// It is uniquely identified by AgreementID.
+// This demo will support 3 types of agreement terms, e.g.,
+//
+//  "Type": "BASELINE_GROWTH",
+//  "GrowthTerms": [
+//      {
+//          "MinSaleGrowth": 1.1,
+//          "BonusPct": 0.1
+//      },
+//      {
+//          "MinSaleGrowth": 1.2,
+//          "BonusPct": 0.05
+//      }
+//  ]
+// or,
+//  "Type": "STARDARD_STEP",
+//  "StandardTerms": [
+//      {
+//          "MinSaleAmt": 10000,
+//          "BonusPct": 0.1
+//      },
+//      {
+//          "MinSaleAmt": 20000,
+//          "BonusPct": 0.05
+//      }
+//  ]
+// or,
+//  "Type": "FIXED_RATE",
+//  "StandardTerms": [
+//      {
+//          "MinSaleAmt": 10000,
+//          "BonusPct": 0.1
+//      }
+//  ]
+message Agreement {
+    message GrowthTerm {
+        float MinSaleGrowth = 1;
+        float BonusPct = 2;
+    }
+    message StandardTerm {
+        float MinSaleAmt = 1;
+        float BonusPct = 2;
+    }
+	// Required.
+	string AgreementID = 1;
+	// Required.
+	string SupplierID = 2;
+	// Required. only one primary agreement per supplier in a specified time period
+	bool IsPrimary = 3;
+	string FullName = 4;
+	string ShortName = 5;
+	string Status = 6;
+	string SignatureDate = 7;
+	// Required. must be one of 'jabil', SupplierID, or 'BOTH'. It can be primary only after signed by 'BOTH'
+	string SignedBy = 8;
+	// Reference to signed agreement PDF filename and content hash
+	string ReferenceID = 9;
+	string ReferenceHash = 10;
+	// Required. start and end time period when the agreement is effective
+	string StartDate = 11;
+	// Required.
+	string EndDate = 12;
+	// Required. must be one of the frequency: 'QUARTERLY', 'SEMI-ANNUALLY' or 'ANNUALLY'
+	string CollectionFrequency = 13;
+	// Required. must be one of the term type: 'FIXED_RATE', 'STARDARD_STEP' or 'BASELINE_GROWTH'
+	string Type = 14;
+	// Required for type of 'BASELINE_GROWTH'
+	repeated GrowthTerm GrowthTerms = 15;
+	// Required for types of 'FIXED_RATE' or 'STARDARD_STEP'
+	repeated StandardTerm StandardTerms = 16;
+	// Output only.
+	string DocType = 17;
+}
+
+message AgreementList {
+    message AgreementKV {
+	    string key = 1;
+	    Agreement value = 2;
+    }
+    repeated AgreementKV agreements = 1;
+}
+
+message AgreementHistory {
+    message AgreementState {
+	    string txID = 1;
+	    string txTime = 2;
+	    bool isDeleted = 3;
+        Agreement value = 4;
+    }
+    repeated AgreementState states = 1;
+}
+
+// Purchase
+//
+// PO item is uniquely identified by combination of 'PurchaseOrderNbr' and 'ManufacturerPartNbr'
+// 'SalePriceUSD' is counted in bonus calculation only if VerifiedBy='BOTH'
+message Purchase {
+	// Required.
+	string PurchaseOrderNbr = 1;
+	// Required.
+	string SupplierID = 2;
+	string PurchaseOrderStatus = 3;
+	// Required.
+	string DocumentID = 4;
+	// Required.
+	string DocumentDate = 5;
+	string ShipDate = 6;
+	// Required.
+	string ManufacturerPartNbr = 7;
+	string SupplierPartNbr = 8;
+	string JabilPartNbr = 9;
+	string Currency = 10;
+	float ShippedQty = 11;
+	float UnitPrice = 12;
+	float SalePriceLocalAmt = 13;
+	// Required.
+	float SalePriceUSD = 14;
+	float ReturnQty = 15;
+	float ReturnUSD = 16;
+	string ReturnReason = 17;
+	// Required. must be one of 'jabil', SupplierID, or 'BOTH'; it tracks the reconciliation workflow
+	string VerifiedBy = 18;
+	// reference to the last supplier bulk-load that updated this PO item
+	string SupplierBulkLoadID = 19;
+	// reference to the last Jabil bulk-load that updated this PO item
+	string JabilBulkLoadID = 20;
+	// Output only.
+	int32 Year = 21;
+	// Output only.
+    int32 Month = 22;
+	// Output only.
+	string DocType = 23;
+}
+
+message PurchaseList {
+    message PurchaseKV {
+	    string key = 1;
+	    Purchase value = 2;
+    }
+    repeated PurchaseKV purchases = 1;
+}
+
+message ReconciliationHistory {
+    message PurchaseState {
+	    string txID = 1;
+	    string txTime = 2;
+	    bool isDeleted = 3;
+        Purchase value = 4;
+    }
+    repeated PurchaseState states = 1;
+}
+
+// BulkLoad
+//
+// bulk-load tracking with reference to the bulk xls filename and content hash
+message BulkLoad {
+	// Required.
+	string BulkLoadID = 1;
+	string ReferenceFile = 2;
+	string ReferenceHash = 3;
+	// Required. LoadedBy must be either SupplierID or 'jabil'
+	string LoadedBy = 4;
+	// Output only.
+	string DocType = 5;
+}
+
+// MonthlyPurchase
+//
+// monthly total purchase amount in the previous year, can be initialized by Jabil user, or 
+//   calculated by the system after 1 month of production
+message MonthlyPurchase {
+	// Required.
+	string SupplierID = 1;
+	// Required.
+	int32 Year = 2;
+	// Required.
+	int32 Month = 3;
+	// Required.
+	float PurchaseAmt = 4;
+	// Output only.
+	string DocType = 5;
+}
+
+message MonthlyPurchaseList {
+    message MonthlyPurchaseKV {
+        string key = 1;
+        MonthlyPurchase value = 2;
+    }
+    repeated MonthlyPurchaseKV summary = 1;
+}
+
+message Rebate {
+	float RebateAmt = 1;
+}

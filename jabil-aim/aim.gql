@@ -1,0 +1,381 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+# Read-only operations of the blockchain chaincode
+# Additional queries will be required to support full UI app
+type Query {
+  # Retrieves current state of a supplier of specified SupplierID
+  GetSupplier(user: String, SupplierID: String): Supplier
+  # Retrieves all suppliers defined in the system
+  QueryAllSuppliers(user: String): [SupplierKV]
+  # Retrieves current state of an agreement of specified AgreementID
+  GetAgreement(user: String, AgreementID: String): Agreement
+  # Retrieves history of a specified agreement even after deletion from current state
+  GetAgreementHistory(user: String, AgreementID: String): [AgreementHistory]
+  # Retrieve all current agreements of a specified supplier
+  GetSupplierAgreements(user: String, SupplierID: String): [AgreementKV]
+  # Retrieve all agreements defined in the system
+  QueryAllAgreements(user: String, PrimaryOnly: Boolean): [AgreementKV]
+  # Retrieve all PO items of a specified supplier that are verified by 'jabil' or SupplierID or 'BOTH'
+  GetPurchasesPerSupplier(
+    user: String
+    SupplierID: String
+    VerifiedBy: String
+    Year: Float
+    Month: Float
+  ): [PurchaseKV]
+  # Retrieve reconciliation history of a PO item of specified PO and MPN
+  GetReconciliationHistory(
+    user: String
+    PurchaseOrderNbr: String
+    ManufacturePartNbr: String
+  ): [ReconciliationHistory]
+  # Retrieve info of a specified bulk-load
+  GetBulkLoad(user: String, BulkLoadID: String): BulkLoad
+  # Retrieve monthly total purchase amount of a specified supplier
+  GetMonthlyPurchases(
+    user: String
+    SupplierID: String
+    Year: Float
+  ): [MonthlyPurchaseKV]
+  # Calculate rebate amount
+  CalculateRebate(
+    AgreementID: String
+    Year: Float
+    Sequence: Float
+    SupplierID: String
+  ): Rebate
+}
+
+# Update transactions of the blockchain chaincode
+type Mutation {
+  # Create or update the current state of a supplier
+  PutSupplier(user: String, supplier: SupplierInput): Supplier
+  # Delete the current state of a specified supplier
+  DeleteSupplier(user: String, SupplierID: String): Supplier
+  # Create or update the current state of an agreement
+  PutAgreement(user: String, agreement: AgreementInput): Agreement
+  # Delete the current state of a specified agreement
+  DeleteAgreement(user: String, AgreementID: String): Agreement
+  # Create or update a list of PO items, by either bulk-load or user edit
+  PutPurchases(user: String, purchases: [PurchaseInput]): [PurchaseKV]
+  # Delete a PO item
+  DeletePurchase(
+    PurchaseOrderNbr: String
+    ManufacturerPartNbr: String
+  ): Purchase
+  # Create a bulk-load record, which is referenced by PO items
+  PutBulkLoad(user: String, bulkLoad: BulkLoadInput): BulkLoad
+  # Create or update a monthly purchase amount of a previous year,
+  #   which can be used for growth-based bonus calculation
+  PutMonthlyPurchase(
+    user: String
+    summary: MonthlyPurchaseInput
+  ): MonthlyPurchase
+  # Sum up reconciled purchase amounts of a specified supplier for a year and month.
+  CalculateMonthlyPurchase(
+    user: String
+    SupplierID: String
+    Year: Float
+    Month: Float
+  ): MonthlyPurchase
+}
+
+# Supplier for input
+input SupplierInput {
+  SupplierID: String
+  TenantID: String
+  GlobalCode: String
+  FullName: String
+  ShortName: String
+  Description: String
+  Region: String
+  Commodity: String
+  HighLevelCommodity: String
+  Address: AddressInput
+  WebsiteURL: String
+  TickerSymbol: String
+  DocType: String
+}
+input AddressInput {
+  Street1: String
+  Street2: String
+  Street3: String
+  Street4: String
+  CityOrMunicipality: String
+  StateOrProvince: String
+  CountyOrSubdivision: String
+  ZipOrPostcode: String
+  Country: String
+}
+
+# Supplier is uniquely identified SupplierID
+type Supplier {
+  SupplierID: String
+  TenantID: String
+  GlobalCode: String
+  FullName: String
+  ShortName: String
+  Description: String
+  Region: String
+  Commodity: String
+  HighLevelCommodity: String
+  Address: AddressType
+  WebsiteURL: String
+  TickerSymbol: String
+  DocType: String
+}
+# Address data structure used by Supplier
+type AddressType {
+  Street1: String
+  Street2: String
+  Street3: String
+  Street4: String
+  CityOrMunicipality: String
+  StateOrProvince: String
+  CountyOrSubdivision: String
+  ZipOrPostcode: String
+  Country: String
+}
+
+type SupplierKV {
+  key: String
+  value: Supplier
+}
+
+# Agreement is uniquely identified by AgreementID
+# This demo will support 3 types of agreement terms, e.g.,
+#
+#   "Type": "BASELINE_GROWTH",
+#   "GrowthTerms": [
+#       {
+#           "MinSaleGrowth": 1.1,
+#           "BonusPct": 0.1
+#       },
+#       {
+#           "MinSaleGrowth": 1.2,
+#           "BonusPct": 0.05
+#       }
+#   ]
+# or,
+#   "Type": "STARDARD_STEP",
+#   "StandardTerms": [
+#       {
+#           "MinSaleAmt": 10000,
+#           "BonusPct": 0.1
+#       },
+#       {
+#           "MinSaleAmt": 20000,
+#           "BonusPct": 0.05
+#       }
+#   ]
+# or,
+#   "Type": "FIXED_RATE",
+#   "StandardTerms": [
+#       {
+#           "MinSaleAmt": 10000,
+#           "BonusPct": 0.1
+#       }
+#   ]
+type Agreement {
+  AgreementID: String
+  SupplierID: String
+  # only one primary agreement per supplier in a specified time period
+  IsPrimary: Boolean
+  FullName: String
+  ShortName: String
+  Status: String
+  SignatureDate: String
+  # must be one of 'jabil', SupplierID, or 'BOTH'. It can be primary only after signed by 'BOTH'
+  SignedBy: String
+  # Reference to signed agreement PDF filename and content hash
+  ReferenceID: String
+  ReferenceHash: String
+  # start and end time period when the agreement is effective
+  StartDate: String
+  EndDate: String
+  # must be one of the frequency: 'QUARTERLY', 'SEMI-ANNUALLY' or 'ANNUALLY'
+  CollectionFrequency: String
+  # must be one of the term type: 'FIXED_RATE', 'STARDARD_STEP' or 'BASELINE_GROWTH'
+  Type: String
+  # GrowthTerms apply to only type of 'BASELINE_GROWTH'
+  GrowthTerms: [GrowthTerm]
+  # StandardTerms apply to types of 'FIXED_RATE' or 'STARDARD_STEP'
+  StandardTerms: [StandardTerm]
+  DocType: String
+}
+type GrowthTerm {
+  MinSaleGrowth: Float
+  BonusPct: Float
+}
+type StandardTerm {
+  MinSaleAmt: Float
+  BonusPct: Float
+}
+
+type AgreementKV {
+  key: String
+  value: Agreement
+}
+type AgreementHistory {
+  txID: String
+  txTime: String
+  isDeleted: Boolean
+  value: Agreement
+}
+
+# Agreement for input
+input AgreementInput {
+  AgreementID: String
+  SupplierID: String
+  # only one primary agreement per supplier in a specified time period
+  IsPrimary: Boolean
+  FullName: String
+  ShortName: String
+  Status: String
+  SignatureDate: String
+  # must be one of 'jabil', SupplierID, or 'BOTH'. It can be primary only after signed by 'BOTH'
+  SignedBy: String
+  # Reference to signed agreement PDF filename and content hash
+  ReferenceID: String
+  ReferenceHash: String
+  # start and end time period when the agreement is effective
+  StartDate: String
+  EndDate: String
+  # must be one of the frequency: 'QUARTERLY', 'SEMI-ANNUALLY' or 'ANNUALLY'
+  CollectionFrequency: String
+  # must be one of the term type: 'FIXED_RATE', 'STARDARD_STEP' or 'BASELINE_GROWTH'
+  Type: String
+  # GrowthTerms apply to only type of 'BASELINE_GROWTH'
+  GrowthTerms: [GrowthTermInput]
+  # StandardTerms apply to types of 'FIXED_RATE' or 'STARDARD_STEP'
+  StandardTerms: [StandardTermInput]
+  DocType: String
+}
+input GrowthTermInput {
+  MinSaleGrowth: Float
+  BonusPct: Float
+}
+input StandardTermInput {
+  MinSaleAmt: Float
+  BonusPct: Float
+}
+
+# PO item is uniquely identified by combination of 'PurchaseOrderNbr' and 'ManufacturerPartNbr'
+# 'SalePriceUSD' is counted in bonus calculation only if VerifiedBy='BOTH'
+type Purchase {
+  PurchaseOrderNbr: String
+  SupplierID: String
+  PurchaseOrderStatus: String
+  DocumentID: String
+  DocumentDate: String
+  ShipDate: String
+  ManufacturerPartNbr: String
+  SupplierPartNbr: String
+  JabilPartNbr: String
+  Currency: String
+  ShippedQty: Float
+  UnitPrice: Float
+  SalePriceLocalAmt: Float
+  SalePriceUSD: Float
+  ReturnQty: Float
+  ReturnUSD: Float
+  ReturnReason: String
+  # must be one of 'jabil', SupplierID, or 'BOTH'; it tracks the reconciliation workflow
+  VerifiedBy: String
+  # reference to the last supplier bulk-load that updated this PO item
+  SupplierBulkLoadID: String
+  # reference to the last Jabil bulk-load that updated this PO item
+  JabilBulkLoadID: String
+  Year: Float
+  Month: Float
+  DocType: String
+}
+
+type PurchaseKV {
+  key: String
+  value: Purchase
+}
+type ReconciliationHistory {
+  txID: String
+  txTime: String
+  isDeleted: Boolean
+  value: Purchase
+}
+
+input PurchaseInput {
+  PurchaseOrderNbr: String
+  SupplierID: String
+  PurchaseOrderStatus: String
+  DocumentID: String
+  DocumentDate: String
+  ShipDate: String
+  ManufacturerPartNbr: String
+  SupplierPartNbr: String
+  JabilPartNbr: String
+  Currency: String
+  ShippedQty: Float
+  UnitPrice: Float
+  SalePriceLocalAmt: Float
+  SalePriceUSD: Float
+  ReturnQty: Float
+  ReturnUSD: Float
+  ReturnReason: String
+  # must be one of 'jabil', SupplierID, or 'BOTH'; it tracks the reconciliation workflow
+  VerifiedBy: String
+  # reference to the last supplier bulk-load that updated this PO item
+  SupplierBulkLoadID: String
+  # reference to the last Jabil bulk-load that updated this PO item
+  JabilBulkLoadID: String
+  Year: Float
+  Month: Float
+  DocType: String
+}
+
+# bulk-load tracking with reference to the bulk xls filename and content hash
+type BulkLoad {
+  BulkLoadID: String
+  ReferenceFile: String
+  ReferenceHash: String
+  # LoadedBy must be either SupplierID or 'jabil'
+  LoadedBy: String
+  DocType: String
+}
+
+input BulkLoadInput {
+  BulkLoadID: String
+  ReferenceFile: String
+  ReferenceHash: String
+  # LoadedBy must be either SupplierID or 'jabil'
+  LoadedBy: String
+  DocType: String
+}
+
+# monthly total purchase amount in the previous year, can be initialized by Jabil user, or
+#   calculated by the system after 1 month of production
+type MonthlyPurchase {
+  SupplierID: String
+  Year: Float
+  Month: Float
+  PurchaseAmt: Float
+  DocType: String
+}
+
+type MonthlyPurchaseKV {
+  key: String
+  value: MonthlyPurchase
+}
+
+input MonthlyPurchaseInput {
+  SupplierID: String
+  Year: Float
+  Month: Float
+  PurchaseAmt: Float
+  DocType: String
+}
+
+type Rebate {
+  RebateAmt: Float
+}

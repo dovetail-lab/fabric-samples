@@ -1,0 +1,19 @@
+{
+    "jabil_aim_0": "Supplier",
+    "jabil_aim_1": "Agreement",
+    "jabil_aim_4": "BulkLoad",
+    "jabil_aim_5": "PurchaseKV",
+    "jabil_aim_6": "MonthlyPurchase",
+    "jabil_aim_7": "AgreementKV",
+
+    "AgreementKVType": "AgreementKV",
+    "GetAgreementHistoryReturnType": "AgreementHistory",
+    "GetReconciliationHistoryReturnType": "ReconciliationHistory",
+    "GetMonthlyPurchasesReturnType":"MonthlyPurchaseKV",
+    "QueryAllSuppliersReturnType": "SupplierKV",
+    "ValueType": "Purchase",
+    "PurchaseKVType": "PurchaseKV",
+    "StandardTermsType": "StandardTerm",
+    "GrowthTermsType": "GrowthTerm",
+    "CalculateRebateReturnType": "Rebate"
+}

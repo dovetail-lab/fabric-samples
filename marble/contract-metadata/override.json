@@ -1,0 +1,9 @@
+{
+    "marble_0": "Marble",
+    "marble_2": "MarbleList",
+    "marble_3": "MarbleQueryResult",
+    "ValueType": "Marble",
+    "MarblesType": "MarbleKeyValue",
+    "MarbleListType": "MarbleKeyValue",
+    "GetHistoryForMarbleReturnType": "MarbleHistory"
+}

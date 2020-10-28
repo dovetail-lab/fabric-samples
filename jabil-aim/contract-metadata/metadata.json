@@ -1,0 +1,1348 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "info": {
+        "title": "jabil_aim",
+        "version": "1.1.0"
+    },
+    "contract": {
+        "name": "jabil_aim",
+        "transactions": {
+            "CalculateMonthlyPurchase": {
+                "name": "CalculateMonthlyPurchase",
+                "description": "Sum up reconciled purchase amounts of a specified supplier for a year and month. Update the corresponding state of MonthlyPurchase.",
+                "operation": "invoke",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "Year": {
+                            "type": "number"
+                        },
+                        "Month": {
+                            "type": "number"
+                        },
+                        "SupplierID": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "returns": {
+                    "$ref": "#/components/MonthlyPurchase"
+                }
+            },
+            "CalculateRebate": {
+                "name": "CalculateRebate",
+                "description": "calculate rebate amount for a specified period from a supplier",
+                "operation": "query",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "SupplierID": {
+                            "type": "string"
+                        },
+                        "AgreementID": {
+                            "type": "string"
+                        },
+                        "Year": {
+                            "type": "number"
+                        },
+                        "Sequence": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "returns": {
+                    "type": "object",
+                    "properties": {
+                        "RebateAmt": {
+                            "type": "number"
+                        }
+                    }
+                }
+            },
+            "DeleteAgreement": {
+                "name": "DeleteAgreement",
+                "description": "Delete an agreement of specified AgreementID",
+                "operation": "invoke",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "AgreementID": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "returns": {
+                    "$ref": "#/components/Agreement"
+                }
+            },
+            "DeletePurchase": {
+                "name": "DeletePurchase",
+                "description": "Delete current state of a PO item",
+                "operation": "invoke",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "PurchaseOrderNbr": {
+                            "type": "string"
+                        },
+                        "ManufacturerPartNbr": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "returns": {
+                    "type": "object",
+                    "properties": {
+                        "PurchaseOrderNbr": {
+                            "type": "string"
+                        },
+                        "SupplierID": {
+                            "type": "string"
+                        },
+                        "PurchaseOrderStatus": {
+                            "type": "string"
+                        },
+                        "DocumentID": {
+                            "type": "string"
+                        },
+                        "DocumentDate": {
+                            "type": "string"
+                        },
+                        "ShipDate": {
+                            "type": "string"
+                        },
+                        "ManufacturerPartNbr": {
+                            "type": "string"
+                        },
+                        "SupplierPartNbr": {
+                            "type": "string"
+                        },
+                        "JabilPartNbr": {
+                            "type": "string"
+                        },
+                        "Currency": {
+                            "type": "string"
+                        },
+                        "ShippedQty": {
+                            "type": "number"
+                        },
+                        "UnitPrice": {
+                            "type": "number"
+                        },
+                        "SalePriceLocalAmt": {
+                            "type": "number"
+                        },
+                        "SalePriceUSD": {
+                            "type": "number"
+                        },
+                        "ReturnQty": {
+                            "type": "number"
+                        },
+                        "ReturnUSD": {
+                            "type": "number"
+                        },
+                        "ReturnReason": {
+                            "type": "string"
+                        },
+                        "VerifiedBy": {
+                            "type": "string"
+                        },
+                        "SupplierBulkLoadID": {
+                            "type": "string"
+                        },
+                        "JabilBulkLoadID": {
+                            "type": "string"
+                        },
+                        "Year": {
+                            "type": "number"
+                        },
+                        "Month": {
+                            "type": "number"
+                        },
+                        "DocType": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "DeleteSupplier": {
+                "name": "DeleteSupplier",
+                "description": "Delete current state of a supplier of specified SupplierID",
+                "operation": "invoke",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "SupplierID": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "returns": {
+                    "$ref": "#/components/Supplier"
+                }
+            },
+            "GetAgreement": {
+                "name": "GetAgreement",
+                "description": "Retrieve an agreement by its AgreementID",
+                "operation": "query",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "AgreementID": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "returns": {
+                    "$ref": "#/components/Agreement"
+                }
+            },
+            "GetAgreementHistory": {
+                "name": "GetAgreementHistory",
+                "description": "Retrieve history of an agreement of a specified AgreementID",
+                "operation": "query",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "AgreementID": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "returns": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "txID": {
+                                "type": "string"
+                            },
+                            "txTime": {
+                                "type": "string"
+                            },
+                            "isDeleted": {
+                                "type": "boolean"
+                            },
+                            "value": {
+                                "type": "object",
+                                "properties": {
+                                    "AgreementID": {
+                                        "type": "string"
+                                    },
+                                    "SupplierID": {
+                                        "type": "string"
+                                    },
+                                    "IsPrimary": {
+                                        "type": "boolean"
+                                    },
+                                    "FullName": {
+                                        "type": "string"
+                                    },
+                                    "ShortName": {
+                                        "type": "string"
+                                    },
+                                    "Status": {
+                                        "type": "string"
+                                    },
+                                    "SignatureDate": {
+                                        "type": "string"
+                                    },
+                                    "SignedBy": {
+                                        "type": "string"
+                                    },
+                                    "ReferenceID": {
+                                        "type": "string"
+                                    },
+                                    "ReferenceHash": {
+                                        "type": "string"
+                                    },
+                                    "StartDate": {
+                                        "type": "string"
+                                    },
+                                    "EndDate": {
+                                        "type": "string"
+                                    },
+                                    "CollectionFrequency": {
+                                        "type": "string"
+                                    },
+                                    "Type": {
+                                        "type": "string"
+                                    },
+                                    "GrowthTerms": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "MinSaleGrowth": {
+                                                    "type": "number"
+                                                },
+                                                "BonusPct": {
+                                                    "type": "number"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "StandardTerms": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "MinSaleAmt": {
+                                                    "type": "number"
+                                                },
+                                                "BonusPct": {
+                                                    "type": "number"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "DocType": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "GetBulkLoad": {
+                "name": "GetBulkLoad",
+                "description": "Retrieve data of a bulk-load of specified BulkLoadID",
+                "operation": "query",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "BulkLoadID": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "returns": {
+                    "$ref": "#/components/BulkLoad"
+                }
+            },
+            "GetMonthlyPurchases": {
+                "name": "GetMonthlyPurchases",
+                "description": "Retrieve monthly total purchase from a supplier in a previous year",
+                "operation": "query",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "SupplierID": {
+                            "type": "string"
+                        },
+                        "Year": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "returns": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "type": "object",
+                                "properties": {
+                                    "SupplierID": {
+                                        "type": "string"
+                                    },
+                                    "Year": {
+                                        "type": "number"
+                                    },
+                                    "Month": {
+                                        "type": "number"
+                                    },
+                                    "PurchaseAmt": {
+                                        "type": "number"
+                                    },
+                                    "DocType": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "GetPurchasesPerSupplier": {
+                "name": "GetPurchasesPerSupplier",
+                "description": "Retrieve purchased items by specified supplier and reconciliation status",
+                "operation": "query",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "SupplierID": {
+                            "type": "string"
+                        },
+                        "VerifiedBy": {
+                            "type": "string"
+                        },
+                        "Year": {
+                            "type": "number"
+                        },
+                        "Month": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "returns": {
+                    "$ref": "#/components/PurchaseKV"
+                }
+            },
+            "GetReconciliationHistory": {
+                "name": "GetReconciliationHistory",
+                "description": "Retrieve history of a purchase item of specified PO and MPN",
+                "operation": "query",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "PurchaseOrderNbr": {
+                            "type": "string"
+                        },
+                        "ManufacturePartNbr": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "returns": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "txID": {
+                                "type": "string"
+                            },
+                            "txTime": {
+                                "type": "string"
+                            },
+                            "isDeleted": {
+                                "type": "boolean"
+                            },
+                            "value": {
+                                "type": "object",
+                                "properties": {
+                                    "PurchaseOrderNbr": {
+                                        "type": "string"
+                                    },
+                                    "SupplierID": {
+                                        "type": "string"
+                                    },
+                                    "PurchaseOrderStatus": {
+                                        "type": "string"
+                                    },
+                                    "DocumentID": {
+                                        "type": "string"
+                                    },
+                                    "DocumentDate": {
+                                        "type": "string"
+                                    },
+                                    "ShipDate": {
+                                        "type": "string"
+                                    },
+                                    "ManufacturerPartNbr": {
+                                        "type": "string"
+                                    },
+                                    "SupplierPartNbr": {
+                                        "type": "string"
+                                    },
+                                    "JabilPartNbr": {
+                                        "type": "string"
+                                    },
+                                    "Currency": {
+                                        "type": "string"
+                                    },
+                                    "ShippedQty": {
+                                        "type": "number"
+                                    },
+                                    "UnitPrice": {
+                                        "type": "number"
+                                    },
+                                    "SalePriceLocalAmt": {
+                                        "type": "number"
+                                    },
+                                    "SalePriceUSD": {
+                                        "type": "number"
+                                    },
+                                    "ReturnQty": {
+                                        "type": "number"
+                                    },
+                                    "ReturnUSD": {
+                                        "type": "number"
+                                    },
+                                    "ReturnReason": {
+                                        "type": "string"
+                                    },
+                                    "VerifiedBy": {
+                                        "type": "string"
+                                    },
+                                    "SupplierBulkLoadID": {
+                                        "type": "string"
+                                    },
+                                    "JabilBulkLoadID": {
+                                        "type": "string"
+                                    },
+                                    "Year": {
+                                        "type": "number"
+                                    },
+                                    "Month": {
+                                        "type": "number"
+                                    },
+                                    "DocType": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "GetSupplier": {
+                "name": "GetSupplier",
+                "description": "Retrieve a supplier by its SupplierID",
+                "operation": "query",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "SupplierID": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "returns": {
+                    "$ref": "#/components/Supplier"
+                }
+            },
+            "GetSupplierAgreements": {
+                "name": "GetSupplierAgreements",
+                "description": "Retrieve agreements of a specified supplier",
+                "operation": "query",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "SupplierID": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "returns": {
+                    "$ref": "#/components/AgreementKV"
+                }
+            },
+            "PutAgreement": {
+                "name": "PutAgreement",
+                "description": "Create or update an agreement and its terms",
+                "operation": "invoke",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "agreement": {
+                            "type": "object",
+                            "properties": {
+                                "AgreementID": {
+                                    "type": "string"
+                                },
+                                "SupplierID": {
+                                    "type": "string"
+                                },
+                                "IsPrimary": {
+                                    "type": "boolean"
+                                },
+                                "FullName": {
+                                    "type": "string"
+                                },
+                                "ShortName": {
+                                    "type": "string"
+                                },
+                                "Status": {
+                                    "type": "string"
+                                },
+                                "SignatureDate": {
+                                    "type": "string"
+                                },
+                                "SignedBy": {
+                                    "type": "string"
+                                },
+                                "ReferenceID": {
+                                    "type": "string"
+                                },
+                                "ReferenceHash": {
+                                    "type": "string"
+                                },
+                                "StartDate": {
+                                    "type": "string"
+                                },
+                                "EndDate": {
+                                    "type": "string"
+                                },
+                                "CollectionFrequency": {
+                                    "type": "string"
+                                },
+                                "Type": {
+                                    "type": "string"
+                                },
+                                "GrowthTerms": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "MinSaleGrowth": {
+                                                "type": "number"
+                                            },
+                                            "BonusPct": {
+                                                "type": "number"
+                                            }
+                                        }
+                                    }
+                                },
+                                "StandardTerms": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "MinSaleAmt": {
+                                                "type": "number"
+                                            },
+                                            "BonusPct": {
+                                                "type": "number"
+                                            }
+                                        }
+                                    }
+                                },
+                                "DocType": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "returns": {
+                    "$ref": "#/components/Agreement"
+                }
+            },
+            "PutBulkLoad": {
+                "name": "PutBulkLoad",
+                "description": "Record a bulk-load of purchasing records",
+                "operation": "invoke",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "bulkLoad": {
+                            "type": "object",
+                            "properties": {
+                                "BulkLoadID": {
+                                    "type": "string"
+                                },
+                                "ReferenceFile": {
+                                    "type": "string"
+                                },
+                                "ReferenceHash": {
+                                    "type": "string"
+                                },
+                                "LoadedBy": {
+                                    "type": "string"
+                                },
+                                "DocType": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "returns": {
+                    "$ref": "#/components/BulkLoad"
+                }
+            },
+            "PutMonthlyPurchase": {
+                "name": "PutMonthlyPurchase",
+                "description": "Create or update monthly total purchase amount of a previous year",
+                "operation": "invoke",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "summary": {
+                            "type": "object",
+                            "properties": {
+                                "SupplierID": {
+                                    "type": "string"
+                                },
+                                "Year": {
+                                    "type": "number"
+                                },
+                                "Month": {
+                                    "type": "number"
+                                },
+                                "PurchaseAmt": {
+                                    "type": "number"
+                                },
+                                "DocType": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "returns": {
+                    "$ref": "#/components/MonthlyPurchase"
+                }
+            },
+            "PutPurchases": {
+                "name": "PutPurchases",
+                "description": "Create or update list of purchase records",
+                "operation": "invoke",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "purchases": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "PurchaseOrderNbr": {
+                                        "type": "string"
+                                    },
+                                    "SupplierID": {
+                                        "type": "string"
+                                    },
+                                    "PurchaseOrderStatus": {
+                                        "type": "string"
+                                    },
+                                    "DocumentID": {
+                                        "type": "string"
+                                    },
+                                    "DocumentDate": {
+                                        "type": "string"
+                                    },
+                                    "ShipDate": {
+                                        "type": "string"
+                                    },
+                                    "ManufacturerPartNbr": {
+                                        "type": "string"
+                                    },
+                                    "SupplierPartNbr": {
+                                        "type": "string"
+                                    },
+                                    "JabilPartNbr": {
+                                        "type": "string"
+                                    },
+                                    "Currency": {
+                                        "type": "string"
+                                    },
+                                    "ShippedQty": {
+                                        "type": "number"
+                                    },
+                                    "UnitPrice": {
+                                        "type": "number"
+                                    },
+                                    "SalePriceLocalAmt": {
+                                        "type": "number"
+                                    },
+                                    "SalePriceUSD": {
+                                        "type": "number"
+                                    },
+                                    "ReturnQty": {
+                                        "type": "number"
+                                    },
+                                    "ReturnUSD": {
+                                        "type": "number"
+                                    },
+                                    "ReturnReason": {
+                                        "type": "string"
+                                    },
+                                    "VerifiedBy": {
+                                        "type": "string"
+                                    },
+                                    "SupplierBulkLoadID": {
+                                        "type": "string"
+                                    },
+                                    "JabilBulkLoadID": {
+                                        "type": "string"
+                                    },
+                                    "Year": {
+                                        "type": "number"
+                                    },
+                                    "Month": {
+                                        "type": "number"
+                                    },
+                                    "DocType": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "returns": {
+                    "$ref": "#/components/PurchaseKV"
+                }
+            },
+            "PutSupplier": {
+                "name": "PutSupplier",
+                "description": "create or update a Supplier",
+                "operation": "invoke",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "supplier": {
+                            "type": "object",
+                            "properties": {
+                                "SupplierID": {
+                                    "type": "string"
+                                },
+                                "TenantID": {
+                                    "type": "string"
+                                },
+                                "GlobalCode": {
+                                    "type": "string"
+                                },
+                                "FullName": {
+                                    "type": "string"
+                                },
+                                "ShortName": {
+                                    "type": "string"
+                                },
+                                "Description": {
+                                    "type": "string"
+                                },
+                                "Region": {
+                                    "type": "string"
+                                },
+                                "Commodity": {
+                                    "type": "string"
+                                },
+                                "HighLevelCommodity": {
+                                    "type": "string"
+                                },
+                                "Address": {
+                                    "type": "object",
+                                    "properties": {
+                                        "Street1": {
+                                            "type": "string"
+                                        },
+                                        "Street2": {
+                                            "type": "string"
+                                        },
+                                        "Street3": {
+                                            "type": "string"
+                                        },
+                                        "Street4": {
+                                            "type": "string"
+                                        },
+                                        "CityOrMunicipality": {
+                                            "type": "string"
+                                        },
+                                        "StateOrProvince": {
+                                            "type": "string"
+                                        },
+                                        "CountyOrSubdivision": {
+                                            "type": "string"
+                                        },
+                                        "ZipOrPostcode": {
+                                            "type": "string"
+                                        },
+                                        "Country": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "WebsiteURL": {
+                                    "type": "string"
+                                },
+                                "TickerSymbol": {
+                                    "type": "string"
+                                },
+                                "DocType": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "returns": {
+                    "$ref": "#/components/Supplier"
+                }
+            },
+            "QueryAllAgreements": {
+                "name": "QueryAllAgreements",
+                "description": "Query all agreements, primary or not",
+                "operation": "query",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "PrimaryOnly": {
+                            "type": "boolean"
+                        }
+                    }
+                },
+                "returns": {
+                    "$ref": "#/components/AgreementKV"
+                }
+            },
+            "QueryAllSuppliers": {
+                "name": "QueryAllSuppliers",
+                "description": "Rich query for all supplier states",
+                "operation": "query",
+                "returns": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string"
+                            },
+                            "value": {
+                                "type": "object",
+                                "properties": {
+                                    "SupplierID": {
+                                        "type": "string"
+                                    },
+                                    "TenantID": {
+                                        "type": "string"
+                                    },
+                                    "GlobalCode": {
+                                        "type": "string"
+                                    },
+                                    "FullName": {
+                                        "type": "string"
+                                    },
+                                    "ShortName": {
+                                        "type": "string"
+                                    },
+                                    "Description": {
+                                        "type": "string"
+                                    },
+                                    "Region": {
+                                        "type": "string"
+                                    },
+                                    "Commodity": {
+                                        "type": "string"
+                                    },
+                                    "HighLevelCommodity": {
+                                        "type": "string"
+                                    },
+                                    "Address": {
+                                        "type": "object",
+                                        "properties": {
+                                            "Street1": {
+                                                "type": "string"
+                                            },
+                                            "Street2": {
+                                                "type": "string"
+                                            },
+                                            "Street3": {
+                                                "type": "string"
+                                            },
+                                            "Street4": {
+                                                "type": "string"
+                                            },
+                                            "CityOrMunicipality": {
+                                                "type": "string"
+                                            },
+                                            "StateOrProvince": {
+                                                "type": "string"
+                                            },
+                                            "CountyOrSubdivision": {
+                                                "type": "string"
+                                            },
+                                            "ZipOrPostcode": {
+                                                "type": "string"
+                                            },
+                                            "Country": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "WebsiteURL": {
+                                        "type": "string"
+                                    },
+                                    "TickerSymbol": {
+                                        "type": "string"
+                                    },
+                                    "DocType": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "Agreement": {
+            "$id": "Agreement",
+            "type": "object",
+            "properties": {
+                "AgreementID": {
+                    "type": "string"
+                },
+                "SupplierID": {
+                    "type": "string"
+                },
+                "IsPrimary": {
+                    "type": "boolean"
+                },
+                "FullName": {
+                    "type": "string"
+                },
+                "ShortName": {
+                    "type": "string"
+                },
+                "Status": {
+                    "type": "string"
+                },
+                "SignatureDate": {
+                    "type": "string"
+                },
+                "SignedBy": {
+                    "type": "string"
+                },
+                "ReferenceID": {
+                    "type": "string"
+                },
+                "ReferenceHash": {
+                    "type": "string"
+                },
+                "StartDate": {
+                    "type": "string"
+                },
+                "EndDate": {
+                    "type": "string"
+                },
+                "CollectionFrequency": {
+                    "type": "string"
+                },
+                "Type": {
+                    "type": "string"
+                },
+                "GrowthTerms": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "MinSaleGrowth": {
+                                "type": "number"
+                            },
+                            "BonusPct": {
+                                "type": "number"
+                            }
+                        }
+                    }
+                },
+                "StandardTerms": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "MinSaleAmt": {
+                                "type": "number"
+                            },
+                            "BonusPct": {
+                                "type": "number"
+                            }
+                        }
+                    }
+                },
+                "DocType": {
+                    "type": "string"
+                }
+            }
+        },
+        "AgreementKV": {
+            "$id": "AgreementKV",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "object",
+                        "properties": {
+                            "AgreementID": {
+                                "type": "string"
+                            },
+                            "SupplierID": {
+                                "type": "string"
+                            },
+                            "IsPrimary": {
+                                "type": "boolean"
+                            },
+                            "FullName": {
+                                "type": "string"
+                            },
+                            "ShortName": {
+                                "type": "string"
+                            },
+                            "Status": {
+                                "type": "string"
+                            },
+                            "SignatureDate": {
+                                "type": "string"
+                            },
+                            "SignedBy": {
+                                "type": "string"
+                            },
+                            "ReferenceID": {
+                                "type": "string"
+                            },
+                            "ReferenceHash": {
+                                "type": "string"
+                            },
+                            "StartDate": {
+                                "type": "string"
+                            },
+                            "EndDate": {
+                                "type": "string"
+                            },
+                            "CollectionFrequency": {
+                                "type": "string"
+                            },
+                            "Type": {
+                                "type": "string"
+                            },
+                            "GrowthTerms": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "MinSaleGrowth": {
+                                            "type": "number"
+                                        },
+                                        "BonusPct": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            },
+                            "StandardTerms": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "MinSaleAmt": {
+                                            "type": "number"
+                                        },
+                                        "BonusPct": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            },
+                            "DocType": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "BulkLoad": {
+            "$id": "BulkLoad",
+            "type": "object",
+            "properties": {
+                "BulkLoadID": {
+                    "type": "string"
+                },
+                "ReferenceFile": {
+                    "type": "string"
+                },
+                "ReferenceHash": {
+                    "type": "string"
+                },
+                "LoadedBy": {
+                    "type": "string"
+                },
+                "DocType": {
+                    "type": "string"
+                }
+            }
+        },
+        "MonthlyPurchase": {
+            "$id": "MonthlyPurchase",
+            "type": "object",
+            "properties": {
+                "SupplierID": {
+                    "type": "string"
+                },
+                "Year": {
+                    "type": "number"
+                },
+                "Month": {
+                    "type": "number"
+                },
+                "PurchaseAmt": {
+                    "type": "number"
+                },
+                "DocType": {
+                    "type": "string"
+                }
+            }
+        },
+        "PurchaseKV": {
+            "$id": "PurchaseKV",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "type": "string"
+                    },
+                    "value": {
+                        "type": "object",
+                        "properties": {
+                            "PurchaseOrderNbr": {
+                                "type": "string"
+                            },
+                            "SupplierID": {
+                                "type": "string"
+                            },
+                            "PurchaseOrderStatus": {
+                                "type": "string"
+                            },
+                            "DocumentID": {
+                                "type": "string"
+                            },
+                            "DocumentDate": {
+                                "type": "string"
+                            },
+                            "ShipDate": {
+                                "type": "string"
+                            },
+                            "ManufacturerPartNbr": {
+                                "type": "string"
+                            },
+                            "SupplierPartNbr": {
+                                "type": "string"
+                            },
+                            "JabilPartNbr": {
+                                "type": "string"
+                            },
+                            "Currency": {
+                                "type": "string"
+                            },
+                            "ShippedQty": {
+                                "type": "number"
+                            },
+                            "UnitPrice": {
+                                "type": "number"
+                            },
+                            "SalePriceLocalAmt": {
+                                "type": "number"
+                            },
+                            "SalePriceUSD": {
+                                "type": "number"
+                            },
+                            "ReturnQty": {
+                                "type": "number"
+                            },
+                            "ReturnUSD": {
+                                "type": "number"
+                            },
+                            "ReturnReason": {
+                                "type": "string"
+                            },
+                            "VerifiedBy": {
+                                "type": "string"
+                            },
+                            "SupplierBulkLoadID": {
+                                "type": "string"
+                            },
+                            "JabilBulkLoadID": {
+                                "type": "string"
+                            },
+                            "Year": {
+                                "type": "number"
+                            },
+                            "Month": {
+                                "type": "number"
+                            },
+                            "DocType": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "Supplier": {
+            "$id": "Supplier",
+            "type": "object",
+            "properties": {
+                "SupplierID": {
+                    "type": "string"
+                },
+                "TenantID": {
+                    "type": "string"
+                },
+                "GlobalCode": {
+                    "type": "string"
+                },
+                "FullName": {
+                    "type": "string"
+                },
+                "ShortName": {
+                    "type": "string"
+                },
+                "Description": {
+                    "type": "string"
+                },
+                "Region": {
+                    "type": "string"
+                },
+                "Commodity": {
+                    "type": "string"
+                },
+                "HighLevelCommodity": {
+                    "type": "string"
+                },
+                "Address": {
+                    "type": "object",
+                    "properties": {
+                        "Street1": {
+                            "type": "string"
+                        },
+                        "Street2": {
+                            "type": "string"
+                        },
+                        "Street3": {
+                            "type": "string"
+                        },
+                        "Street4": {
+                            "type": "string"
+                        },
+                        "CityOrMunicipality": {
+                            "type": "string"
+                        },
+                        "StateOrProvince": {
+                            "type": "string"
+                        },
+                        "CountyOrSubdivision": {
+                            "type": "string"
+                        },
+                        "ZipOrPostcode": {
+                            "type": "string"
+                        },
+                        "Country": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "WebsiteURL": {
+                    "type": "string"
+                },
+                "TickerSymbol": {
+                    "type": "string"
+                },
+                "DocType": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
