@@ -29,18 +29,18 @@ make build
 make deploy
 ```
 
-The `build` script uses a `dovetail-tools` docker container to build the chaincode model into a CDS package that can be installed on any fabric network.
+The `build` script uses a `dovetail-tools` docker container to build and package the chaincode model into `marble_cc_1.0.tar.gz` that can be installed on any fabric network.
 
 ## Install and test chaincode using fabric test network
 
-Start Hyperledger Fabric first-network with CouchDB:
+Start Hyperledger Fabric test-network with CouchDB:
 
 ```bash
 cd /path/to/dovetail-lab/fabric-samples/marble
 make start
 ```
 
-Use `cli` docker container to install and instantiate the `marble_cc` chaincode.
+Use `cli` docker container to install, approve and commit the `marble_cc` chaincode.
 
 ```bash
 cd /path/to/dovetail-lab/fabric-samples/marble
@@ -54,9 +54,9 @@ cd /path/to/dovetail-lab/fabric-samples/marble
 make cli-test
 ```
 
-You may skip this test, and follow the steps in the next section to build client apps, and then use the client app to execute the tests. If you run the `cli` tests, however, it should print out 17 successful tests with status code `200` if the `marble_cc` chaincode is installed and instantiated successfully on the Fabric network.
+You may skip this test, and follow the steps in the next section to build client apps, and then use the client app to execute the tests. If you run the `cli` tests, however, it should print out 17 successful tests with status code `200` if the `marble_cc` chaincode is installed and instantiated successfully on the Fabric test-network.
 
-Note that developers can also use Fabric dev-mode to test chaincode (refer [dev](./dev.md) for more details). For issues regarding how to work with the Fabric network, please refer the [Hyperledger Fabric docs](https://hyperledger-fabric.readthedocs.io/en/latest/build_network.html).
+Note that developers can also use Fabric dev-mode to test chaincode (refer [dev](./dev.md) for more details).
 
 ## Edit marble REST service (optional)
 
@@ -150,7 +150,7 @@ The previous step `make package` generated a `GraphQL` schema file [`metadata.gq
 
 ## Cleanup the Hyplerledger Fabric test network
 
-After you are done testing, you can stop and cleanup the Fabric sample `first-network` as follows:
+After you are done testing, you can stop and cleanup the Fabric `test-network` as follows:
 
 ```bash
 cd /path/to/dovetail-lab/fabric-samples/marble
@@ -159,7 +159,7 @@ make shutdown
 
 ## Deploy to IBM Cloud
 
-The CDS package, `marble_cc_1.0.cds`, created by the build script above can be used to deploy to IBM Blockchain Platform. Refer to [fabric-tools](https://github.com/dovetail-lab/fabric-cli/tree/master/fabric-tools) for details about installing chaincode on the IBM Blockchain Platform.
+Dovetail release v1.0.0 builds chaincode into CDS package, `marble_cc_1.0.cds`, which can be deployed to IBM Blockchain Platform. Refer to [fabric-tools](https://github.com/dovetail-lab/fabric-cli/tree/master/fabric-tools) for details about installing chaincode on the IBM Blockchain Platform.
 
 The REST or GraphQL service apps can access the same `marble` chaincode deployed in [IBM Cloud](https://cloud.ibm.com) using the [IBM Blockchain Platform](https://cloud.ibm.com/catalog/services/blockchain-platform-20). The only required update is the network configuration file. [config_ibp.yaml](../testdata/config_ibp.yaml) is a sample network configuration that can be used by the REST or GraphQL service app.
 

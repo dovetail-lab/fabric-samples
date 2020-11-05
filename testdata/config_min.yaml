@@ -42,7 +42,7 @@ orderers:
   orderer.example.com:
     url: orderer.example.com:7050
     tlsCACerts:
-      path: ${CRYPTO_PATH}/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
+      path: ${CRYPTO_PATH}/ordererOrganizations/example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 
 peers:
   peer0.org1.example.com:

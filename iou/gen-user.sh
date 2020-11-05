@@ -5,15 +5,20 @@
 #  user-name ending with "Admin" acts as bank admin 
 
 FAB_HOME=${1:-"${GOPATH}/src/github.com/hyperledger/fabric-samples"}
+FAB_PATH=${FAB_HOME}/test-network
+
 USER=${2:-"Alice"}
-ORG=org1.example.com
+ORG_NAME=org1
 PORT=7054
 BANK=EURBank
 if [ "$3" == "2" ]; then
-  ORG=org2.example.com
+  ORG_NAME=org2
   PORT=8054
   BANK=USDBank
 fi
+ORG=${ORG_NAME}.example.com
+CANAME=ca-${ORG_NAME}
+TLSCA=${FAB_PATH}/organizations/fabric-ca/${ORG_NAME}/tls-cert.pem
 
 ADMIN="false"
 if [[ "${USER}" == *Admin ]]; then
@@ -21,7 +26,6 @@ if [[ "${USER}" == *Admin ]]; then
   ADMIN="true"
 fi
 
-FABRIC_SAMPLE_PATH=${FAB_HOME}/first-network
 WORK=/tmp/ca
 echo "generate key and cert for user ${USER}@${ORG}"
 
@@ -33,32 +37,31 @@ fi
 # check CA server
 docker ps | grep "hyperledger/fabric-ca" | grep "${PORT}->${PORT}/tcp"
 if [ "$?" -ne 0 ]; then
-  echo "CA server is not running.  Start first network with '-a' option, e.g., './byfn.sh up -a -s couchdb'."
+  echo "CA server is not running.  Start test network with '-ca' option, e.g., './network.sh up createChannel -ca -s couchdb'."
   exit 1
 fi
 
 # check fabric-ca-client
-which fabric-ca-client
-if [ "$?" -ne 0 ]; then
-  echo "fabric-ca-client not found. You can install fabric-ca by using 'go get -u github.com/hyperledger/fabric-ca/cmd/...'"
+if [ ! -f "${FAB_HOME}/bin/fabric-ca-client" ]; then
+  echo "fabric-ca-client not found in ${FAB_HOME}/bin"
   exit 1
 fi
 
 # enroll CA admin
 export FABRIC_CA_CLIENT_HOME=${WORK}/admin
-fabric-ca-client getcainfo -u http://localhost:${PORT}
+${FAB_HOME}/bin/fabric-ca-client getcainfo -u https://localhost:${PORT} --caname ${CANAME} --tls.certfiles ${TLSCA}
 openssl x509 -noout -text -in ${FABRIC_CA_CLIENT_HOME}/msp/cacerts/localhost-${PORT}.pem
-fabric-ca-client enroll -u http://admin:adminpw@localhost:${PORT}
+${FAB_HOME}/bin/fabric-ca-client enroll -u https://admin:adminpw@localhost:${PORT} --caname ${CANAME} --tls.certfiles ${TLSCA}
 
 # register and enroll new user
 # Note: important to make id.name as user@org for signature verification!
-fabric-ca-client register --id.name ''"${USER}@${ORG}"'' --id.secret ${USER}pw --id.type client --id.attrs 'admin='"${ADMIN}"':ecert,alias='"${USER}"',bank='"${BANK}"',email='"${USER}@${ORG}"''
+${FAB_HOME}/bin/fabric-ca-client register --caname ${CANAME} --tls.certfiles ${TLSCA} --id.name ''"${USER}@${ORG}"'' --id.secret ${USER}pw --id.type client --id.attrs 'admin='"${ADMIN}"':ecert,alias='"${USER}"',bank='"${BANK}"',email='"${USER}@${ORG}"''
 export FABRIC_CA_CLIENT_HOME=${WORK}/${USER}\@${ORG}
-fabric-ca-client enroll -u http://${USER}@${ORG}:${USER}pw@localhost:${PORT} --enrollment.attrs "admin,alias,bank,email" -M ${FABRIC_CA_CLIENT_HOME}/msp
+${FAB_HOME}/bin/fabric-ca-client enroll -u https://${USER}@${ORG}:${USER}pw@localhost:${PORT} --caname ${CANAME} --tls.certfiles ${TLSCA} --enrollment.attrs "admin,alias,bank,email" -M ${FABRIC_CA_CLIENT_HOME}/msp
 openssl x509 -noout -text -in ${WORK}/${USER}\@${ORG}/msp/signcerts/cert.pem
 
-# copy key and cert to first-network sample crypto-config
-cd ${FABRIC_SAMPLE_PATH}/crypto-config/peerOrganizations/${ORG}/users
+# copy key and cert to test-network orgainizations
+cd ${FAB_PATH}/organizations/peerOrganizations/${ORG}/users
 if [ -d "${USER}@${ORG}" ]; then
   echo "remove old crypto ${USER}@${ORG}"
   rm -Rf ${USER}\@${ORG}
