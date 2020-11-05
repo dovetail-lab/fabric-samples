@@ -6,7 +6,7 @@ This example uses the [TIBCO Flogo® Enterprise](https://www.tibco.com/products/
 
 Follow the instructions [here](https://github.com/dovetail-lab/fabric-cli) to setup the Dovetail development environment on Mac or Linux.
 
-## Edit smart contract (opptional)
+## Edit smart contract (optional)
 
 Skip to the next section if you do not plan to modify the included sample model.
 
@@ -31,9 +31,9 @@ make deploy
 
 The `build` script uses a `dovetail-tools` docker container to build the chaincode model into a CDS package that can be installed on any fabric network.
 
-## Install and test chaincode using fabric sample first-network
+## Install and test chaincode using fabric test-network
 
-Start Hyperledger Fabric first-network with CouchDB:
+Start Hyperledger Fabric test-network with CouchDB:
 
 ```bash
 cd /path/to/dovetail-lab/fabric-samples/marble-private
@@ -141,7 +141,7 @@ The previous step `make metadata` generated a `GraphQL` schema file [`metadata.g
 
 ## Cleanup the Hyperledger Fabric test network
 
-After you are done testing, you can stop and cleanup the Fabric sample `first-network` as follows:
+After you are done testing, you can stop and cleanup the Fabric `test-network` as follows:
 
 ```bash
 cd /path/to/dovetail-lab/fabric-samples/marble-private
@@ -150,6 +150,6 @@ make shutdown
 
 ## Deploy to IBM Cloud
 
-The CDS package, `marble_private_cc_1.0.cds`, created by the build script above can be used to deploy to IBM Blockchain Platform. Refer to [fabric-tools](https://github.com/dovetail-lab/fabric-cli/tree/master/fabric-tools) for details about installing chaincode on the IBM Blockchain Platform.
+Dovetail release v1.0.0 builds chaincode package, `marble_private_cc_1.0.cds`, which can be deployed to IBM Blockchain Platform. Refer to [fabric-tools](https://github.com/dovetail-lab/fabric-cli/tree/master/fabric-tools) for details about installing chaincode on the IBM Blockchain Platform.
 
 The REST or GraphQL service apps can access the same `marble_private` chaincode deployed in [IBM Cloud](https://cloud.ibm.com) using the [IBM Blockchain Platform](https://cloud.ibm.com/catalog/services/blockchain-platform-20). The only required update is the network configuration file. [config_ibp.yaml](../testdata/config_ibp.yaml) is a sample network configuration that can be used by the REST or GraphQL service app.

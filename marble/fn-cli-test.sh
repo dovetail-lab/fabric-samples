@@ -26,7 +26,7 @@ peer chaincode query -C mychannel -n marble_cc -c '{"Args":["readMarble","marble
 peer chaincode invoke $ORDERER_ARGS -C mychannel -n marble_cc $ORG1_ARGS $ORG2_ARGS -c '{"function":"transferMarble","Args":["marble2","jerry"]}'
 peer chaincode invoke $ORDERER_ARGS -C mychannel -n marble_cc $ORG1_ARGS $ORG2_ARGS -c '{"function":"transferMarblesBasedOnColor","Args":["blue","jerry"]}'
 sleep 5
-../bin/peer chaincode query -C mychannel -n marble_cc -c '{"Args":["getMarblesByRange","marble1","marble5"]}'
+peer chaincode query -C mychannel -n marble_cc -c '{"Args":["getMarblesByRange","marble1","marble5"]}'
 
 # delete marble state, not history
 echo "test delete and history"

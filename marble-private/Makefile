@@ -28,17 +28,17 @@ deploy: $(BUILD_PATH)/work/$(APP_HAME)
 	-rm -rf $(CC_DEPLOY)/$(APP_NAME)
 	cp -Rf $(BUILD_PATH)/work/$(APP_NAME)/$(APP_NAME) $(CC_DEPLOY)
 	cp $(BUILD_PATH)/work/$(APP_NAME)/$(APP_NAME)_linux_amd64 $(CC_DEPLOY)/$(APP_NAME)
-	cp $(BUILD_PATH)/work/$(APP_NAME)/$(APP_NAME)_1.0.cds $(CC_DEPLOY)/$(APP_NAME)
-	cp fn-cli-init.sh $(FAB_PATH)/first-network/scripts/fn-init-marble-private.sh
-	cp fn-cli-test.sh $(FAB_PATH)/first-network/scripts/fn-test-marble-private.sh
+	cp $(BUILD_PATH)/work/$(APP_NAME)/$(APP_NAME)_1.0.tar.gz $(CC_DEPLOY)/$(APP_NAME)
+	cp fn-cli-init.sh $(FAB_PATH)/test-network/fn-init-marble-private.sh
+	cp fn-cli-test.sh $(FAB_PATH)/test-network/fn-test-marble-private.sh
 
 .PHONY: cli-init
 cli-init:
-	docker exec cli bash -c 'cd scripts; ./fn-init-marble-private.sh'
+	docker exec cli bash -c './fn-init-marble-private.sh'
 
 .PHONY: cli-test
 cli-test:
-	docker exec cli bash -c 'cd scripts; ./fn-test-marble-private.sh'
+	docker exec cli bash -c './fn-test-marble-private.sh'
 
 .PHONY: metadata
 metadata:
@@ -54,14 +54,17 @@ build-client: $(CLIENT_FILE) clean-client
 
 .PHONY: run
 run:
-	FLOGO_APP_PROP_RESOLVERS=env FLOGO_APP_PROPS_ENV=auto PORT=8989 FLOGO_LOG_LEVEL=DEBUG FLOGO_SCHEMA_SUPPORT=true FLOGO_SCHEMA_VALIDATION=false CRYPTO_PATH=$(FAB_PATH)/first-network/crypto-config $(BUILD_PATH)/work/$(CLIENT_NAME)/$(CLIENT_NAME)_$(CLIENT_OS)_amd64
+	FLOGO_APP_PROP_RESOLVERS=env FLOGO_APP_PROPS_ENV=auto PORT=8989 FLOGO_LOG_LEVEL=DEBUG FLOGO_SCHEMA_SUPPORT=true FLOGO_SCHEMA_VALIDATION=false CRYPTO_PATH=$(FAB_PATH)/test-network/organizations $(BUILD_PATH)/work/$(CLIENT_NAME)/$(CLIENT_NAME)_$(CLIENT_OS)_amd64
+
+.PHONY: test-network
+test-network: $(FAB_PATH)/test-network/network.sh
+	cp $(SRC_PATH)/../testdata/docker-compose-cli.yaml $(FAB_PATH)/test-network/docker
+	sed -i -e "s/COMPOSE_FILE_BASE=docker\/docker-compose-test-net.yaml.*/COMPOSE_FILE_BASE=\"docker\/docker-compose-test-net.yaml -f docker\/docker-compose-cli.yaml\"/" $(FAB_PATH)/test-network/network.sh
 
 .PHONY: start
-start:
-	cd $(FAB_PATH)/first-network && ./byfn.sh up -a -n -s couchdb -i 1.4.9
+start: test-network
+	cd $(FAB_PATH)/test-network && ./network.sh up createChannel -s couchdb
 
 .PHONY: shutdown
 shutdown:
-	cd $(FAB_PATH)/first-network && ./byfn.sh down
-	-docker rm $(docker ps -a | grep dev-peer | awk '{print $1}')
-	-docker rmi $(docker images | grep dev-peer | awk '{print $3}')
+	cd $(FAB_PATH)/test-network && ./network.sh down

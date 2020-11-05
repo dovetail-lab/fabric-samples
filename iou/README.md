@@ -167,11 +167,11 @@ The `build` script uses a `dovetail-tools` docker container to build the chainco
 
 ## Install and test chaincode using fabric test network
 
-Start Hyperledger Fabric first-network with CouchDB, and create crypto key-pairs for bank-admin and test user-accounts
+Start Hyperledger Fabric test-network with CouchDB, and create crypto key-pairs for bank-admin and test user-accounts
 
 ```bash
 cd /path/to/dovetail-lab/fabric-samples/iou
-make start-fn
+make start
 ```
 
 Use `cli` docker container to install and instantiate the `iou_cc` chaincode.
@@ -221,9 +221,9 @@ This should create 13 Flogo flows based on the chaincode transactions defined in
 
 Once you complete the model similar to the sample file `iou_client.json`, you can export, build and test it as described above. Note that the default service port is `7879`, although you can make it configurable by defining an `app property` for it.
 
-## Cleanup the sample fabric network
+## Cleanup the fabric test-network
 
-After you are done testing, you can stop and cleanup the Fabric sample `first-network` as follows:
+After you are done testing, you can stop and cleanup the Fabric `test-network` as follows:
 
 ```bash
 cd /path/to/dovetail-lab/fabric-samples/iou
@@ -232,10 +232,10 @@ make shutdown
 
 ## Deploy to IBM Cloud
 
-The CDS package, `iou_cc_1.0.cds`, created by the build script above can be used to deploy to IBM Blockchain Platform. Refer to [fabric-tools](https://github.com/dovetail-lab/fabric-cli/tree/master/fabric-tools) for details about installing chaincode on the IBM Blockchain Platform.
+Dovetail release v1.0.0 builds chaincode into CDS package, `iou_cc_1.0.cds`, which can be deployed to IBM Blockchain Platform. Refer to [fabric-tools](https://github.com/dovetail-lab/fabric-cli/tree/master/fabric-tools) for details about installing chaincode on the IBM Blockchain Platform.
 
 The GraphQL service app can access the same `iou_cc` chaincode deployed in [IBM Cloud](https://cloud.ibm.com) using the [IBM Blockchain Platform](https://cloud.ibm.com/catalog/services/blockchain-platform-20). The only required update is the network configuration file. [config_ibp.yaml](../testdata/config_ibp.yaml) is a sample network configuration that can be used by the GraphQL service.
 
 ## Deploy to other cloud
 
-You can also deploy and test chaincode or applications in a Kubernetes cluster by other cloud service providers, e.g., Amazon AWS, Microsoft Azure, or Google GCP. The scripts in the [fabric-operation](https://github.com/dovetail-lab/fabric-operation) folder can be used to create Kubernetes clusters and manage Hyperledger Fabric networks in each of the 3 major cloud service providers. Even though AWS and Azure provide their own managed service for Hyperledger Fabric, they do not support the latest version of the fabric release, e.g., release v1.4.9, and thus you may need to manage your own clusters in any cloud provider other than IBM.
+You can also deploy and test chaincode or applications in a Kubernetes cluster by other cloud service providers, e.g., Amazon AWS, Microsoft Azure, or Google GCP. The scripts in the [fabric-operation](https://github.com/dovetail-lab/fabric-operation) folder can be used to create Kubernetes clusters and manage Hyperledger Fabric networks in each of the 3 major cloud service providers. Even though AWS and Azure provide their own managed service for Hyperledger Fabric, they do not support the latest version of the fabric release, e.g., release v1.4.9, and thus you may need to manage your own clusters in a cloud provider other than IBM.
