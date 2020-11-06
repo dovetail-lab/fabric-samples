@@ -3,20 +3,24 @@
 # usage: gen-user.sh name org
 #  e.g., gen-user.sh s1User@s1.com 1
 
-FAB_HOME=${1:-"${HOME}/work/fabric-samples"}
+FAB_HOME=${1:-"${PWD}/../../hyperledger/fabric-samples"}
+FAB_PATH=${FAB_HOME}/test-network
+
 USER=${2:-"Alice@org1.example.com"}
-ORG=org1.example.com
-PORT=7054
 ALIAS="${USER%%@*}"
 DOMAIN="${USER##*@}"
 ENTITY="${DOMAIN%%.*}"
 
+ORG_NAME=org1
+PORT=7054
 if [ "$3" == "2" ]; then
-  ORG=org2.example.com
+  ORG_NAME=org2
   PORT=8054
 fi
+ORG=${ORG_NAME}.example.com
+CANAME=ca-${ORG_NAME}
+TLSCA=${FAB_PATH}/organizations/fabric-ca/${ORG_NAME}/tls-cert.pem
 
-FABRIC_SAMPLE_PATH=${FAB_HOME}/first-network
 WORK=/tmp/ca
 echo "generate key and cert for user ${ALIAS}@${ORG}"
 
@@ -33,27 +37,26 @@ if [ "$?" -ne 0 ]; then
 fi
 
 # check fabric-ca-client
-which fabric-ca-client
-if [ "$?" -ne 0 ]; then
-  echo "fabric-ca-client not found. You can install fabric-ca by using 'go get -u github.com/hyperledger/fabric-ca/cmd/...'"
+if [ ! -f "${FAB_HOME}/bin/fabric-ca-client" ]; then
+  echo "fabric-ca-client not found in ${FAB_HOME}/bin"
   exit 1
 fi
 
 # enroll CA admin
 export FABRIC_CA_CLIENT_HOME=${WORK}/admin
-fabric-ca-client getcainfo -u http://localhost:${PORT}
+${FAB_HOME}/bin/fabric-ca-client getcainfo -u https://localhost:${PORT} --caname ${CANAME} --tls.certfiles ${TLSCA}
 openssl x509 -noout -text -in ${FABRIC_CA_CLIENT_HOME}/msp/cacerts/localhost-${PORT}.pem
-fabric-ca-client enroll -u http://admin:adminpw@localhost:${PORT}
+${FAB_HOME}/bin/fabric-ca-client enroll -u https://admin:adminpw@localhost:${PORT} --caname ${CANAME} --tls.certfiles ${TLSCA}
 
 # register and enroll new user
 # Note: important to make id.name as user@org for signature verification!
-fabric-ca-client register --id.name ''"${ALIAS}@${ORG}"'' --id.secret ${ALIAS}pw --id.type client --id.attrs 'alias='"${ALIAS}"',entity='"${ENTITY}"',email='"${USER}"''
+${FAB_HOME}/bin/fabric-ca-client register --caname ${CANAME} --tls.certfiles ${TLSCA} --id.name ''"${ALIAS}@${ORG}"'' --id.secret ${ALIAS}pw --id.type client --id.attrs 'alias='"${ALIAS}"',entity='"${ENTITY}"',email='"${USER}"''
 export FABRIC_CA_CLIENT_HOME=${WORK}/${ALIAS}\@${ORG}
-fabric-ca-client enroll -u http://${ALIAS}@${ORG}:${ALIAS}pw@localhost:${PORT} --enrollment.attrs "alias,entity,email" -M ${FABRIC_CA_CLIENT_HOME}/msp
+${FAB_HOME}/bin/fabric-ca-client enroll -u https://${ALIAS}@${ORG}:${ALIAS}pw@localhost:${PORT} --caname ${CANAME} --tls.certfiles ${TLSCA} --enrollment.attrs "alias,entity,email" -M ${FABRIC_CA_CLIENT_HOME}/msp
 openssl x509 -noout -text -in ${WORK}/${ALIAS}\@${ORG}/msp/signcerts/cert.pem
 
 # copy key and cert to first-network sample crypto-config
-cd ${FABRIC_SAMPLE_PATH}/crypto-config/peerOrganizations/${ORG}/users
+cd ${FAB_PATH}/organizations/peerOrganizations/${ORG}/users
 if [ -d "${ALIAS}@${ORG}" ]; then
   echo "remove old crypto ${ALIAS}@${ORG}"
   rm -Rf ${ALIAS}\@${ORG}

@@ -28,13 +28,13 @@ deploy: $(BUILD_PATH)/work/$(APP_NAME)
 	-rm -rf $(CC_DEPLOY)/$(APP_NAME)
 	cp -Rf $(BUILD_PATH)/work/$(APP_NAME)/$(APP_NAME) $(CC_DEPLOY)
 	cp $(BUILD_PATH)/work/$(APP_NAME)/$(APP_NAME)_linux_amd64 $(CC_DEPLOY)/$(APP_NAME)
-	cp $(BUILD_PATH)/work/$(APP_NAME)/$(APP_NAME)_1.0.cds $(CC_DEPLOY)/$(APP_NAME)
+	cp $(BUILD_PATH)/work/$(APP_NAME)/$(APP_NAME)_1.0.tar.gz $(CC_DEPLOY)/$(APP_NAME)
 	cp collections_config.json $(CC_DEPLOY)/$(APP_NAME)
-	cp fn-cli-init.sh $(FAB_PATH)/first-network/scripts/fn-init-aim.sh
-	cp fn-cli-test.sh $(FAB_PATH)/first-network/scripts/fn-test-aim.sh
+	cp fn-cli-init.sh $(FAB_PATH)/test-network/fn-init-aim.sh
+	cp fn-cli-test.sh $(FAB_PATH)/test-network/fn-test-aim.sh
 
-.PHONY: start-fn
-start-fn:
+.PHONY: start
+start: test-network
 	./start-fn.sh $(FAB_PATH)
 	./gen-user.sh $(FAB_PATH) jack@jabil.com 1
 	./gen-user.sh $(FAB_PATH) jill@jabil.com 1
@@ -47,19 +47,22 @@ start-fn:
 	./gen-user.sh $(FAB_PATH) henry@hitachi.com 1
 	./gen-user.sh $(FAB_PATH) helen@hitachi.com 1
 
+.PHONY: test-network
+test-network: $(FAB_PATH)/test-network/network.sh
+	cp $(SRC_PATH)/../testdata/docker-compose-cli.yaml $(FAB_PATH)/test-network/docker
+	sed -i -e "s/COMPOSE_FILE_BASE=docker\/docker-compose-test-net.yaml.*/COMPOSE_FILE_BASE=\"docker\/docker-compose-test-net.yaml -f docker\/docker-compose-cli.yaml\"/" $(FAB_PATH)/test-network/network.sh
+
 .PHONY: shutdown
 shutdown:
-	cd $(FAB_PATH)/first-network && ./byfn.sh down
-	-docker rm $(docker ps -a | grep dev-peer | awk '{print $1}')
-	-docker rmi $(docker images | grep dev-peer | awk '{print $3}')
+	cd $(FAB_PATH)/test-network && ./network.sh down
 
 .PHONY: cli-init
 cli-init:
-	docker exec cli bash -c 'cd scripts; ./fn-init-aim.sh'
+	docker exec cli bash -c './fn-init-aim.sh'
 
 .PHONY: cli-test
 cli-test:
-	docker exec cli bash -c 'cd scripts; ./fn-test-aim.sh'
+	docker exec cli bash -c './fn-test-aim.sh'
 
 .PHONY: metadata
 metadata:
@@ -68,13 +71,18 @@ metadata:
 
 .PHONY: gen-swagger
 gen-swagger:
-	protoc -I. -I$(GOPATH)/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --swagger_out=logtostderr=true:. ./aim.proto
+	protoc -I=. -I=$(LAB_PATH)/fabric-operation/service/src/proto \
+		--openapiv2_out . \
+		--openapiv2_opt logtostderr=true \
+		./aim.proto
 
 .PHONY: grpc-gateway
 grpc-gateway:
-	go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
-	go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
-	go get -u github.com/golang/protobuf/protoc-gen-go
+	cd $(LAB_PATH)/fabric-operation/service/tools && go install \
+		github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway \
+		github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2 \
+		google.golang.org/protobuf/cmd/protoc-gen-go \
+		google.golang.org/grpc/cmd/protoc-gen-go-grpc
 
 .PHONY: clean-client
 clean-client:
@@ -86,4 +94,4 @@ build-client: $(CLIENT_FILE) clean-client
 
 .PHONY: run
 run:
-	FLOGO_APP_PROP_RESOLVERS=env FLOGO_APP_PROPS_ENV=auto PORT=8989 FLOGO_LOG_LEVEL=DEBUG FLOGO_SCHEMA_SUPPORT=true FLOGO_SCHEMA_VALIDATION=false CRYPTO_PATH=$(FAB_PATH)/first-network/crypto-config $(BUILD_PATH)/work/$(CLIENT_NAME)/$(CLIENT_NAME)_$(CLIENT_OS)_amd64
+	FLOGO_APP_PROP_RESOLVERS=env FLOGO_APP_PROPS_ENV=auto PORT=8989 FLOGO_LOG_LEVEL=DEBUG FLOGO_SCHEMA_SUPPORT=true FLOGO_SCHEMA_VALIDATION=false CRYPTO_PATH=$(FAB_PATH)/test-network/organizations $(BUILD_PATH)/work/$(CLIENT_NAME)/$(CLIENT_NAME)_$(CLIENT_OS)_amd64

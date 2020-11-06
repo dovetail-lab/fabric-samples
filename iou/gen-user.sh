@@ -4,7 +4,7 @@
 #  e.g., gen-user/sh Alice 1
 #  user-name ending with "Admin" acts as bank admin 
 
-FAB_HOME=${1:-"${GOPATH}/src/github.com/hyperledger/fabric-samples"}
+FAB_HOME=${1:-"${PWD}/../../hyperledger/fabric-samples"}
 FAB_PATH=${FAB_HOME}/test-network
 
 USER=${2:-"Alice"}

@@ -1,5 +1,5 @@
 #!/bin/bash
-# restart fabric sample first-network, including CA servers without TLS
+# start fabric test-network, including CA servers with TLS
 
 FAB_PATH=${1:-"${FAB_PATH}"}
 cd ${FAB_PATH}/test-network

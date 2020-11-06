@@ -29,14 +29,14 @@ Follow the instructions [here](https://github.com/dovetail-lab/fabric-cli) to se
 Start and test AIM chaincode:
 
 ```bash
-# build chaincode cds
+# build chaincode package
 make build
 
-# copy cds to byfn sample network
+# copy chaincode package to fabric test-network
 make deploy
 
-# start byfn network
-make start-fn
+# start fabric test-network
+make start
 
 # install AIM chaincode
 make cli-init
@@ -158,5 +158,5 @@ Steps used to develop this app:
 - For gRPC and REST service, we create gRPC service definitions `aim.proto` based on the `metadata.gql`;
 - `make grpc-gateway` to install required Go packages for generating REST API defintions;
 - `make gen-swagger` to generate REST API defintion `aim.swagger.json` from the gRPC definitions in `aim.proto`;
-- Use Flogo Enterprise 2.8.1 to create REST service model that implements the REST APIs of `aim.swagger.json` and invokes chaincode transactions defined by `metadata.json`;
+- Use Flogo Enterprise 2.10.0 to create REST service model that implements the REST APIs of `aim.swagger.json` and invokes chaincode transactions defined by `metadata.json`;
 - Export REST service model as `aim_rest.json`, and `make build-client` to build the REST service, and then perform end-to-end test by using `Postman`.
