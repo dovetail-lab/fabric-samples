@@ -34,18 +34,18 @@ make build
 make deploy
 ```
 
-The `build` script uses a `dovetail-tools` docker container to build the chaincode model into a CDS package that can be installed on any fabric network.
+The `build` script uses a `dovetail-tools` docker container to build the chaincode model into a chaincode package that can be installed on any fabric network.
 
 ## Install and test chaincode using fabric test network
 
-Start Hyperledger Fabric first-network with CouchDB:
+Start Hyperledger Fabric test-network with CouchDB:
 
 ```bash
 cd /path/to/dovetail-lab/fabric-samples/audit
 make start
 ```
 
-Use `cli` docker container to install and instantiate the `audit_cc` chaincode.
+Use `cli` docker container to install, approve and commit the `audit_cc` chaincode.
 
 ```bash
 cd /path/to/dovetail-lab/fabric-samples/audit
@@ -114,9 +114,9 @@ This should create 8 Flogo flows based on the chaincode transactions defined in 
 
 Once you complete the same model as that in the sample `audit_client.json`, you can export, build and test it as described above. Note that the default service port is `7879`, although you can make it configurable by defining an `app property` for it.
 
-## Cleanup the sample fabric network
+## Cleanup the fabric test-network
 
-After you are done testing, you can stop and cleanup the Fabric sample `first-network` as follows:
+After you are done testing, you can stop and cleanup the Fabric `test-network` as follows:
 
 ```bash
 cd /path/to/dovetail-lab/fabric-samples/audit
@@ -125,6 +125,6 @@ make shutdown
 
 ## Deploy to IBM Cloud
 
-The CDS package, `audit_cc_1.0.cds`, created by the build script above can be used to deploy to IBM Blockchain Platform. Refer to [fabric-tools](../../fabric-tools) for details about installing chaincode on the IBM Blockchain Platform.
+Dovetail release v1.0.0 builds chaincode package, `audit_cc_1.0.cds`, which can be deployed to IBM Blockchain Platform. Refer to [fabric-tools](../../fabric-tools) for details about installing chaincode on the IBM Blockchain Platform.
 
 The GraphQL service app can access the same `audit` chaincode deployed in [IBM Cloud](https://cloud.ibm.com) using the [IBM Blockchain Platform](https://cloud.ibm.com/catalog/services/blockchain-platform-20). The only required update is the network configuration file. [config_ibp.yaml](../testdata/config_ibp.yaml) is a sample network configuration that can be used by the GraphQL service.

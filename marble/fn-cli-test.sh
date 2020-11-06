@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# marble_cc tests executed from cli docker container of the Fabric sample first-network
+# marble_cc tests executed from cli docker container of the Fabric test-network
 
 . ./scripts/envVar.sh
 setGlobals 1

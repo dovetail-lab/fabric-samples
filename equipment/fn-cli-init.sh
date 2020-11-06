@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# install and instantiate equipment chaincode in the Fabric sample first-network
+# install and instantiate equipment chaincode in the Fabric test-network
 # execute this script from the scripts folder of the cli docker container
 
 . ./scripts/envVar.sh
