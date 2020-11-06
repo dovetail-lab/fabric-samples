@@ -9,248 +9,253 @@
     ],
     "name": "equipment_gql",
     "description": "GQL service for equipment chaincode",
-    "version": "1.0.0",
+    "version": "1.2.0",
     "type": "flogo:app",
     "appModel": "1.1.1",
     "feVersion": "2.10.0",
-    "triggers": [{
-        "ref": "#graphql",
-        "name": "tibco-graphql",
-        "description": "",
-        "settings": {
-            "port": "=$property[\"PORT\"]",
-            "path": "/graphql",
-            "schemaFile": "",
-            "secureConnection": false,
-            "serverKey": "",
-            "caCertificate": "",
-            "graphqlSchema": "schema {\n\tquery: Query\n\tmutation: Mutation\n}\ntype Query {\n\tqueryAsset(assetUniqueId: String): FixedAsset\n}\ntype Mutation {\n\treceiveInvoice(invoiceDate: String, orgId: String, invoicePrice: Float, vendor: String, assetUniqueId: String, description: String, location: String): FixedAsset\n\tsubmitPO(assetUniqueId: String, description: String, purchasePrice: Float, location: String, vendor: String, orgId: String): FixedAsset\n\tupdateAsset(invoiceDate: String, serialNum: String, assetUniqueId: String, description: String, purchasePrice: Float, model: String, orgId: String, location: String, installDate: String, netBookValue: Float): FixedAsset\n\tinstallAsset(serialNum: String, installDate: String, acquisitionDate: String, location: String, model: String, vendor: String, orgId: String, assetUniqueId: String, description: String, manufacturer: String): FixedAsset\n\treceiveAsset(description: String, manufacturer: String, model: String, serialNum: String, orgId: String, assetUniqueId: String, acquisitionDate: String, location: String, vendor: String): FixedAsset\n}\ntype FixedAsset {\n\tpurchasePrice: Float\n\tvalue: Float\n\tinvoiceDate: [String]\n\tretireDate: String\n\tdescription: String\n\tvendor: String\n\tmanufacturer: String\n\tnetBookValue: Float\n\tlocation: String\n\tacquisitionDate: String\n\tassetNum: String\n\torgId: String\n\tsiteId: String\n\tserialNum: String\n\tinvoicePrice: Float\n\tinstallDate: String\n\tstatus: String\n\tassetUniqueId: String\n\tassetTag: String\n\tstatusDate: String\n\tmodel: String\n\towner: String\n}"
-        },
-        "id": "GraphQLTrigger",
-        "handlers": [{
-                "description": "",
-                "settings": {
-                    "operation": "Query",
-                    "resolverFor": "queryAsset"
-                },
-                "action": {
-                    "ref": "github.com/project-flogo/flow",
-                    "settings": {
-                        "flowURI": "res://flow:Query_queryAsset"
-                    },
-                    "input": {
-                        "arguments": "=$.arguments"
-                    },
-                    "output": {
-                        "data": "=$.data"
-                    }
-                },
-                "schemas": {
-                    "reply": {
-                        "data": {
-                            "type": "json",
-                            "value": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}",
-                            "fe_metadata": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}"
-                        }
-                    },
-                    "output": {
-                        "arguments": {
-                            "type": "json",
-                            "value": "{\"type\":\"object\",\"properties\":{\"assetUniqueId\":{\"type\":\"string\"}},\"required\":[]}",
-                            "fe_metadata": "{\"type\":\"object\",\"properties\":{\"assetUniqueId\":{\"type\":\"string\"}},\"required\":[]}"
-                        }
-                    }
-                },
-                "name": "Query_queryAsset"
+    "triggers": [
+        {
+            "ref": "#graphql",
+            "name": "tibco-graphql",
+            "description": "",
+            "settings": {
+                "port": "=$property[\"PORT\"]",
+                "path": "/graphql",
+                "schemaFile": "",
+                "secureConnection": false,
+                "serverKey": "",
+                "caCertificate": "",
+                "graphqlSchema": "schema {\n\tquery: Query\n\tmutation: Mutation\n}\ntype Query {\n\tqueryAsset(assetUniqueId: String): FixedAsset\n}\ntype Mutation {\n\treceiveInvoice(invoiceDate: String, orgId: String, invoicePrice: Float, vendor: String, assetUniqueId: String, description: String, location: String): FixedAsset\n\tsubmitPO(assetUniqueId: String, description: String, purchasePrice: Float, location: String, vendor: String, orgId: String): FixedAsset\n\tupdateAsset(invoiceDate: String, serialNum: String, assetUniqueId: String, description: String, purchasePrice: Float, model: String, orgId: String, location: String, installDate: String, netBookValue: Float): FixedAsset\n\tinstallAsset(serialNum: String, installDate: String, acquisitionDate: String, location: String, model: String, vendor: String, orgId: String, assetUniqueId: String, description: String, manufacturer: String): FixedAsset\n\treceiveAsset(description: String, manufacturer: String, model: String, serialNum: String, orgId: String, assetUniqueId: String, acquisitionDate: String, location: String, vendor: String): FixedAsset\n}\ntype FixedAsset {\n\tpurchasePrice: Float\n\tvalue: Float\n\tinvoiceDate: [String]\n\tretireDate: String\n\tdescription: String\n\tvendor: String\n\tmanufacturer: String\n\tnetBookValue: Float\n\tlocation: String\n\tacquisitionDate: String\n\tassetNum: String\n\torgId: String\n\tsiteId: String\n\tserialNum: String\n\tinvoicePrice: Float\n\tinstallDate: String\n\tstatus: String\n\tassetUniqueId: String\n\tassetTag: String\n\tstatusDate: String\n\tmodel: String\n\towner: String\n}"
             },
-            {
-                "description": "",
-                "settings": {
-                    "operation": "Mutation",
-                    "resolverFor": "receiveInvoice"
-                },
-                "action": {
-                    "ref": "github.com/project-flogo/flow",
+            "id": "GraphQLTrigger",
+            "handlers": [
+                {
+                    "description": "",
                     "settings": {
-                        "flowURI": "res://flow:Mutation_receiveInvoice"
+                        "operation": "Query",
+                        "resolverFor": "queryAsset"
                     },
-                    "input": {
-                        "arguments": "=$.arguments"
-                    },
-                    "output": {
-                        "data": "=$.data"
-                    }
-                },
-                "schemas": {
-                    "reply": {
-                        "data": {
-                            "type": "json",
-                            "value": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}",
-                            "fe_metadata": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}"
+                    "action": {
+                        "ref": "github.com/project-flogo/flow",
+                        "settings": {
+                            "flowURI": "res://flow:Query_queryAsset"
+                        },
+                        "input": {
+                            "arguments": "=$.arguments"
+                        },
+                        "output": {
+                            "data": "=$.data"
                         }
                     },
-                    "output": {
-                        "arguments": {
-                            "type": "json",
-                            "value": "{\"type\":\"object\",\"properties\":{\"invoiceDate\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"vendor\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"}},\"required\":[]}",
-                            "fe_metadata": "{\"type\":\"object\",\"properties\":{\"invoiceDate\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"vendor\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"}},\"required\":[]}"
+                    "schemas": {
+                        "reply": {
+                            "data": {
+                                "type": "json",
+                                "value": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}",
+                                "fe_metadata": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}"
+                            }
+                        },
+                        "output": {
+                            "arguments": {
+                                "type": "json",
+                                "value": "{\"type\":\"object\",\"properties\":{\"assetUniqueId\":{\"type\":\"string\"}},\"required\":[]}",
+                                "fe_metadata": "{\"type\":\"object\",\"properties\":{\"assetUniqueId\":{\"type\":\"string\"}},\"required\":[]}"
+                            }
                         }
-                    }
+                    },
+                    "name": "Query_queryAsset"
                 },
-                "name": "Mutation_receiveInvoice"
-            },
-            {
-                "description": "",
-                "settings": {
-                    "operation": "Mutation",
-                    "resolverFor": "submitPO"
-                },
-                "action": {
-                    "ref": "github.com/project-flogo/flow",
+                {
+                    "description": "",
                     "settings": {
-                        "flowURI": "res://flow:Mutation_submitPO"
+                        "operation": "Mutation",
+                        "resolverFor": "receiveInvoice"
                     },
-                    "input": {
-                        "arguments": "=$.arguments"
-                    },
-                    "output": {
-                        "data": "=$.data"
-                    }
-                },
-                "schemas": {
-                    "reply": {
-                        "data": {
-                            "type": "json",
-                            "value": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}",
-                            "fe_metadata": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}"
+                    "action": {
+                        "ref": "github.com/project-flogo/flow",
+                        "settings": {
+                            "flowURI": "res://flow:Mutation_receiveInvoice"
+                        },
+                        "input": {
+                            "arguments": "=$.arguments"
+                        },
+                        "output": {
+                            "data": "=$.data"
                         }
                     },
-                    "output": {
-                        "arguments": {
-                            "type": "json",
-                            "value": "{\"type\":\"object\",\"properties\":{\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"purchasePrice\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"}},\"required\":[]}",
-                            "fe_metadata": "{\"type\":\"object\",\"properties\":{\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"purchasePrice\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"}},\"required\":[]}"
+                    "schemas": {
+                        "reply": {
+                            "data": {
+                                "type": "json",
+                                "value": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}",
+                                "fe_metadata": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}"
+                            }
+                        },
+                        "output": {
+                            "arguments": {
+                                "type": "json",
+                                "value": "{\"type\":\"object\",\"properties\":{\"invoiceDate\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"vendor\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"}},\"required\":[]}",
+                                "fe_metadata": "{\"type\":\"object\",\"properties\":{\"invoiceDate\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"vendor\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"}},\"required\":[]}"
+                            }
                         }
-                    }
+                    },
+                    "name": "Mutation_receiveInvoice"
                 },
-                "name": "Mutation_submitPO"
-            },
-            {
-                "description": "",
-                "settings": {
-                    "operation": "Mutation",
-                    "resolverFor": "updateAsset"
-                },
-                "action": {
-                    "ref": "github.com/project-flogo/flow",
+                {
+                    "description": "",
                     "settings": {
-                        "flowURI": "res://flow:Mutation_updateAsset"
+                        "operation": "Mutation",
+                        "resolverFor": "submitPO"
                     },
-                    "input": {
-                        "arguments": "=$.arguments"
-                    },
-                    "output": {
-                        "data": "=$.data"
-                    }
-                },
-                "schemas": {
-                    "reply": {
-                        "data": {
-                            "type": "json",
-                            "value": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}",
-                            "fe_metadata": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}"
+                    "action": {
+                        "ref": "github.com/project-flogo/flow",
+                        "settings": {
+                            "flowURI": "res://flow:Mutation_submitPO"
+                        },
+                        "input": {
+                            "arguments": "=$.arguments"
+                        },
+                        "output": {
+                            "data": "=$.data"
                         }
                     },
-                    "output": {
-                        "arguments": {
-                            "type": "json",
-                            "value": "{\"type\":\"object\",\"properties\":{\"invoiceDate\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"purchasePrice\":{\"type\":\"number\"},\"model\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"installDate\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"}},\"required\":[]}",
-                            "fe_metadata": "{\"type\":\"object\",\"properties\":{\"invoiceDate\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"purchasePrice\":{\"type\":\"number\"},\"model\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"installDate\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"}},\"required\":[]}"
+                    "schemas": {
+                        "reply": {
+                            "data": {
+                                "type": "json",
+                                "value": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}",
+                                "fe_metadata": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}"
+                            }
+                        },
+                        "output": {
+                            "arguments": {
+                                "type": "json",
+                                "value": "{\"type\":\"object\",\"properties\":{\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"purchasePrice\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"}},\"required\":[]}",
+                                "fe_metadata": "{\"type\":\"object\",\"properties\":{\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"purchasePrice\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"}},\"required\":[]}"
+                            }
                         }
-                    }
+                    },
+                    "name": "Mutation_submitPO"
                 },
-                "name": "Mutation_updateAsset"
-            },
-            {
-                "description": "",
-                "settings": {
-                    "operation": "Mutation",
-                    "resolverFor": "installAsset"
-                },
-                "action": {
-                    "ref": "github.com/project-flogo/flow",
+                {
+                    "description": "",
                     "settings": {
-                        "flowURI": "res://flow:Mutation_installAsset"
+                        "operation": "Mutation",
+                        "resolverFor": "updateAsset"
                     },
-                    "input": {
-                        "arguments": "=$.arguments"
-                    },
-                    "output": {
-                        "data": "=$.data"
-                    }
-                },
-                "schemas": {
-                    "reply": {
-                        "data": {
-                            "type": "json",
-                            "value": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}",
-                            "fe_metadata": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}"
+                    "action": {
+                        "ref": "github.com/project-flogo/flow",
+                        "settings": {
+                            "flowURI": "res://flow:Mutation_updateAsset"
+                        },
+                        "input": {
+                            "arguments": "=$.arguments"
+                        },
+                        "output": {
+                            "data": "=$.data"
                         }
                     },
-                    "output": {
-                        "arguments": {
-                            "type": "json",
-                            "value": "{\"type\":\"object\",\"properties\":{\"serialNum\":{\"type\":\"string\"},\"installDate\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"}},\"required\":[]}",
-                            "fe_metadata": "{\"type\":\"object\",\"properties\":{\"serialNum\":{\"type\":\"string\"},\"installDate\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"}},\"required\":[]}"
+                    "schemas": {
+                        "reply": {
+                            "data": {
+                                "type": "json",
+                                "value": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}",
+                                "fe_metadata": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}"
+                            }
+                        },
+                        "output": {
+                            "arguments": {
+                                "type": "json",
+                                "value": "{\"type\":\"object\",\"properties\":{\"invoiceDate\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"purchasePrice\":{\"type\":\"number\"},\"model\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"installDate\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"}},\"required\":[]}",
+                                "fe_metadata": "{\"type\":\"object\",\"properties\":{\"invoiceDate\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"purchasePrice\":{\"type\":\"number\"},\"model\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"installDate\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"}},\"required\":[]}"
+                            }
                         }
-                    }
+                    },
+                    "name": "Mutation_updateAsset"
                 },
-                "name": "Mutation_installAsset"
-            },
-            {
-                "description": "",
-                "settings": {
-                    "operation": "Mutation",
-                    "resolverFor": "receiveAsset"
-                },
-                "action": {
-                    "ref": "github.com/project-flogo/flow",
+                {
+                    "description": "",
                     "settings": {
-                        "flowURI": "res://flow:Mutation_receiveAsset"
+                        "operation": "Mutation",
+                        "resolverFor": "installAsset"
                     },
-                    "input": {
-                        "arguments": "=$.arguments"
-                    },
-                    "output": {
-                        "data": "=$.data"
-                    }
-                },
-                "schemas": {
-                    "reply": {
-                        "data": {
-                            "type": "json",
-                            "value": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}",
-                            "fe_metadata": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}"
+                    "action": {
+                        "ref": "github.com/project-flogo/flow",
+                        "settings": {
+                            "flowURI": "res://flow:Mutation_installAsset"
+                        },
+                        "input": {
+                            "arguments": "=$.arguments"
+                        },
+                        "output": {
+                            "data": "=$.data"
                         }
                     },
-                    "output": {
-                        "arguments": {
-                            "type": "json",
-                            "value": "{\"type\":\"object\",\"properties\":{\"description\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"}},\"required\":[]}",
-                            "fe_metadata": "{\"type\":\"object\",\"properties\":{\"description\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"}},\"required\":[]}"
+                    "schemas": {
+                        "reply": {
+                            "data": {
+                                "type": "json",
+                                "value": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}",
+                                "fe_metadata": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}"
+                            }
+                        },
+                        "output": {
+                            "arguments": {
+                                "type": "json",
+                                "value": "{\"type\":\"object\",\"properties\":{\"serialNum\":{\"type\":\"string\"},\"installDate\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"}},\"required\":[]}",
+                                "fe_metadata": "{\"type\":\"object\",\"properties\":{\"serialNum\":{\"type\":\"string\"},\"installDate\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"}},\"required\":[]}"
+                            }
                         }
-                    }
+                    },
+                    "name": "Mutation_installAsset"
                 },
-                "name": "Mutation_receiveAsset"
-            }
-        ]
-    }],
-    "resources": [{
+                {
+                    "description": "",
+                    "settings": {
+                        "operation": "Mutation",
+                        "resolverFor": "receiveAsset"
+                    },
+                    "action": {
+                        "ref": "github.com/project-flogo/flow",
+                        "settings": {
+                            "flowURI": "res://flow:Mutation_receiveAsset"
+                        },
+                        "input": {
+                            "arguments": "=$.arguments"
+                        },
+                        "output": {
+                            "data": "=$.data"
+                        }
+                    },
+                    "schemas": {
+                        "reply": {
+                            "data": {
+                                "type": "json",
+                                "value": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}",
+                                "fe_metadata": "{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}"
+                            }
+                        },
+                        "output": {
+                            "arguments": {
+                                "type": "json",
+                                "value": "{\"type\":\"object\",\"properties\":{\"description\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"}},\"required\":[]}",
+                                "fe_metadata": "{\"type\":\"object\",\"properties\":{\"description\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"}},\"required\":[]}"
+                            }
+                        }
+                    },
+                    "name": "Mutation_receiveAsset"
+                }
+            ]
+        }
+    ],
+    "resources": [
+        {
             "id": "flow:Query_queryAsset",
             "data": {
                 "name": "Query_queryAsset",
                 "description": "",
-                "links": [{
+                "links": [
+                    {
                         "id": 1,
                         "from": "Log",
                         "to": "FabricRequest",
@@ -269,7 +274,8 @@
                         "type": "default"
                     }
                 ],
-                "tasks": [{
+                "tasks": [
+                    {
                         "id": "Log",
                         "name": "Log",
                         "description": "",
@@ -290,7 +296,7 @@
                             "ref": "#fabrequest",
                             "input": {
                                 "connectionName": {
-                                    "id": "1d818fb0-13e9-11eb-bf14-df5b7fa30e78",
+                                    "id": "41cbdd70-1fc5-11eb-8b14-cb94d2aa5f12",
                                     "type": "flogo:connector",
                                     "version": "1.0.0",
                                     "name": "fabclient-connector",
@@ -301,7 +307,8 @@
                                     "title": "Fabric Connector",
                                     "description": "Fabric Connection",
                                     "ref": "github.com/dovetail-lab/fabric-client/connector/fabconnector",
-                                    "settings": [{
+                                    "settings": [
+                                        {
                                             "name": "name",
                                             "description": "Unique name of the Fabric network connection",
                                             "type": "string",
@@ -344,7 +351,7 @@
                                             },
                                             "value": {
                                                 "filename": "config_min.yaml",
-                                                "content": "data:application/octet-stream;base64,bmFtZTogbXljaGFubmVsCnZlcnNpb246IDEuMC4wCgpjbGllbnQ6CiAgb3JnYW5pemF0aW9uOiBvcmcxCiAgY3J5cHRvY29uZmlnOgogICAgcGF0aDogJHtDUllQVE9fUEFUSH0KCmNoYW5uZWxzOgogIG15Y2hhbm5lbDoKICAgIHBlZXJzOgogICAgICBwZWVyMC5vcmcxLmV4YW1wbGUuY29tOgogICAgICAgIGVuZG9yc2luZ1BlZXI6IHRydWUKICAgICAgICBjaGFpbmNvZGVRdWVyeTogdHJ1ZQogICAgICAgIGxlZGdlclF1ZXJ5OiB0cnVlCiAgICAgICAgZXZlbnRTb3VyY2U6IHRydWUKCiAgICAgIHBlZXIxLm9yZzEuZXhhbXBsZS5jb206CiAgICAgICAgZW5kb3JzaW5nUGVlcjogdHJ1ZQogICAgICAgIGNoYWluY29kZVF1ZXJ5OiB0cnVlCiAgICAgICAgbGVkZ2VyUXVlcnk6IHRydWUKICAgICAgICBldmVudFNvdXJjZTogdHJ1ZQoKICAgICAgcGVlcjAub3JnMi5leGFtcGxlLmNvbToKICAgICAgICBlbmRvcnNpbmdQZWVyOiB0cnVlCiAgICAgICAgY2hhaW5jb2RlUXVlcnk6IHRydWUKICAgICAgICBsZWRnZXJRdWVyeTogdHJ1ZQogICAgICAgIGV2ZW50U291cmNlOiB0cnVlCgogICAgICBwZWVyMS5vcmcyLmV4YW1wbGUuY29tOgogICAgICAgIGVuZG9yc2luZ1BlZXI6IHRydWUKICAgICAgICBjaGFpbmNvZGVRdWVyeTogdHJ1ZQogICAgICAgIGxlZGdlclF1ZXJ5OiB0cnVlCiAgICAgICAgZXZlbnRTb3VyY2U6IHRydWUKCm9yZ2FuaXphdGlvbnM6CiAgb3JnMToKICAgIG1zcGlkOiBPcmcxTVNQCiAgICBjcnlwdG9QYXRoOiAgcGVlck9yZ2FuaXphdGlvbnMvb3JnMS5leGFtcGxlLmNvbS91c2Vycy97dXNlcm5hbWV9QG9yZzEuZXhhbXBsZS5jb20vbXNwCiAgICBwZWVyczoKICAgICAgLSBwZWVyMC5vcmcxLmV4YW1wbGUuY29tCiAgICAgIC0gcGVlcjEub3JnMS5leGFtcGxlLmNvbQogICAgY2VydGlmaWNhdGVBdXRob3JpdGllczoKICAgICAgLSBjYS5vcmcxLmV4YW1wbGUuY29tCgogIG9yZzI6CiAgICBtc3BpZDogT3JnMk1TUAogICAgY3J5cHRvUGF0aDogIHBlZXJPcmdhbml6YXRpb25zL29yZzIuZXhhbXBsZS5jb20vdXNlcnMve3VzZXJuYW1lfUBvcmcyLmV4YW1wbGUuY29tL21zcAogICAgcGVlcnM6CiAgICAgIC0gcGVlcjAub3JnMi5leGFtcGxlLmNvbQogICAgICAtIHBlZXIxLm9yZzIuZXhhbXBsZS5jb20KICAgIGNlcnRpZmljYXRlQXV0aG9yaXRpZXM6CiAgICAgIC0gY2Eub3JnMi5leGFtcGxlLmNvbQoKb3JkZXJlcnM6CiAgb3JkZXJlci5leGFtcGxlLmNvbToKICAgIHVybDogb3JkZXJlci5leGFtcGxlLmNvbTo3MDUwCiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9vcmRlcmVyT3JnYW5pemF0aW9ucy9leGFtcGxlLmNvbS90bHNjYS90bHNjYS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKcGVlcnM6CiAgcGVlcjAub3JnMS5leGFtcGxlLmNvbToKICAgIHVybDogcGVlcjAub3JnMS5leGFtcGxlLmNvbTo3MDUxCiAgICAjZ3JwY09wdGlvbnM6CiAgICAjICBzc2wtdGFyZ2V0LW5hbWUtb3ZlcnJpZGU6IHBlZXIwLm9yZzEuZXhhbXBsZS5jb20KICAgIHRsc0NBQ2VydHM6CiAgICAgIHBhdGg6ICR7Q1JZUFRPX1BBVEh9L3BlZXJPcmdhbml6YXRpb25zL29yZzEuZXhhbXBsZS5jb20vdGxzY2EvdGxzY2Eub3JnMS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKICBwZWVyMS5vcmcxLmV4YW1wbGUuY29tOgogICAgdXJsOiBwZWVyMS5vcmcxLmV4YW1wbGUuY29tOjcxNTEKICAgICNncnBjT3B0aW9uczoKICAgICMgIHNzbC10YXJnZXQtbmFtZS1vdmVycmlkZTogcGVlcjEub3JnMS5leGFtcGxlLmNvbQogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMS5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcxLmV4YW1wbGUuY29tLWNlcnQucGVtCgogIHBlZXIwLm9yZzIuZXhhbXBsZS5jb206CiAgICB1cmw6IHBlZXIwLm9yZzIuZXhhbXBsZS5jb206ODA1MQogICAgI2dycGNPcHRpb25zOgogICAgIyAgc3NsLXRhcmdldC1uYW1lLW92ZXJyaWRlOiBwZWVyMC5vcmcyLmV4YW1wbGUuY29tCiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9wZWVyT3JnYW5pemF0aW9ucy9vcmcyLmV4YW1wbGUuY29tL3Rsc2NhL3Rsc2NhLm9yZzIuZXhhbXBsZS5jb20tY2VydC5wZW0KCiAgcGVlcjEub3JnMi5leGFtcGxlLmNvbToKICAgIHVybDogcGVlcjEub3JnMi5leGFtcGxlLmNvbTo5MDUxCiAgICAjZ3JwY09wdGlvbnM6CiAgICAjICBzc2wtdGFyZ2V0LW5hbWUtb3ZlcnJpZGU6IHBlZXIxLm9yZzIuZXhhbXBsZS5jb20KICAgIHRsc0NBQ2VydHM6CiAgICAgIHBhdGg6ICR7Q1JZUFRPX1BBVEh9L3BlZXJPcmdhbml6YXRpb25zL29yZzIuZXhhbXBsZS5jb20vdGxzY2EvdGxzY2Eub3JnMi5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKY2VydGlmaWNhdGVBdXRob3JpdGllczoKICBjYS5vcmcxLmV4YW1wbGUuY29tOgogICAgdXJsOiBodHRwczovL2NhLm9yZzEuZXhhbXBsZS5jb206NzA1NAogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMS5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcxLmV4YW1wbGUuY29tLWNlcnQucGVtCiAgICByZWdpc3RyYXI6CiAgICAgIGVucm9sbElkOiBhZG1pbgogICAgICBlbnJvbGxTZWNyZXQ6IGFkbWlucHcKICAgIGNhTmFtZTogY2Eub3JnMS5leGFtcGxlLmNvbQoKICBjYS5vcmcyLmV4YW1wbGUuY29tOgogICAgdXJsOiBodHRwczovL2NhLm9yZzIuZXhhbXBsZS5jb206ODA1NAogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMi5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcyLmV4YW1wbGUuY29tLWNlcnQucGVtCiAgICByZWdpc3RyYXI6CiAgICAgIGVucm9sbElkOiBhZG1pbgogICAgICBlbnJvbGxTZWNyZXQ6IGFkbWlucHcKICAgIGNhTmFtZTogY2Eub3JnMi5leGFtcGxlLmNvbQo="
+                                                "content": "data:application/x-yaml;base64,bmFtZTogbXljaGFubmVsCnZlcnNpb246IDEuMC4wCgpjbGllbnQ6CiAgb3JnYW5pemF0aW9uOiBvcmcxCiAgY3J5cHRvY29uZmlnOgogICAgcGF0aDogJHtDUllQVE9fUEFUSH0KCmNoYW5uZWxzOgogIG15Y2hhbm5lbDoKICAgIHBlZXJzOgogICAgICBwZWVyMC5vcmcxLmV4YW1wbGUuY29tOgogICAgICAgIGVuZG9yc2luZ1BlZXI6IHRydWUKICAgICAgICBjaGFpbmNvZGVRdWVyeTogdHJ1ZQogICAgICAgIGxlZGdlclF1ZXJ5OiB0cnVlCiAgICAgICAgZXZlbnRTb3VyY2U6IHRydWUKCiAgICAgIHBlZXIwLm9yZzIuZXhhbXBsZS5jb206CiAgICAgICAgZW5kb3JzaW5nUGVlcjogdHJ1ZQogICAgICAgIGNoYWluY29kZVF1ZXJ5OiB0cnVlCiAgICAgICAgbGVkZ2VyUXVlcnk6IHRydWUKICAgICAgICBldmVudFNvdXJjZTogdHJ1ZQoKb3JnYW5pemF0aW9uczoKICBvcmcxOgogICAgbXNwaWQ6IE9yZzFNU1AKICAgIGNyeXB0b1BhdGg6ICBwZWVyT3JnYW5pemF0aW9ucy9vcmcxLmV4YW1wbGUuY29tL3VzZXJzL3t1c2VybmFtZX1Ab3JnMS5leGFtcGxlLmNvbS9tc3AKICAgIHBlZXJzOgogICAgICAtIHBlZXIwLm9yZzEuZXhhbXBsZS5jb20KICAgIGNlcnRpZmljYXRlQXV0aG9yaXRpZXM6CiAgICAgIC0gY2Eub3JnMS5leGFtcGxlLmNvbQoKICBvcmcyOgogICAgbXNwaWQ6IE9yZzJNU1AKICAgIGNyeXB0b1BhdGg6ICBwZWVyT3JnYW5pemF0aW9ucy9vcmcyLmV4YW1wbGUuY29tL3VzZXJzL3t1c2VybmFtZX1Ab3JnMi5leGFtcGxlLmNvbS9tc3AKICAgIHBlZXJzOgogICAgICAtIHBlZXIwLm9yZzIuZXhhbXBsZS5jb20KICAgIGNlcnRpZmljYXRlQXV0aG9yaXRpZXM6CiAgICAgIC0gY2Eub3JnMi5leGFtcGxlLmNvbQoKb3JkZXJlcnM6CiAgb3JkZXJlci5leGFtcGxlLmNvbToKICAgIHVybDogb3JkZXJlci5leGFtcGxlLmNvbTo3MDUwCiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9vcmRlcmVyT3JnYW5pemF0aW9ucy9leGFtcGxlLmNvbS9tc3AvdGxzY2FjZXJ0cy90bHNjYS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKcGVlcnM6CiAgcGVlcjAub3JnMS5leGFtcGxlLmNvbToKICAgIHVybDogcGVlcjAub3JnMS5leGFtcGxlLmNvbTo3MDUxCiAgICAjZ3JwY09wdGlvbnM6CiAgICAjICBzc2wtdGFyZ2V0LW5hbWUtb3ZlcnJpZGU6IHBlZXIwLm9yZzEuZXhhbXBsZS5jb20KICAgIHRsc0NBQ2VydHM6CiAgICAgIHBhdGg6ICR7Q1JZUFRPX1BBVEh9L3BlZXJPcmdhbml6YXRpb25zL29yZzEuZXhhbXBsZS5jb20vdGxzY2EvdGxzY2Eub3JnMS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKICBwZWVyMC5vcmcyLmV4YW1wbGUuY29tOgogICAgdXJsOiBwZWVyMC5vcmcyLmV4YW1wbGUuY29tOjkwNTEKICAgICNncnBjT3B0aW9uczoKICAgICMgIHNzbC10YXJnZXQtbmFtZS1vdmVycmlkZTogcGVlcjAub3JnMi5leGFtcGxlLmNvbQogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMi5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcyLmV4YW1wbGUuY29tLWNlcnQucGVtCgpjZXJ0aWZpY2F0ZUF1dGhvcml0aWVzOgogIGNhLm9yZzEuZXhhbXBsZS5jb206CiAgICB1cmw6IGh0dHBzOi8vY2Eub3JnMS5leGFtcGxlLmNvbTo3MDU0CiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9wZWVyT3JnYW5pemF0aW9ucy9vcmcxLmV4YW1wbGUuY29tL3Rsc2NhL3Rsc2NhLm9yZzEuZXhhbXBsZS5jb20tY2VydC5wZW0KICAgIHJlZ2lzdHJhcjoKICAgICAgZW5yb2xsSWQ6IGFkbWluCiAgICAgIGVucm9sbFNlY3JldDogYWRtaW5wdwogICAgY2FOYW1lOiBjYS5vcmcxLmV4YW1wbGUuY29tCgogIGNhLm9yZzIuZXhhbXBsZS5jb206CiAgICB1cmw6IGh0dHBzOi8vY2Eub3JnMi5leGFtcGxlLmNvbTo4MDU0CiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9wZWVyT3JnYW5pemF0aW9ucy9vcmcyLmV4YW1wbGUuY29tL3Rsc2NhL3Rsc2NhLm9yZzIuZXhhbXBsZS5jb20tY2VydC5wZW0KICAgIHJlZ2lzdHJhcjoKICAgICAgZW5yb2xsSWQ6IGFkbWluCiAgICAgIGVucm9sbFNlY3JldDogYWRtaW5wdwogICAgY2FOYW1lOiBjYS5vcmcyLmV4YW1wbGUuY29tCg=="
                                             }
                                         },
                                         {
@@ -416,14 +423,16 @@
                                         "smallIcon": "ic-fabconnector@2x.png",
                                         "largeIcon": "ic-fabconnector@3x.png"
                                     },
-                                    "actions": [{
-                                        "name": "Save Connector",
-                                        "display": {
-                                            "readonly": false,
-                                            "valid": true,
-                                            "visible": true
+                                    "actions": [
+                                        {
+                                            "name": "Save Connector",
+                                            "display": {
+                                                "readonly": false,
+                                                "valid": true,
+                                                "visible": true
+                                            }
                                         }
-                                    }],
+                                    ],
                                     "feature": {},
                                     "loopType": "none",
                                     "loopSettings": [],
@@ -434,7 +443,7 @@
                                     "iteratorAccumulate": false,
                                     "accessOutputInInput": false,
                                     "isValid": true,
-                                    "lastUpdatedTime": 1603317812082,
+                                    "lastUpdatedTime": 1604628250417,
                                     "user": "flogo",
                                     "connectorName": "equipment client",
                                     "connectorDescription": "equipment poc client for fabric sample first-network"
@@ -502,22 +511,26 @@
                     }
                 ],
                 "metadata": {
-                    "input": [{
-                        "name": "arguments",
-                        "type": "object",
-                        "schema": {
-                            "type": "json",
-                            "value": "{\"assetUniqueId\":{\"type\":\"string\"}}"
+                    "input": [
+                        {
+                            "name": "arguments",
+                            "type": "object",
+                            "schema": {
+                                "type": "json",
+                                "value": "{\"assetUniqueId\":{\"type\":\"string\"}}"
+                            }
                         }
-                    }],
-                    "output": [{
-                        "name": "data",
-                        "type": "object",
-                        "schema": {
-                            "type": "json",
-                            "value": "{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}}"
+                    ],
+                    "output": [
+                        {
+                            "name": "data",
+                            "type": "object",
+                            "schema": {
+                                "type": "json",
+                                "value": "{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}}"
+                            }
                         }
-                    }],
+                    ],
                     "fe_metadata": {
                         "input": "{\"type\":\"object\",\"title\":\"GraphQLTrigger\",\"properties\":{\"arguments\":{\"type\":\"object\",\"properties\":{\"assetUniqueId\":{\"type\":\"string\"}},\"required\":[]}}}",
                         "output": "{\"type\":\"object\",\"title\":\"Inputs\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}},\"required\":[]}"
@@ -530,7 +543,8 @@
             "data": {
                 "name": "Mutation_receiveInvoice",
                 "description": "",
-                "links": [{
+                "links": [
+                    {
                         "id": 1,
                         "from": "Log",
                         "to": "FabricRequest",
@@ -549,7 +563,8 @@
                         "type": "default"
                     }
                 ],
-                "tasks": [{
+                "tasks": [
+                    {
                         "id": "Log",
                         "name": "Log",
                         "description": "",
@@ -570,7 +585,7 @@
                             "ref": "#fabrequest",
                             "input": {
                                 "connectionName": {
-                                    "id": "1d818fb0-13e9-11eb-bf14-df5b7fa30e78",
+                                    "id": "41cbdd70-1fc5-11eb-8b14-cb94d2aa5f12",
                                     "type": "flogo:connector",
                                     "version": "1.0.0",
                                     "name": "fabclient-connector",
@@ -581,7 +596,8 @@
                                     "title": "Fabric Connector",
                                     "description": "Fabric Connection",
                                     "ref": "github.com/dovetail-lab/fabric-client/connector/fabconnector",
-                                    "settings": [{
+                                    "settings": [
+                                        {
                                             "name": "name",
                                             "description": "Unique name of the Fabric network connection",
                                             "type": "string",
@@ -624,7 +640,7 @@
                                             },
                                             "value": {
                                                 "filename": "config_min.yaml",
-                                                "content": "data:application/octet-stream;base64,bmFtZTogbXljaGFubmVsCnZlcnNpb246IDEuMC4wCgpjbGllbnQ6CiAgb3JnYW5pemF0aW9uOiBvcmcxCiAgY3J5cHRvY29uZmlnOgogICAgcGF0aDogJHtDUllQVE9fUEFUSH0KCmNoYW5uZWxzOgogIG15Y2hhbm5lbDoKICAgIHBlZXJzOgogICAgICBwZWVyMC5vcmcxLmV4YW1wbGUuY29tOgogICAgICAgIGVuZG9yc2luZ1BlZXI6IHRydWUKICAgICAgICBjaGFpbmNvZGVRdWVyeTogdHJ1ZQogICAgICAgIGxlZGdlclF1ZXJ5OiB0cnVlCiAgICAgICAgZXZlbnRTb3VyY2U6IHRydWUKCiAgICAgIHBlZXIxLm9yZzEuZXhhbXBsZS5jb206CiAgICAgICAgZW5kb3JzaW5nUGVlcjogdHJ1ZQogICAgICAgIGNoYWluY29kZVF1ZXJ5OiB0cnVlCiAgICAgICAgbGVkZ2VyUXVlcnk6IHRydWUKICAgICAgICBldmVudFNvdXJjZTogdHJ1ZQoKICAgICAgcGVlcjAub3JnMi5leGFtcGxlLmNvbToKICAgICAgICBlbmRvcnNpbmdQZWVyOiB0cnVlCiAgICAgICAgY2hhaW5jb2RlUXVlcnk6IHRydWUKICAgICAgICBsZWRnZXJRdWVyeTogdHJ1ZQogICAgICAgIGV2ZW50U291cmNlOiB0cnVlCgogICAgICBwZWVyMS5vcmcyLmV4YW1wbGUuY29tOgogICAgICAgIGVuZG9yc2luZ1BlZXI6IHRydWUKICAgICAgICBjaGFpbmNvZGVRdWVyeTogdHJ1ZQogICAgICAgIGxlZGdlclF1ZXJ5OiB0cnVlCiAgICAgICAgZXZlbnRTb3VyY2U6IHRydWUKCm9yZ2FuaXphdGlvbnM6CiAgb3JnMToKICAgIG1zcGlkOiBPcmcxTVNQCiAgICBjcnlwdG9QYXRoOiAgcGVlck9yZ2FuaXphdGlvbnMvb3JnMS5leGFtcGxlLmNvbS91c2Vycy97dXNlcm5hbWV9QG9yZzEuZXhhbXBsZS5jb20vbXNwCiAgICBwZWVyczoKICAgICAgLSBwZWVyMC5vcmcxLmV4YW1wbGUuY29tCiAgICAgIC0gcGVlcjEub3JnMS5leGFtcGxlLmNvbQogICAgY2VydGlmaWNhdGVBdXRob3JpdGllczoKICAgICAgLSBjYS5vcmcxLmV4YW1wbGUuY29tCgogIG9yZzI6CiAgICBtc3BpZDogT3JnMk1TUAogICAgY3J5cHRvUGF0aDogIHBlZXJPcmdhbml6YXRpb25zL29yZzIuZXhhbXBsZS5jb20vdXNlcnMve3VzZXJuYW1lfUBvcmcyLmV4YW1wbGUuY29tL21zcAogICAgcGVlcnM6CiAgICAgIC0gcGVlcjAub3JnMi5leGFtcGxlLmNvbQogICAgICAtIHBlZXIxLm9yZzIuZXhhbXBsZS5jb20KICAgIGNlcnRpZmljYXRlQXV0aG9yaXRpZXM6CiAgICAgIC0gY2Eub3JnMi5leGFtcGxlLmNvbQoKb3JkZXJlcnM6CiAgb3JkZXJlci5leGFtcGxlLmNvbToKICAgIHVybDogb3JkZXJlci5leGFtcGxlLmNvbTo3MDUwCiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9vcmRlcmVyT3JnYW5pemF0aW9ucy9leGFtcGxlLmNvbS90bHNjYS90bHNjYS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKcGVlcnM6CiAgcGVlcjAub3JnMS5leGFtcGxlLmNvbToKICAgIHVybDogcGVlcjAub3JnMS5leGFtcGxlLmNvbTo3MDUxCiAgICAjZ3JwY09wdGlvbnM6CiAgICAjICBzc2wtdGFyZ2V0LW5hbWUtb3ZlcnJpZGU6IHBlZXIwLm9yZzEuZXhhbXBsZS5jb20KICAgIHRsc0NBQ2VydHM6CiAgICAgIHBhdGg6ICR7Q1JZUFRPX1BBVEh9L3BlZXJPcmdhbml6YXRpb25zL29yZzEuZXhhbXBsZS5jb20vdGxzY2EvdGxzY2Eub3JnMS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKICBwZWVyMS5vcmcxLmV4YW1wbGUuY29tOgogICAgdXJsOiBwZWVyMS5vcmcxLmV4YW1wbGUuY29tOjcxNTEKICAgICNncnBjT3B0aW9uczoKICAgICMgIHNzbC10YXJnZXQtbmFtZS1vdmVycmlkZTogcGVlcjEub3JnMS5leGFtcGxlLmNvbQogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMS5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcxLmV4YW1wbGUuY29tLWNlcnQucGVtCgogIHBlZXIwLm9yZzIuZXhhbXBsZS5jb206CiAgICB1cmw6IHBlZXIwLm9yZzIuZXhhbXBsZS5jb206ODA1MQogICAgI2dycGNPcHRpb25zOgogICAgIyAgc3NsLXRhcmdldC1uYW1lLW92ZXJyaWRlOiBwZWVyMC5vcmcyLmV4YW1wbGUuY29tCiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9wZWVyT3JnYW5pemF0aW9ucy9vcmcyLmV4YW1wbGUuY29tL3Rsc2NhL3Rsc2NhLm9yZzIuZXhhbXBsZS5jb20tY2VydC5wZW0KCiAgcGVlcjEub3JnMi5leGFtcGxlLmNvbToKICAgIHVybDogcGVlcjEub3JnMi5leGFtcGxlLmNvbTo5MDUxCiAgICAjZ3JwY09wdGlvbnM6CiAgICAjICBzc2wtdGFyZ2V0LW5hbWUtb3ZlcnJpZGU6IHBlZXIxLm9yZzIuZXhhbXBsZS5jb20KICAgIHRsc0NBQ2VydHM6CiAgICAgIHBhdGg6ICR7Q1JZUFRPX1BBVEh9L3BlZXJPcmdhbml6YXRpb25zL29yZzIuZXhhbXBsZS5jb20vdGxzY2EvdGxzY2Eub3JnMi5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKY2VydGlmaWNhdGVBdXRob3JpdGllczoKICBjYS5vcmcxLmV4YW1wbGUuY29tOgogICAgdXJsOiBodHRwczovL2NhLm9yZzEuZXhhbXBsZS5jb206NzA1NAogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMS5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcxLmV4YW1wbGUuY29tLWNlcnQucGVtCiAgICByZWdpc3RyYXI6CiAgICAgIGVucm9sbElkOiBhZG1pbgogICAgICBlbnJvbGxTZWNyZXQ6IGFkbWlucHcKICAgIGNhTmFtZTogY2Eub3JnMS5leGFtcGxlLmNvbQoKICBjYS5vcmcyLmV4YW1wbGUuY29tOgogICAgdXJsOiBodHRwczovL2NhLm9yZzIuZXhhbXBsZS5jb206ODA1NAogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMi5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcyLmV4YW1wbGUuY29tLWNlcnQucGVtCiAgICByZWdpc3RyYXI6CiAgICAgIGVucm9sbElkOiBhZG1pbgogICAgICBlbnJvbGxTZWNyZXQ6IGFkbWlucHcKICAgIGNhTmFtZTogY2Eub3JnMi5leGFtcGxlLmNvbQo="
+                                                "content": "data:application/x-yaml;base64,bmFtZTogbXljaGFubmVsCnZlcnNpb246IDEuMC4wCgpjbGllbnQ6CiAgb3JnYW5pemF0aW9uOiBvcmcxCiAgY3J5cHRvY29uZmlnOgogICAgcGF0aDogJHtDUllQVE9fUEFUSH0KCmNoYW5uZWxzOgogIG15Y2hhbm5lbDoKICAgIHBlZXJzOgogICAgICBwZWVyMC5vcmcxLmV4YW1wbGUuY29tOgogICAgICAgIGVuZG9yc2luZ1BlZXI6IHRydWUKICAgICAgICBjaGFpbmNvZGVRdWVyeTogdHJ1ZQogICAgICAgIGxlZGdlclF1ZXJ5OiB0cnVlCiAgICAgICAgZXZlbnRTb3VyY2U6IHRydWUKCiAgICAgIHBlZXIwLm9yZzIuZXhhbXBsZS5jb206CiAgICAgICAgZW5kb3JzaW5nUGVlcjogdHJ1ZQogICAgICAgIGNoYWluY29kZVF1ZXJ5OiB0cnVlCiAgICAgICAgbGVkZ2VyUXVlcnk6IHRydWUKICAgICAgICBldmVudFNvdXJjZTogdHJ1ZQoKb3JnYW5pemF0aW9uczoKICBvcmcxOgogICAgbXNwaWQ6IE9yZzFNU1AKICAgIGNyeXB0b1BhdGg6ICBwZWVyT3JnYW5pemF0aW9ucy9vcmcxLmV4YW1wbGUuY29tL3VzZXJzL3t1c2VybmFtZX1Ab3JnMS5leGFtcGxlLmNvbS9tc3AKICAgIHBlZXJzOgogICAgICAtIHBlZXIwLm9yZzEuZXhhbXBsZS5jb20KICAgIGNlcnRpZmljYXRlQXV0aG9yaXRpZXM6CiAgICAgIC0gY2Eub3JnMS5leGFtcGxlLmNvbQoKICBvcmcyOgogICAgbXNwaWQ6IE9yZzJNU1AKICAgIGNyeXB0b1BhdGg6ICBwZWVyT3JnYW5pemF0aW9ucy9vcmcyLmV4YW1wbGUuY29tL3VzZXJzL3t1c2VybmFtZX1Ab3JnMi5leGFtcGxlLmNvbS9tc3AKICAgIHBlZXJzOgogICAgICAtIHBlZXIwLm9yZzIuZXhhbXBsZS5jb20KICAgIGNlcnRpZmljYXRlQXV0aG9yaXRpZXM6CiAgICAgIC0gY2Eub3JnMi5leGFtcGxlLmNvbQoKb3JkZXJlcnM6CiAgb3JkZXJlci5leGFtcGxlLmNvbToKICAgIHVybDogb3JkZXJlci5leGFtcGxlLmNvbTo3MDUwCiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9vcmRlcmVyT3JnYW5pemF0aW9ucy9leGFtcGxlLmNvbS9tc3AvdGxzY2FjZXJ0cy90bHNjYS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKcGVlcnM6CiAgcGVlcjAub3JnMS5leGFtcGxlLmNvbToKICAgIHVybDogcGVlcjAub3JnMS5leGFtcGxlLmNvbTo3MDUxCiAgICAjZ3JwY09wdGlvbnM6CiAgICAjICBzc2wtdGFyZ2V0LW5hbWUtb3ZlcnJpZGU6IHBlZXIwLm9yZzEuZXhhbXBsZS5jb20KICAgIHRsc0NBQ2VydHM6CiAgICAgIHBhdGg6ICR7Q1JZUFRPX1BBVEh9L3BlZXJPcmdhbml6YXRpb25zL29yZzEuZXhhbXBsZS5jb20vdGxzY2EvdGxzY2Eub3JnMS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKICBwZWVyMC5vcmcyLmV4YW1wbGUuY29tOgogICAgdXJsOiBwZWVyMC5vcmcyLmV4YW1wbGUuY29tOjkwNTEKICAgICNncnBjT3B0aW9uczoKICAgICMgIHNzbC10YXJnZXQtbmFtZS1vdmVycmlkZTogcGVlcjAub3JnMi5leGFtcGxlLmNvbQogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMi5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcyLmV4YW1wbGUuY29tLWNlcnQucGVtCgpjZXJ0aWZpY2F0ZUF1dGhvcml0aWVzOgogIGNhLm9yZzEuZXhhbXBsZS5jb206CiAgICB1cmw6IGh0dHBzOi8vY2Eub3JnMS5leGFtcGxlLmNvbTo3MDU0CiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9wZWVyT3JnYW5pemF0aW9ucy9vcmcxLmV4YW1wbGUuY29tL3Rsc2NhL3Rsc2NhLm9yZzEuZXhhbXBsZS5jb20tY2VydC5wZW0KICAgIHJlZ2lzdHJhcjoKICAgICAgZW5yb2xsSWQ6IGFkbWluCiAgICAgIGVucm9sbFNlY3JldDogYWRtaW5wdwogICAgY2FOYW1lOiBjYS5vcmcxLmV4YW1wbGUuY29tCgogIGNhLm9yZzIuZXhhbXBsZS5jb206CiAgICB1cmw6IGh0dHBzOi8vY2Eub3JnMi5leGFtcGxlLmNvbTo4MDU0CiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9wZWVyT3JnYW5pemF0aW9ucy9vcmcyLmV4YW1wbGUuY29tL3Rsc2NhL3Rsc2NhLm9yZzIuZXhhbXBsZS5jb20tY2VydC5wZW0KICAgIHJlZ2lzdHJhcjoKICAgICAgZW5yb2xsSWQ6IGFkbWluCiAgICAgIGVucm9sbFNlY3JldDogYWRtaW5wdwogICAgY2FOYW1lOiBjYS5vcmcyLmV4YW1wbGUuY29tCg=="
                                             }
                                         },
                                         {
@@ -696,14 +712,16 @@
                                         "smallIcon": "ic-fabconnector@2x.png",
                                         "largeIcon": "ic-fabconnector@3x.png"
                                     },
-                                    "actions": [{
-                                        "name": "Save Connector",
-                                        "display": {
-                                            "readonly": false,
-                                            "valid": true,
-                                            "visible": true
+                                    "actions": [
+                                        {
+                                            "name": "Save Connector",
+                                            "display": {
+                                                "readonly": false,
+                                                "valid": true,
+                                                "visible": true
+                                            }
                                         }
-                                    }],
+                                    ],
                                     "feature": {},
                                     "loopType": "none",
                                     "loopSettings": [],
@@ -714,7 +732,7 @@
                                     "iteratorAccumulate": false,
                                     "accessOutputInInput": false,
                                     "isValid": true,
-                                    "lastUpdatedTime": 1603317812082,
+                                    "lastUpdatedTime": 1604628250417,
                                     "user": "flogo",
                                     "connectorName": "equipment client",
                                     "connectorDescription": "equipment poc client for fabric sample first-network"
@@ -778,22 +796,26 @@
                     }
                 ],
                 "metadata": {
-                    "input": [{
-                        "name": "arguments",
-                        "type": "object",
-                        "schema": {
-                            "type": "json",
-                            "value": "{\"invoiceDate\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"vendor\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"}}"
+                    "input": [
+                        {
+                            "name": "arguments",
+                            "type": "object",
+                            "schema": {
+                                "type": "json",
+                                "value": "{\"invoiceDate\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"vendor\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"}}"
+                            }
                         }
-                    }],
-                    "output": [{
-                        "name": "data",
-                        "type": "object",
-                        "schema": {
-                            "type": "json",
-                            "value": "{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}}"
+                    ],
+                    "output": [
+                        {
+                            "name": "data",
+                            "type": "object",
+                            "schema": {
+                                "type": "json",
+                                "value": "{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}}"
+                            }
                         }
-                    }],
+                    ],
                     "fe_metadata": {
                         "input": "{\"type\":\"object\",\"title\":\"GraphQLTrigger\",\"properties\":{\"arguments\":{\"type\":\"object\",\"properties\":{\"invoiceDate\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"vendor\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"}},\"required\":[]}}}",
                         "output": "{\"type\":\"object\",\"title\":\"Inputs\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}},\"required\":[]}"
@@ -806,7 +828,8 @@
             "data": {
                 "name": "Mutation_submitPO",
                 "description": "",
-                "links": [{
+                "links": [
+                    {
                         "id": 1,
                         "from": "Log",
                         "to": "FabricRequest",
@@ -825,7 +848,8 @@
                         "type": "default"
                     }
                 ],
-                "tasks": [{
+                "tasks": [
+                    {
                         "id": "Log",
                         "name": "Log",
                         "description": "",
@@ -846,7 +870,7 @@
                             "ref": "#fabrequest",
                             "input": {
                                 "connectionName": {
-                                    "id": "1d818fb0-13e9-11eb-bf14-df5b7fa30e78",
+                                    "id": "41cbdd70-1fc5-11eb-8b14-cb94d2aa5f12",
                                     "type": "flogo:connector",
                                     "version": "1.0.0",
                                     "name": "fabclient-connector",
@@ -857,7 +881,8 @@
                                     "title": "Fabric Connector",
                                     "description": "Fabric Connection",
                                     "ref": "github.com/dovetail-lab/fabric-client/connector/fabconnector",
-                                    "settings": [{
+                                    "settings": [
+                                        {
                                             "name": "name",
                                             "description": "Unique name of the Fabric network connection",
                                             "type": "string",
@@ -900,7 +925,7 @@
                                             },
                                             "value": {
                                                 "filename": "config_min.yaml",
-                                                "content": "data:application/octet-stream;base64,bmFtZTogbXljaGFubmVsCnZlcnNpb246IDEuMC4wCgpjbGllbnQ6CiAgb3JnYW5pemF0aW9uOiBvcmcxCiAgY3J5cHRvY29uZmlnOgogICAgcGF0aDogJHtDUllQVE9fUEFUSH0KCmNoYW5uZWxzOgogIG15Y2hhbm5lbDoKICAgIHBlZXJzOgogICAgICBwZWVyMC5vcmcxLmV4YW1wbGUuY29tOgogICAgICAgIGVuZG9yc2luZ1BlZXI6IHRydWUKICAgICAgICBjaGFpbmNvZGVRdWVyeTogdHJ1ZQogICAgICAgIGxlZGdlclF1ZXJ5OiB0cnVlCiAgICAgICAgZXZlbnRTb3VyY2U6IHRydWUKCiAgICAgIHBlZXIxLm9yZzEuZXhhbXBsZS5jb206CiAgICAgICAgZW5kb3JzaW5nUGVlcjogdHJ1ZQogICAgICAgIGNoYWluY29kZVF1ZXJ5OiB0cnVlCiAgICAgICAgbGVkZ2VyUXVlcnk6IHRydWUKICAgICAgICBldmVudFNvdXJjZTogdHJ1ZQoKICAgICAgcGVlcjAub3JnMi5leGFtcGxlLmNvbToKICAgICAgICBlbmRvcnNpbmdQZWVyOiB0cnVlCiAgICAgICAgY2hhaW5jb2RlUXVlcnk6IHRydWUKICAgICAgICBsZWRnZXJRdWVyeTogdHJ1ZQogICAgICAgIGV2ZW50U291cmNlOiB0cnVlCgogICAgICBwZWVyMS5vcmcyLmV4YW1wbGUuY29tOgogICAgICAgIGVuZG9yc2luZ1BlZXI6IHRydWUKICAgICAgICBjaGFpbmNvZGVRdWVyeTogdHJ1ZQogICAgICAgIGxlZGdlclF1ZXJ5OiB0cnVlCiAgICAgICAgZXZlbnRTb3VyY2U6IHRydWUKCm9yZ2FuaXphdGlvbnM6CiAgb3JnMToKICAgIG1zcGlkOiBPcmcxTVNQCiAgICBjcnlwdG9QYXRoOiAgcGVlck9yZ2FuaXphdGlvbnMvb3JnMS5leGFtcGxlLmNvbS91c2Vycy97dXNlcm5hbWV9QG9yZzEuZXhhbXBsZS5jb20vbXNwCiAgICBwZWVyczoKICAgICAgLSBwZWVyMC5vcmcxLmV4YW1wbGUuY29tCiAgICAgIC0gcGVlcjEub3JnMS5leGFtcGxlLmNvbQogICAgY2VydGlmaWNhdGVBdXRob3JpdGllczoKICAgICAgLSBjYS5vcmcxLmV4YW1wbGUuY29tCgogIG9yZzI6CiAgICBtc3BpZDogT3JnMk1TUAogICAgY3J5cHRvUGF0aDogIHBlZXJPcmdhbml6YXRpb25zL29yZzIuZXhhbXBsZS5jb20vdXNlcnMve3VzZXJuYW1lfUBvcmcyLmV4YW1wbGUuY29tL21zcAogICAgcGVlcnM6CiAgICAgIC0gcGVlcjAub3JnMi5leGFtcGxlLmNvbQogICAgICAtIHBlZXIxLm9yZzIuZXhhbXBsZS5jb20KICAgIGNlcnRpZmljYXRlQXV0aG9yaXRpZXM6CiAgICAgIC0gY2Eub3JnMi5leGFtcGxlLmNvbQoKb3JkZXJlcnM6CiAgb3JkZXJlci5leGFtcGxlLmNvbToKICAgIHVybDogb3JkZXJlci5leGFtcGxlLmNvbTo3MDUwCiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9vcmRlcmVyT3JnYW5pemF0aW9ucy9leGFtcGxlLmNvbS90bHNjYS90bHNjYS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKcGVlcnM6CiAgcGVlcjAub3JnMS5leGFtcGxlLmNvbToKICAgIHVybDogcGVlcjAub3JnMS5leGFtcGxlLmNvbTo3MDUxCiAgICAjZ3JwY09wdGlvbnM6CiAgICAjICBzc2wtdGFyZ2V0LW5hbWUtb3ZlcnJpZGU6IHBlZXIwLm9yZzEuZXhhbXBsZS5jb20KICAgIHRsc0NBQ2VydHM6CiAgICAgIHBhdGg6ICR7Q1JZUFRPX1BBVEh9L3BlZXJPcmdhbml6YXRpb25zL29yZzEuZXhhbXBsZS5jb20vdGxzY2EvdGxzY2Eub3JnMS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKICBwZWVyMS5vcmcxLmV4YW1wbGUuY29tOgogICAgdXJsOiBwZWVyMS5vcmcxLmV4YW1wbGUuY29tOjcxNTEKICAgICNncnBjT3B0aW9uczoKICAgICMgIHNzbC10YXJnZXQtbmFtZS1vdmVycmlkZTogcGVlcjEub3JnMS5leGFtcGxlLmNvbQogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMS5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcxLmV4YW1wbGUuY29tLWNlcnQucGVtCgogIHBlZXIwLm9yZzIuZXhhbXBsZS5jb206CiAgICB1cmw6IHBlZXIwLm9yZzIuZXhhbXBsZS5jb206ODA1MQogICAgI2dycGNPcHRpb25zOgogICAgIyAgc3NsLXRhcmdldC1uYW1lLW92ZXJyaWRlOiBwZWVyMC5vcmcyLmV4YW1wbGUuY29tCiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9wZWVyT3JnYW5pemF0aW9ucy9vcmcyLmV4YW1wbGUuY29tL3Rsc2NhL3Rsc2NhLm9yZzIuZXhhbXBsZS5jb20tY2VydC5wZW0KCiAgcGVlcjEub3JnMi5leGFtcGxlLmNvbToKICAgIHVybDogcGVlcjEub3JnMi5leGFtcGxlLmNvbTo5MDUxCiAgICAjZ3JwY09wdGlvbnM6CiAgICAjICBzc2wtdGFyZ2V0LW5hbWUtb3ZlcnJpZGU6IHBlZXIxLm9yZzIuZXhhbXBsZS5jb20KICAgIHRsc0NBQ2VydHM6CiAgICAgIHBhdGg6ICR7Q1JZUFRPX1BBVEh9L3BlZXJPcmdhbml6YXRpb25zL29yZzIuZXhhbXBsZS5jb20vdGxzY2EvdGxzY2Eub3JnMi5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKY2VydGlmaWNhdGVBdXRob3JpdGllczoKICBjYS5vcmcxLmV4YW1wbGUuY29tOgogICAgdXJsOiBodHRwczovL2NhLm9yZzEuZXhhbXBsZS5jb206NzA1NAogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMS5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcxLmV4YW1wbGUuY29tLWNlcnQucGVtCiAgICByZWdpc3RyYXI6CiAgICAgIGVucm9sbElkOiBhZG1pbgogICAgICBlbnJvbGxTZWNyZXQ6IGFkbWlucHcKICAgIGNhTmFtZTogY2Eub3JnMS5leGFtcGxlLmNvbQoKICBjYS5vcmcyLmV4YW1wbGUuY29tOgogICAgdXJsOiBodHRwczovL2NhLm9yZzIuZXhhbXBsZS5jb206ODA1NAogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMi5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcyLmV4YW1wbGUuY29tLWNlcnQucGVtCiAgICByZWdpc3RyYXI6CiAgICAgIGVucm9sbElkOiBhZG1pbgogICAgICBlbnJvbGxTZWNyZXQ6IGFkbWlucHcKICAgIGNhTmFtZTogY2Eub3JnMi5leGFtcGxlLmNvbQo="
+                                                "content": "data:application/x-yaml;base64,bmFtZTogbXljaGFubmVsCnZlcnNpb246IDEuMC4wCgpjbGllbnQ6CiAgb3JnYW5pemF0aW9uOiBvcmcxCiAgY3J5cHRvY29uZmlnOgogICAgcGF0aDogJHtDUllQVE9fUEFUSH0KCmNoYW5uZWxzOgogIG15Y2hhbm5lbDoKICAgIHBlZXJzOgogICAgICBwZWVyMC5vcmcxLmV4YW1wbGUuY29tOgogICAgICAgIGVuZG9yc2luZ1BlZXI6IHRydWUKICAgICAgICBjaGFpbmNvZGVRdWVyeTogdHJ1ZQogICAgICAgIGxlZGdlclF1ZXJ5OiB0cnVlCiAgICAgICAgZXZlbnRTb3VyY2U6IHRydWUKCiAgICAgIHBlZXIwLm9yZzIuZXhhbXBsZS5jb206CiAgICAgICAgZW5kb3JzaW5nUGVlcjogdHJ1ZQogICAgICAgIGNoYWluY29kZVF1ZXJ5OiB0cnVlCiAgICAgICAgbGVkZ2VyUXVlcnk6IHRydWUKICAgICAgICBldmVudFNvdXJjZTogdHJ1ZQoKb3JnYW5pemF0aW9uczoKICBvcmcxOgogICAgbXNwaWQ6IE9yZzFNU1AKICAgIGNyeXB0b1BhdGg6ICBwZWVyT3JnYW5pemF0aW9ucy9vcmcxLmV4YW1wbGUuY29tL3VzZXJzL3t1c2VybmFtZX1Ab3JnMS5leGFtcGxlLmNvbS9tc3AKICAgIHBlZXJzOgogICAgICAtIHBlZXIwLm9yZzEuZXhhbXBsZS5jb20KICAgIGNlcnRpZmljYXRlQXV0aG9yaXRpZXM6CiAgICAgIC0gY2Eub3JnMS5leGFtcGxlLmNvbQoKICBvcmcyOgogICAgbXNwaWQ6IE9yZzJNU1AKICAgIGNyeXB0b1BhdGg6ICBwZWVyT3JnYW5pemF0aW9ucy9vcmcyLmV4YW1wbGUuY29tL3VzZXJzL3t1c2VybmFtZX1Ab3JnMi5leGFtcGxlLmNvbS9tc3AKICAgIHBlZXJzOgogICAgICAtIHBlZXIwLm9yZzIuZXhhbXBsZS5jb20KICAgIGNlcnRpZmljYXRlQXV0aG9yaXRpZXM6CiAgICAgIC0gY2Eub3JnMi5leGFtcGxlLmNvbQoKb3JkZXJlcnM6CiAgb3JkZXJlci5leGFtcGxlLmNvbToKICAgIHVybDogb3JkZXJlci5leGFtcGxlLmNvbTo3MDUwCiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9vcmRlcmVyT3JnYW5pemF0aW9ucy9leGFtcGxlLmNvbS9tc3AvdGxzY2FjZXJ0cy90bHNjYS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKcGVlcnM6CiAgcGVlcjAub3JnMS5leGFtcGxlLmNvbToKICAgIHVybDogcGVlcjAub3JnMS5leGFtcGxlLmNvbTo3MDUxCiAgICAjZ3JwY09wdGlvbnM6CiAgICAjICBzc2wtdGFyZ2V0LW5hbWUtb3ZlcnJpZGU6IHBlZXIwLm9yZzEuZXhhbXBsZS5jb20KICAgIHRsc0NBQ2VydHM6CiAgICAgIHBhdGg6ICR7Q1JZUFRPX1BBVEh9L3BlZXJPcmdhbml6YXRpb25zL29yZzEuZXhhbXBsZS5jb20vdGxzY2EvdGxzY2Eub3JnMS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKICBwZWVyMC5vcmcyLmV4YW1wbGUuY29tOgogICAgdXJsOiBwZWVyMC5vcmcyLmV4YW1wbGUuY29tOjkwNTEKICAgICNncnBjT3B0aW9uczoKICAgICMgIHNzbC10YXJnZXQtbmFtZS1vdmVycmlkZTogcGVlcjAub3JnMi5leGFtcGxlLmNvbQogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMi5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcyLmV4YW1wbGUuY29tLWNlcnQucGVtCgpjZXJ0aWZpY2F0ZUF1dGhvcml0aWVzOgogIGNhLm9yZzEuZXhhbXBsZS5jb206CiAgICB1cmw6IGh0dHBzOi8vY2Eub3JnMS5leGFtcGxlLmNvbTo3MDU0CiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9wZWVyT3JnYW5pemF0aW9ucy9vcmcxLmV4YW1wbGUuY29tL3Rsc2NhL3Rsc2NhLm9yZzEuZXhhbXBsZS5jb20tY2VydC5wZW0KICAgIHJlZ2lzdHJhcjoKICAgICAgZW5yb2xsSWQ6IGFkbWluCiAgICAgIGVucm9sbFNlY3JldDogYWRtaW5wdwogICAgY2FOYW1lOiBjYS5vcmcxLmV4YW1wbGUuY29tCgogIGNhLm9yZzIuZXhhbXBsZS5jb206CiAgICB1cmw6IGh0dHBzOi8vY2Eub3JnMi5leGFtcGxlLmNvbTo4MDU0CiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9wZWVyT3JnYW5pemF0aW9ucy9vcmcyLmV4YW1wbGUuY29tL3Rsc2NhL3Rsc2NhLm9yZzIuZXhhbXBsZS5jb20tY2VydC5wZW0KICAgIHJlZ2lzdHJhcjoKICAgICAgZW5yb2xsSWQ6IGFkbWluCiAgICAgIGVucm9sbFNlY3JldDogYWRtaW5wdwogICAgY2FOYW1lOiBjYS5vcmcyLmV4YW1wbGUuY29tCg=="
                                             }
                                         },
                                         {
@@ -972,14 +997,16 @@
                                         "smallIcon": "ic-fabconnector@2x.png",
                                         "largeIcon": "ic-fabconnector@3x.png"
                                     },
-                                    "actions": [{
-                                        "name": "Save Connector",
-                                        "display": {
-                                            "readonly": false,
-                                            "valid": true,
-                                            "visible": true
+                                    "actions": [
+                                        {
+                                            "name": "Save Connector",
+                                            "display": {
+                                                "readonly": false,
+                                                "valid": true,
+                                                "visible": true
+                                            }
                                         }
-                                    }],
+                                    ],
                                     "feature": {},
                                     "loopType": "none",
                                     "loopSettings": [],
@@ -990,7 +1017,7 @@
                                     "iteratorAccumulate": false,
                                     "accessOutputInInput": false,
                                     "isValid": true,
-                                    "lastUpdatedTime": 1603317812082,
+                                    "lastUpdatedTime": 1604628250417,
                                     "user": "flogo",
                                     "connectorName": "equipment client",
                                     "connectorDescription": "equipment poc client for fabric sample first-network"
@@ -1054,22 +1081,26 @@
                     }
                 ],
                 "metadata": {
-                    "input": [{
-                        "name": "arguments",
-                        "type": "object",
-                        "schema": {
-                            "type": "json",
-                            "value": "{\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"purchasePrice\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"}}"
+                    "input": [
+                        {
+                            "name": "arguments",
+                            "type": "object",
+                            "schema": {
+                                "type": "json",
+                                "value": "{\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"purchasePrice\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"}}"
+                            }
                         }
-                    }],
-                    "output": [{
-                        "name": "data",
-                        "type": "object",
-                        "schema": {
-                            "type": "json",
-                            "value": "{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}}"
+                    ],
+                    "output": [
+                        {
+                            "name": "data",
+                            "type": "object",
+                            "schema": {
+                                "type": "json",
+                                "value": "{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}}"
+                            }
                         }
-                    }],
+                    ],
                     "fe_metadata": {
                         "input": "{\"type\":\"object\",\"title\":\"GraphQLTrigger\",\"properties\":{\"arguments\":{\"type\":\"object\",\"properties\":{\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"purchasePrice\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"}},\"required\":[]}}}",
                         "output": "{\"type\":\"object\",\"title\":\"Inputs\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}},\"required\":[]}"
@@ -1082,7 +1113,8 @@
             "data": {
                 "name": "Mutation_updateAsset",
                 "description": "",
-                "links": [{
+                "links": [
+                    {
                         "id": 1,
                         "from": "Log",
                         "to": "FabricRequest",
@@ -1101,7 +1133,8 @@
                         "type": "default"
                     }
                 ],
-                "tasks": [{
+                "tasks": [
+                    {
                         "id": "Log",
                         "name": "Log",
                         "description": "",
@@ -1122,7 +1155,7 @@
                             "ref": "#fabrequest",
                             "input": {
                                 "connectionName": {
-                                    "id": "1d818fb0-13e9-11eb-bf14-df5b7fa30e78",
+                                    "id": "41cbdd70-1fc5-11eb-8b14-cb94d2aa5f12",
                                     "type": "flogo:connector",
                                     "version": "1.0.0",
                                     "name": "fabclient-connector",
@@ -1133,7 +1166,8 @@
                                     "title": "Fabric Connector",
                                     "description": "Fabric Connection",
                                     "ref": "github.com/dovetail-lab/fabric-client/connector/fabconnector",
-                                    "settings": [{
+                                    "settings": [
+                                        {
                                             "name": "name",
                                             "description": "Unique name of the Fabric network connection",
                                             "type": "string",
@@ -1176,7 +1210,7 @@
                                             },
                                             "value": {
                                                 "filename": "config_min.yaml",
-                                                "content": "data:application/octet-stream;base64,bmFtZTogbXljaGFubmVsCnZlcnNpb246IDEuMC4wCgpjbGllbnQ6CiAgb3JnYW5pemF0aW9uOiBvcmcxCiAgY3J5cHRvY29uZmlnOgogICAgcGF0aDogJHtDUllQVE9fUEFUSH0KCmNoYW5uZWxzOgogIG15Y2hhbm5lbDoKICAgIHBlZXJzOgogICAgICBwZWVyMC5vcmcxLmV4YW1wbGUuY29tOgogICAgICAgIGVuZG9yc2luZ1BlZXI6IHRydWUKICAgICAgICBjaGFpbmNvZGVRdWVyeTogdHJ1ZQogICAgICAgIGxlZGdlclF1ZXJ5OiB0cnVlCiAgICAgICAgZXZlbnRTb3VyY2U6IHRydWUKCiAgICAgIHBlZXIxLm9yZzEuZXhhbXBsZS5jb206CiAgICAgICAgZW5kb3JzaW5nUGVlcjogdHJ1ZQogICAgICAgIGNoYWluY29kZVF1ZXJ5OiB0cnVlCiAgICAgICAgbGVkZ2VyUXVlcnk6IHRydWUKICAgICAgICBldmVudFNvdXJjZTogdHJ1ZQoKICAgICAgcGVlcjAub3JnMi5leGFtcGxlLmNvbToKICAgICAgICBlbmRvcnNpbmdQZWVyOiB0cnVlCiAgICAgICAgY2hhaW5jb2RlUXVlcnk6IHRydWUKICAgICAgICBsZWRnZXJRdWVyeTogdHJ1ZQogICAgICAgIGV2ZW50U291cmNlOiB0cnVlCgogICAgICBwZWVyMS5vcmcyLmV4YW1wbGUuY29tOgogICAgICAgIGVuZG9yc2luZ1BlZXI6IHRydWUKICAgICAgICBjaGFpbmNvZGVRdWVyeTogdHJ1ZQogICAgICAgIGxlZGdlclF1ZXJ5OiB0cnVlCiAgICAgICAgZXZlbnRTb3VyY2U6IHRydWUKCm9yZ2FuaXphdGlvbnM6CiAgb3JnMToKICAgIG1zcGlkOiBPcmcxTVNQCiAgICBjcnlwdG9QYXRoOiAgcGVlck9yZ2FuaXphdGlvbnMvb3JnMS5leGFtcGxlLmNvbS91c2Vycy97dXNlcm5hbWV9QG9yZzEuZXhhbXBsZS5jb20vbXNwCiAgICBwZWVyczoKICAgICAgLSBwZWVyMC5vcmcxLmV4YW1wbGUuY29tCiAgICAgIC0gcGVlcjEub3JnMS5leGFtcGxlLmNvbQogICAgY2VydGlmaWNhdGVBdXRob3JpdGllczoKICAgICAgLSBjYS5vcmcxLmV4YW1wbGUuY29tCgogIG9yZzI6CiAgICBtc3BpZDogT3JnMk1TUAogICAgY3J5cHRvUGF0aDogIHBlZXJPcmdhbml6YXRpb25zL29yZzIuZXhhbXBsZS5jb20vdXNlcnMve3VzZXJuYW1lfUBvcmcyLmV4YW1wbGUuY29tL21zcAogICAgcGVlcnM6CiAgICAgIC0gcGVlcjAub3JnMi5leGFtcGxlLmNvbQogICAgICAtIHBlZXIxLm9yZzIuZXhhbXBsZS5jb20KICAgIGNlcnRpZmljYXRlQXV0aG9yaXRpZXM6CiAgICAgIC0gY2Eub3JnMi5leGFtcGxlLmNvbQoKb3JkZXJlcnM6CiAgb3JkZXJlci5leGFtcGxlLmNvbToKICAgIHVybDogb3JkZXJlci5leGFtcGxlLmNvbTo3MDUwCiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9vcmRlcmVyT3JnYW5pemF0aW9ucy9leGFtcGxlLmNvbS90bHNjYS90bHNjYS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKcGVlcnM6CiAgcGVlcjAub3JnMS5leGFtcGxlLmNvbToKICAgIHVybDogcGVlcjAub3JnMS5leGFtcGxlLmNvbTo3MDUxCiAgICAjZ3JwY09wdGlvbnM6CiAgICAjICBzc2wtdGFyZ2V0LW5hbWUtb3ZlcnJpZGU6IHBlZXIwLm9yZzEuZXhhbXBsZS5jb20KICAgIHRsc0NBQ2VydHM6CiAgICAgIHBhdGg6ICR7Q1JZUFRPX1BBVEh9L3BlZXJPcmdhbml6YXRpb25zL29yZzEuZXhhbXBsZS5jb20vdGxzY2EvdGxzY2Eub3JnMS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKICBwZWVyMS5vcmcxLmV4YW1wbGUuY29tOgogICAgdXJsOiBwZWVyMS5vcmcxLmV4YW1wbGUuY29tOjcxNTEKICAgICNncnBjT3B0aW9uczoKICAgICMgIHNzbC10YXJnZXQtbmFtZS1vdmVycmlkZTogcGVlcjEub3JnMS5leGFtcGxlLmNvbQogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMS5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcxLmV4YW1wbGUuY29tLWNlcnQucGVtCgogIHBlZXIwLm9yZzIuZXhhbXBsZS5jb206CiAgICB1cmw6IHBlZXIwLm9yZzIuZXhhbXBsZS5jb206ODA1MQogICAgI2dycGNPcHRpb25zOgogICAgIyAgc3NsLXRhcmdldC1uYW1lLW92ZXJyaWRlOiBwZWVyMC5vcmcyLmV4YW1wbGUuY29tCiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9wZWVyT3JnYW5pemF0aW9ucy9vcmcyLmV4YW1wbGUuY29tL3Rsc2NhL3Rsc2NhLm9yZzIuZXhhbXBsZS5jb20tY2VydC5wZW0KCiAgcGVlcjEub3JnMi5leGFtcGxlLmNvbToKICAgIHVybDogcGVlcjEub3JnMi5leGFtcGxlLmNvbTo5MDUxCiAgICAjZ3JwY09wdGlvbnM6CiAgICAjICBzc2wtdGFyZ2V0LW5hbWUtb3ZlcnJpZGU6IHBlZXIxLm9yZzIuZXhhbXBsZS5jb20KICAgIHRsc0NBQ2VydHM6CiAgICAgIHBhdGg6ICR7Q1JZUFRPX1BBVEh9L3BlZXJPcmdhbml6YXRpb25zL29yZzIuZXhhbXBsZS5jb20vdGxzY2EvdGxzY2Eub3JnMi5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKY2VydGlmaWNhdGVBdXRob3JpdGllczoKICBjYS5vcmcxLmV4YW1wbGUuY29tOgogICAgdXJsOiBodHRwczovL2NhLm9yZzEuZXhhbXBsZS5jb206NzA1NAogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMS5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcxLmV4YW1wbGUuY29tLWNlcnQucGVtCiAgICByZWdpc3RyYXI6CiAgICAgIGVucm9sbElkOiBhZG1pbgogICAgICBlbnJvbGxTZWNyZXQ6IGFkbWlucHcKICAgIGNhTmFtZTogY2Eub3JnMS5leGFtcGxlLmNvbQoKICBjYS5vcmcyLmV4YW1wbGUuY29tOgogICAgdXJsOiBodHRwczovL2NhLm9yZzIuZXhhbXBsZS5jb206ODA1NAogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMi5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcyLmV4YW1wbGUuY29tLWNlcnQucGVtCiAgICByZWdpc3RyYXI6CiAgICAgIGVucm9sbElkOiBhZG1pbgogICAgICBlbnJvbGxTZWNyZXQ6IGFkbWlucHcKICAgIGNhTmFtZTogY2Eub3JnMi5leGFtcGxlLmNvbQo="
+                                                "content": "data:application/x-yaml;base64,bmFtZTogbXljaGFubmVsCnZlcnNpb246IDEuMC4wCgpjbGllbnQ6CiAgb3JnYW5pemF0aW9uOiBvcmcxCiAgY3J5cHRvY29uZmlnOgogICAgcGF0aDogJHtDUllQVE9fUEFUSH0KCmNoYW5uZWxzOgogIG15Y2hhbm5lbDoKICAgIHBlZXJzOgogICAgICBwZWVyMC5vcmcxLmV4YW1wbGUuY29tOgogICAgICAgIGVuZG9yc2luZ1BlZXI6IHRydWUKICAgICAgICBjaGFpbmNvZGVRdWVyeTogdHJ1ZQogICAgICAgIGxlZGdlclF1ZXJ5OiB0cnVlCiAgICAgICAgZXZlbnRTb3VyY2U6IHRydWUKCiAgICAgIHBlZXIwLm9yZzIuZXhhbXBsZS5jb206CiAgICAgICAgZW5kb3JzaW5nUGVlcjogdHJ1ZQogICAgICAgIGNoYWluY29kZVF1ZXJ5OiB0cnVlCiAgICAgICAgbGVkZ2VyUXVlcnk6IHRydWUKICAgICAgICBldmVudFNvdXJjZTogdHJ1ZQoKb3JnYW5pemF0aW9uczoKICBvcmcxOgogICAgbXNwaWQ6IE9yZzFNU1AKICAgIGNyeXB0b1BhdGg6ICBwZWVyT3JnYW5pemF0aW9ucy9vcmcxLmV4YW1wbGUuY29tL3VzZXJzL3t1c2VybmFtZX1Ab3JnMS5leGFtcGxlLmNvbS9tc3AKICAgIHBlZXJzOgogICAgICAtIHBlZXIwLm9yZzEuZXhhbXBsZS5jb20KICAgIGNlcnRpZmljYXRlQXV0aG9yaXRpZXM6CiAgICAgIC0gY2Eub3JnMS5leGFtcGxlLmNvbQoKICBvcmcyOgogICAgbXNwaWQ6IE9yZzJNU1AKICAgIGNyeXB0b1BhdGg6ICBwZWVyT3JnYW5pemF0aW9ucy9vcmcyLmV4YW1wbGUuY29tL3VzZXJzL3t1c2VybmFtZX1Ab3JnMi5leGFtcGxlLmNvbS9tc3AKICAgIHBlZXJzOgogICAgICAtIHBlZXIwLm9yZzIuZXhhbXBsZS5jb20KICAgIGNlcnRpZmljYXRlQXV0aG9yaXRpZXM6CiAgICAgIC0gY2Eub3JnMi5leGFtcGxlLmNvbQoKb3JkZXJlcnM6CiAgb3JkZXJlci5leGFtcGxlLmNvbToKICAgIHVybDogb3JkZXJlci5leGFtcGxlLmNvbTo3MDUwCiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9vcmRlcmVyT3JnYW5pemF0aW9ucy9leGFtcGxlLmNvbS9tc3AvdGxzY2FjZXJ0cy90bHNjYS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKcGVlcnM6CiAgcGVlcjAub3JnMS5leGFtcGxlLmNvbToKICAgIHVybDogcGVlcjAub3JnMS5leGFtcGxlLmNvbTo3MDUxCiAgICAjZ3JwY09wdGlvbnM6CiAgICAjICBzc2wtdGFyZ2V0LW5hbWUtb3ZlcnJpZGU6IHBlZXIwLm9yZzEuZXhhbXBsZS5jb20KICAgIHRsc0NBQ2VydHM6CiAgICAgIHBhdGg6ICR7Q1JZUFRPX1BBVEh9L3BlZXJPcmdhbml6YXRpb25zL29yZzEuZXhhbXBsZS5jb20vdGxzY2EvdGxzY2Eub3JnMS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKICBwZWVyMC5vcmcyLmV4YW1wbGUuY29tOgogICAgdXJsOiBwZWVyMC5vcmcyLmV4YW1wbGUuY29tOjkwNTEKICAgICNncnBjT3B0aW9uczoKICAgICMgIHNzbC10YXJnZXQtbmFtZS1vdmVycmlkZTogcGVlcjAub3JnMi5leGFtcGxlLmNvbQogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMi5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcyLmV4YW1wbGUuY29tLWNlcnQucGVtCgpjZXJ0aWZpY2F0ZUF1dGhvcml0aWVzOgogIGNhLm9yZzEuZXhhbXBsZS5jb206CiAgICB1cmw6IGh0dHBzOi8vY2Eub3JnMS5leGFtcGxlLmNvbTo3MDU0CiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9wZWVyT3JnYW5pemF0aW9ucy9vcmcxLmV4YW1wbGUuY29tL3Rsc2NhL3Rsc2NhLm9yZzEuZXhhbXBsZS5jb20tY2VydC5wZW0KICAgIHJlZ2lzdHJhcjoKICAgICAgZW5yb2xsSWQ6IGFkbWluCiAgICAgIGVucm9sbFNlY3JldDogYWRtaW5wdwogICAgY2FOYW1lOiBjYS5vcmcxLmV4YW1wbGUuY29tCgogIGNhLm9yZzIuZXhhbXBsZS5jb206CiAgICB1cmw6IGh0dHBzOi8vY2Eub3JnMi5leGFtcGxlLmNvbTo4MDU0CiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9wZWVyT3JnYW5pemF0aW9ucy9vcmcyLmV4YW1wbGUuY29tL3Rsc2NhL3Rsc2NhLm9yZzIuZXhhbXBsZS5jb20tY2VydC5wZW0KICAgIHJlZ2lzdHJhcjoKICAgICAgZW5yb2xsSWQ6IGFkbWluCiAgICAgIGVucm9sbFNlY3JldDogYWRtaW5wdwogICAgY2FOYW1lOiBjYS5vcmcyLmV4YW1wbGUuY29tCg=="
                                             }
                                         },
                                         {
@@ -1248,14 +1282,16 @@
                                         "smallIcon": "ic-fabconnector@2x.png",
                                         "largeIcon": "ic-fabconnector@3x.png"
                                     },
-                                    "actions": [{
-                                        "name": "Save Connector",
-                                        "display": {
-                                            "readonly": false,
-                                            "valid": true,
-                                            "visible": true
+                                    "actions": [
+                                        {
+                                            "name": "Save Connector",
+                                            "display": {
+                                                "readonly": false,
+                                                "valid": true,
+                                                "visible": true
+                                            }
                                         }
-                                    }],
+                                    ],
                                     "feature": {},
                                     "loopType": "none",
                                     "loopSettings": [],
@@ -1266,7 +1302,7 @@
                                     "iteratorAccumulate": false,
                                     "accessOutputInInput": false,
                                     "isValid": true,
-                                    "lastUpdatedTime": 1603317812082,
+                                    "lastUpdatedTime": 1604628250417,
                                     "user": "flogo",
                                     "connectorName": "equipment client",
                                     "connectorDescription": "equipment poc client for fabric sample first-network"
@@ -1330,22 +1366,26 @@
                     }
                 ],
                 "metadata": {
-                    "input": [{
-                        "name": "arguments",
-                        "type": "object",
-                        "schema": {
-                            "type": "json",
-                            "value": "{\"invoiceDate\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"purchasePrice\":{\"type\":\"number\"},\"model\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"installDate\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"}}"
+                    "input": [
+                        {
+                            "name": "arguments",
+                            "type": "object",
+                            "schema": {
+                                "type": "json",
+                                "value": "{\"invoiceDate\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"purchasePrice\":{\"type\":\"number\"},\"model\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"installDate\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"}}"
+                            }
                         }
-                    }],
-                    "output": [{
-                        "name": "data",
-                        "type": "object",
-                        "schema": {
-                            "type": "json",
-                            "value": "{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}}"
+                    ],
+                    "output": [
+                        {
+                            "name": "data",
+                            "type": "object",
+                            "schema": {
+                                "type": "json",
+                                "value": "{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}}"
+                            }
                         }
-                    }],
+                    ],
                     "fe_metadata": {
                         "input": "{\"type\":\"object\",\"title\":\"GraphQLTrigger\",\"properties\":{\"arguments\":{\"type\":\"object\",\"properties\":{\"invoiceDate\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"purchasePrice\":{\"type\":\"number\"},\"model\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"installDate\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"}},\"required\":[]}}}",
                         "output": "{\"type\":\"object\",\"title\":\"Inputs\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}},\"required\":[]}"
@@ -1358,7 +1398,8 @@
             "data": {
                 "name": "Mutation_installAsset",
                 "description": "",
-                "links": [{
+                "links": [
+                    {
                         "id": 1,
                         "from": "Log",
                         "to": "FabricRequest",
@@ -1377,7 +1418,8 @@
                         "type": "default"
                     }
                 ],
-                "tasks": [{
+                "tasks": [
+                    {
                         "id": "Log",
                         "name": "Log",
                         "description": "",
@@ -1398,7 +1440,7 @@
                             "ref": "#fabrequest",
                             "input": {
                                 "connectionName": {
-                                    "id": "1d818fb0-13e9-11eb-bf14-df5b7fa30e78",
+                                    "id": "41cbdd70-1fc5-11eb-8b14-cb94d2aa5f12",
                                     "type": "flogo:connector",
                                     "version": "1.0.0",
                                     "name": "fabclient-connector",
@@ -1409,7 +1451,8 @@
                                     "title": "Fabric Connector",
                                     "description": "Fabric Connection",
                                     "ref": "github.com/dovetail-lab/fabric-client/connector/fabconnector",
-                                    "settings": [{
+                                    "settings": [
+                                        {
                                             "name": "name",
                                             "description": "Unique name of the Fabric network connection",
                                             "type": "string",
@@ -1452,7 +1495,7 @@
                                             },
                                             "value": {
                                                 "filename": "config_min.yaml",
-                                                "content": "data:application/octet-stream;base64,bmFtZTogbXljaGFubmVsCnZlcnNpb246IDEuMC4wCgpjbGllbnQ6CiAgb3JnYW5pemF0aW9uOiBvcmcxCiAgY3J5cHRvY29uZmlnOgogICAgcGF0aDogJHtDUllQVE9fUEFUSH0KCmNoYW5uZWxzOgogIG15Y2hhbm5lbDoKICAgIHBlZXJzOgogICAgICBwZWVyMC5vcmcxLmV4YW1wbGUuY29tOgogICAgICAgIGVuZG9yc2luZ1BlZXI6IHRydWUKICAgICAgICBjaGFpbmNvZGVRdWVyeTogdHJ1ZQogICAgICAgIGxlZGdlclF1ZXJ5OiB0cnVlCiAgICAgICAgZXZlbnRTb3VyY2U6IHRydWUKCiAgICAgIHBlZXIxLm9yZzEuZXhhbXBsZS5jb206CiAgICAgICAgZW5kb3JzaW5nUGVlcjogdHJ1ZQogICAgICAgIGNoYWluY29kZVF1ZXJ5OiB0cnVlCiAgICAgICAgbGVkZ2VyUXVlcnk6IHRydWUKICAgICAgICBldmVudFNvdXJjZTogdHJ1ZQoKICAgICAgcGVlcjAub3JnMi5leGFtcGxlLmNvbToKICAgICAgICBlbmRvcnNpbmdQZWVyOiB0cnVlCiAgICAgICAgY2hhaW5jb2RlUXVlcnk6IHRydWUKICAgICAgICBsZWRnZXJRdWVyeTogdHJ1ZQogICAgICAgIGV2ZW50U291cmNlOiB0cnVlCgogICAgICBwZWVyMS5vcmcyLmV4YW1wbGUuY29tOgogICAgICAgIGVuZG9yc2luZ1BlZXI6IHRydWUKICAgICAgICBjaGFpbmNvZGVRdWVyeTogdHJ1ZQogICAgICAgIGxlZGdlclF1ZXJ5OiB0cnVlCiAgICAgICAgZXZlbnRTb3VyY2U6IHRydWUKCm9yZ2FuaXphdGlvbnM6CiAgb3JnMToKICAgIG1zcGlkOiBPcmcxTVNQCiAgICBjcnlwdG9QYXRoOiAgcGVlck9yZ2FuaXphdGlvbnMvb3JnMS5leGFtcGxlLmNvbS91c2Vycy97dXNlcm5hbWV9QG9yZzEuZXhhbXBsZS5jb20vbXNwCiAgICBwZWVyczoKICAgICAgLSBwZWVyMC5vcmcxLmV4YW1wbGUuY29tCiAgICAgIC0gcGVlcjEub3JnMS5leGFtcGxlLmNvbQogICAgY2VydGlmaWNhdGVBdXRob3JpdGllczoKICAgICAgLSBjYS5vcmcxLmV4YW1wbGUuY29tCgogIG9yZzI6CiAgICBtc3BpZDogT3JnMk1TUAogICAgY3J5cHRvUGF0aDogIHBlZXJPcmdhbml6YXRpb25zL29yZzIuZXhhbXBsZS5jb20vdXNlcnMve3VzZXJuYW1lfUBvcmcyLmV4YW1wbGUuY29tL21zcAogICAgcGVlcnM6CiAgICAgIC0gcGVlcjAub3JnMi5leGFtcGxlLmNvbQogICAgICAtIHBlZXIxLm9yZzIuZXhhbXBsZS5jb20KICAgIGNlcnRpZmljYXRlQXV0aG9yaXRpZXM6CiAgICAgIC0gY2Eub3JnMi5leGFtcGxlLmNvbQoKb3JkZXJlcnM6CiAgb3JkZXJlci5leGFtcGxlLmNvbToKICAgIHVybDogb3JkZXJlci5leGFtcGxlLmNvbTo3MDUwCiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9vcmRlcmVyT3JnYW5pemF0aW9ucy9leGFtcGxlLmNvbS90bHNjYS90bHNjYS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKcGVlcnM6CiAgcGVlcjAub3JnMS5leGFtcGxlLmNvbToKICAgIHVybDogcGVlcjAub3JnMS5leGFtcGxlLmNvbTo3MDUxCiAgICAjZ3JwY09wdGlvbnM6CiAgICAjICBzc2wtdGFyZ2V0LW5hbWUtb3ZlcnJpZGU6IHBlZXIwLm9yZzEuZXhhbXBsZS5jb20KICAgIHRsc0NBQ2VydHM6CiAgICAgIHBhdGg6ICR7Q1JZUFRPX1BBVEh9L3BlZXJPcmdhbml6YXRpb25zL29yZzEuZXhhbXBsZS5jb20vdGxzY2EvdGxzY2Eub3JnMS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKICBwZWVyMS5vcmcxLmV4YW1wbGUuY29tOgogICAgdXJsOiBwZWVyMS5vcmcxLmV4YW1wbGUuY29tOjcxNTEKICAgICNncnBjT3B0aW9uczoKICAgICMgIHNzbC10YXJnZXQtbmFtZS1vdmVycmlkZTogcGVlcjEub3JnMS5leGFtcGxlLmNvbQogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMS5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcxLmV4YW1wbGUuY29tLWNlcnQucGVtCgogIHBlZXIwLm9yZzIuZXhhbXBsZS5jb206CiAgICB1cmw6IHBlZXIwLm9yZzIuZXhhbXBsZS5jb206ODA1MQogICAgI2dycGNPcHRpb25zOgogICAgIyAgc3NsLXRhcmdldC1uYW1lLW92ZXJyaWRlOiBwZWVyMC5vcmcyLmV4YW1wbGUuY29tCiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9wZWVyT3JnYW5pemF0aW9ucy9vcmcyLmV4YW1wbGUuY29tL3Rsc2NhL3Rsc2NhLm9yZzIuZXhhbXBsZS5jb20tY2VydC5wZW0KCiAgcGVlcjEub3JnMi5leGFtcGxlLmNvbToKICAgIHVybDogcGVlcjEub3JnMi5leGFtcGxlLmNvbTo5MDUxCiAgICAjZ3JwY09wdGlvbnM6CiAgICAjICBzc2wtdGFyZ2V0LW5hbWUtb3ZlcnJpZGU6IHBlZXIxLm9yZzIuZXhhbXBsZS5jb20KICAgIHRsc0NBQ2VydHM6CiAgICAgIHBhdGg6ICR7Q1JZUFRPX1BBVEh9L3BlZXJPcmdhbml6YXRpb25zL29yZzIuZXhhbXBsZS5jb20vdGxzY2EvdGxzY2Eub3JnMi5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKY2VydGlmaWNhdGVBdXRob3JpdGllczoKICBjYS5vcmcxLmV4YW1wbGUuY29tOgogICAgdXJsOiBodHRwczovL2NhLm9yZzEuZXhhbXBsZS5jb206NzA1NAogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMS5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcxLmV4YW1wbGUuY29tLWNlcnQucGVtCiAgICByZWdpc3RyYXI6CiAgICAgIGVucm9sbElkOiBhZG1pbgogICAgICBlbnJvbGxTZWNyZXQ6IGFkbWlucHcKICAgIGNhTmFtZTogY2Eub3JnMS5leGFtcGxlLmNvbQoKICBjYS5vcmcyLmV4YW1wbGUuY29tOgogICAgdXJsOiBodHRwczovL2NhLm9yZzIuZXhhbXBsZS5jb206ODA1NAogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMi5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcyLmV4YW1wbGUuY29tLWNlcnQucGVtCiAgICByZWdpc3RyYXI6CiAgICAgIGVucm9sbElkOiBhZG1pbgogICAgICBlbnJvbGxTZWNyZXQ6IGFkbWlucHcKICAgIGNhTmFtZTogY2Eub3JnMi5leGFtcGxlLmNvbQo="
+                                                "content": "data:application/x-yaml;base64,bmFtZTogbXljaGFubmVsCnZlcnNpb246IDEuMC4wCgpjbGllbnQ6CiAgb3JnYW5pemF0aW9uOiBvcmcxCiAgY3J5cHRvY29uZmlnOgogICAgcGF0aDogJHtDUllQVE9fUEFUSH0KCmNoYW5uZWxzOgogIG15Y2hhbm5lbDoKICAgIHBlZXJzOgogICAgICBwZWVyMC5vcmcxLmV4YW1wbGUuY29tOgogICAgICAgIGVuZG9yc2luZ1BlZXI6IHRydWUKICAgICAgICBjaGFpbmNvZGVRdWVyeTogdHJ1ZQogICAgICAgIGxlZGdlclF1ZXJ5OiB0cnVlCiAgICAgICAgZXZlbnRTb3VyY2U6IHRydWUKCiAgICAgIHBlZXIwLm9yZzIuZXhhbXBsZS5jb206CiAgICAgICAgZW5kb3JzaW5nUGVlcjogdHJ1ZQogICAgICAgIGNoYWluY29kZVF1ZXJ5OiB0cnVlCiAgICAgICAgbGVkZ2VyUXVlcnk6IHRydWUKICAgICAgICBldmVudFNvdXJjZTogdHJ1ZQoKb3JnYW5pemF0aW9uczoKICBvcmcxOgogICAgbXNwaWQ6IE9yZzFNU1AKICAgIGNyeXB0b1BhdGg6ICBwZWVyT3JnYW5pemF0aW9ucy9vcmcxLmV4YW1wbGUuY29tL3VzZXJzL3t1c2VybmFtZX1Ab3JnMS5leGFtcGxlLmNvbS9tc3AKICAgIHBlZXJzOgogICAgICAtIHBlZXIwLm9yZzEuZXhhbXBsZS5jb20KICAgIGNlcnRpZmljYXRlQXV0aG9yaXRpZXM6CiAgICAgIC0gY2Eub3JnMS5leGFtcGxlLmNvbQoKICBvcmcyOgogICAgbXNwaWQ6IE9yZzJNU1AKICAgIGNyeXB0b1BhdGg6ICBwZWVyT3JnYW5pemF0aW9ucy9vcmcyLmV4YW1wbGUuY29tL3VzZXJzL3t1c2VybmFtZX1Ab3JnMi5leGFtcGxlLmNvbS9tc3AKICAgIHBlZXJzOgogICAgICAtIHBlZXIwLm9yZzIuZXhhbXBsZS5jb20KICAgIGNlcnRpZmljYXRlQXV0aG9yaXRpZXM6CiAgICAgIC0gY2Eub3JnMi5leGFtcGxlLmNvbQoKb3JkZXJlcnM6CiAgb3JkZXJlci5leGFtcGxlLmNvbToKICAgIHVybDogb3JkZXJlci5leGFtcGxlLmNvbTo3MDUwCiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9vcmRlcmVyT3JnYW5pemF0aW9ucy9leGFtcGxlLmNvbS9tc3AvdGxzY2FjZXJ0cy90bHNjYS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKcGVlcnM6CiAgcGVlcjAub3JnMS5leGFtcGxlLmNvbToKICAgIHVybDogcGVlcjAub3JnMS5leGFtcGxlLmNvbTo3MDUxCiAgICAjZ3JwY09wdGlvbnM6CiAgICAjICBzc2wtdGFyZ2V0LW5hbWUtb3ZlcnJpZGU6IHBlZXIwLm9yZzEuZXhhbXBsZS5jb20KICAgIHRsc0NBQ2VydHM6CiAgICAgIHBhdGg6ICR7Q1JZUFRPX1BBVEh9L3BlZXJPcmdhbml6YXRpb25zL29yZzEuZXhhbXBsZS5jb20vdGxzY2EvdGxzY2Eub3JnMS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKICBwZWVyMC5vcmcyLmV4YW1wbGUuY29tOgogICAgdXJsOiBwZWVyMC5vcmcyLmV4YW1wbGUuY29tOjkwNTEKICAgICNncnBjT3B0aW9uczoKICAgICMgIHNzbC10YXJnZXQtbmFtZS1vdmVycmlkZTogcGVlcjAub3JnMi5leGFtcGxlLmNvbQogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMi5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcyLmV4YW1wbGUuY29tLWNlcnQucGVtCgpjZXJ0aWZpY2F0ZUF1dGhvcml0aWVzOgogIGNhLm9yZzEuZXhhbXBsZS5jb206CiAgICB1cmw6IGh0dHBzOi8vY2Eub3JnMS5leGFtcGxlLmNvbTo3MDU0CiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9wZWVyT3JnYW5pemF0aW9ucy9vcmcxLmV4YW1wbGUuY29tL3Rsc2NhL3Rsc2NhLm9yZzEuZXhhbXBsZS5jb20tY2VydC5wZW0KICAgIHJlZ2lzdHJhcjoKICAgICAgZW5yb2xsSWQ6IGFkbWluCiAgICAgIGVucm9sbFNlY3JldDogYWRtaW5wdwogICAgY2FOYW1lOiBjYS5vcmcxLmV4YW1wbGUuY29tCgogIGNhLm9yZzIuZXhhbXBsZS5jb206CiAgICB1cmw6IGh0dHBzOi8vY2Eub3JnMi5leGFtcGxlLmNvbTo4MDU0CiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9wZWVyT3JnYW5pemF0aW9ucy9vcmcyLmV4YW1wbGUuY29tL3Rsc2NhL3Rsc2NhLm9yZzIuZXhhbXBsZS5jb20tY2VydC5wZW0KICAgIHJlZ2lzdHJhcjoKICAgICAgZW5yb2xsSWQ6IGFkbWluCiAgICAgIGVucm9sbFNlY3JldDogYWRtaW5wdwogICAgY2FOYW1lOiBjYS5vcmcyLmV4YW1wbGUuY29tCg=="
                                             }
                                         },
                                         {
@@ -1524,14 +1567,16 @@
                                         "smallIcon": "ic-fabconnector@2x.png",
                                         "largeIcon": "ic-fabconnector@3x.png"
                                     },
-                                    "actions": [{
-                                        "name": "Save Connector",
-                                        "display": {
-                                            "readonly": false,
-                                            "valid": true,
-                                            "visible": true
+                                    "actions": [
+                                        {
+                                            "name": "Save Connector",
+                                            "display": {
+                                                "readonly": false,
+                                                "valid": true,
+                                                "visible": true
+                                            }
                                         }
-                                    }],
+                                    ],
                                     "feature": {},
                                     "loopType": "none",
                                     "loopSettings": [],
@@ -1542,7 +1587,7 @@
                                     "iteratorAccumulate": false,
                                     "accessOutputInInput": false,
                                     "isValid": true,
-                                    "lastUpdatedTime": 1603317812082,
+                                    "lastUpdatedTime": 1604628250417,
                                     "user": "flogo",
                                     "connectorName": "equipment client",
                                     "connectorDescription": "equipment poc client for fabric sample first-network"
@@ -1606,22 +1651,26 @@
                     }
                 ],
                 "metadata": {
-                    "input": [{
-                        "name": "arguments",
-                        "type": "object",
-                        "schema": {
-                            "type": "json",
-                            "value": "{\"serialNum\":{\"type\":\"string\"},\"installDate\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"}}"
+                    "input": [
+                        {
+                            "name": "arguments",
+                            "type": "object",
+                            "schema": {
+                                "type": "json",
+                                "value": "{\"serialNum\":{\"type\":\"string\"},\"installDate\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"}}"
+                            }
                         }
-                    }],
-                    "output": [{
-                        "name": "data",
-                        "type": "object",
-                        "schema": {
-                            "type": "json",
-                            "value": "{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}}"
+                    ],
+                    "output": [
+                        {
+                            "name": "data",
+                            "type": "object",
+                            "schema": {
+                                "type": "json",
+                                "value": "{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}}"
+                            }
                         }
-                    }],
+                    ],
                     "fe_metadata": {
                         "input": "{\"type\":\"object\",\"title\":\"GraphQLTrigger\",\"properties\":{\"arguments\":{\"type\":\"object\",\"properties\":{\"serialNum\":{\"type\":\"string\"},\"installDate\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"}},\"required\":[]}}}",
                         "output": "{\"type\":\"object\",\"title\":\"Inputs\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}},\"required\":[]}"
@@ -1634,7 +1683,8 @@
             "data": {
                 "name": "Mutation_receiveAsset",
                 "description": "",
-                "links": [{
+                "links": [
+                    {
                         "id": 1,
                         "from": "Log",
                         "to": "FabricRequest",
@@ -1653,7 +1703,8 @@
                         "type": "default"
                     }
                 ],
-                "tasks": [{
+                "tasks": [
+                    {
                         "id": "Log",
                         "name": "Log",
                         "description": "",
@@ -1674,7 +1725,7 @@
                             "ref": "#fabrequest",
                             "input": {
                                 "connectionName": {
-                                    "id": "1d818fb0-13e9-11eb-bf14-df5b7fa30e78",
+                                    "id": "41cbdd70-1fc5-11eb-8b14-cb94d2aa5f12",
                                     "type": "flogo:connector",
                                     "version": "1.0.0",
                                     "name": "fabclient-connector",
@@ -1685,7 +1736,8 @@
                                     "title": "Fabric Connector",
                                     "description": "Fabric Connection",
                                     "ref": "github.com/dovetail-lab/fabric-client/connector/fabconnector",
-                                    "settings": [{
+                                    "settings": [
+                                        {
                                             "name": "name",
                                             "description": "Unique name of the Fabric network connection",
                                             "type": "string",
@@ -1728,7 +1780,7 @@
                                             },
                                             "value": {
                                                 "filename": "config_min.yaml",
-                                                "content": "data:application/octet-stream;base64,bmFtZTogbXljaGFubmVsCnZlcnNpb246IDEuMC4wCgpjbGllbnQ6CiAgb3JnYW5pemF0aW9uOiBvcmcxCiAgY3J5cHRvY29uZmlnOgogICAgcGF0aDogJHtDUllQVE9fUEFUSH0KCmNoYW5uZWxzOgogIG15Y2hhbm5lbDoKICAgIHBlZXJzOgogICAgICBwZWVyMC5vcmcxLmV4YW1wbGUuY29tOgogICAgICAgIGVuZG9yc2luZ1BlZXI6IHRydWUKICAgICAgICBjaGFpbmNvZGVRdWVyeTogdHJ1ZQogICAgICAgIGxlZGdlclF1ZXJ5OiB0cnVlCiAgICAgICAgZXZlbnRTb3VyY2U6IHRydWUKCiAgICAgIHBlZXIxLm9yZzEuZXhhbXBsZS5jb206CiAgICAgICAgZW5kb3JzaW5nUGVlcjogdHJ1ZQogICAgICAgIGNoYWluY29kZVF1ZXJ5OiB0cnVlCiAgICAgICAgbGVkZ2VyUXVlcnk6IHRydWUKICAgICAgICBldmVudFNvdXJjZTogdHJ1ZQoKICAgICAgcGVlcjAub3JnMi5leGFtcGxlLmNvbToKICAgICAgICBlbmRvcnNpbmdQZWVyOiB0cnVlCiAgICAgICAgY2hhaW5jb2RlUXVlcnk6IHRydWUKICAgICAgICBsZWRnZXJRdWVyeTogdHJ1ZQogICAgICAgIGV2ZW50U291cmNlOiB0cnVlCgogICAgICBwZWVyMS5vcmcyLmV4YW1wbGUuY29tOgogICAgICAgIGVuZG9yc2luZ1BlZXI6IHRydWUKICAgICAgICBjaGFpbmNvZGVRdWVyeTogdHJ1ZQogICAgICAgIGxlZGdlclF1ZXJ5OiB0cnVlCiAgICAgICAgZXZlbnRTb3VyY2U6IHRydWUKCm9yZ2FuaXphdGlvbnM6CiAgb3JnMToKICAgIG1zcGlkOiBPcmcxTVNQCiAgICBjcnlwdG9QYXRoOiAgcGVlck9yZ2FuaXphdGlvbnMvb3JnMS5leGFtcGxlLmNvbS91c2Vycy97dXNlcm5hbWV9QG9yZzEuZXhhbXBsZS5jb20vbXNwCiAgICBwZWVyczoKICAgICAgLSBwZWVyMC5vcmcxLmV4YW1wbGUuY29tCiAgICAgIC0gcGVlcjEub3JnMS5leGFtcGxlLmNvbQogICAgY2VydGlmaWNhdGVBdXRob3JpdGllczoKICAgICAgLSBjYS5vcmcxLmV4YW1wbGUuY29tCgogIG9yZzI6CiAgICBtc3BpZDogT3JnMk1TUAogICAgY3J5cHRvUGF0aDogIHBlZXJPcmdhbml6YXRpb25zL29yZzIuZXhhbXBsZS5jb20vdXNlcnMve3VzZXJuYW1lfUBvcmcyLmV4YW1wbGUuY29tL21zcAogICAgcGVlcnM6CiAgICAgIC0gcGVlcjAub3JnMi5leGFtcGxlLmNvbQogICAgICAtIHBlZXIxLm9yZzIuZXhhbXBsZS5jb20KICAgIGNlcnRpZmljYXRlQXV0aG9yaXRpZXM6CiAgICAgIC0gY2Eub3JnMi5leGFtcGxlLmNvbQoKb3JkZXJlcnM6CiAgb3JkZXJlci5leGFtcGxlLmNvbToKICAgIHVybDogb3JkZXJlci5leGFtcGxlLmNvbTo3MDUwCiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9vcmRlcmVyT3JnYW5pemF0aW9ucy9leGFtcGxlLmNvbS90bHNjYS90bHNjYS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKcGVlcnM6CiAgcGVlcjAub3JnMS5leGFtcGxlLmNvbToKICAgIHVybDogcGVlcjAub3JnMS5leGFtcGxlLmNvbTo3MDUxCiAgICAjZ3JwY09wdGlvbnM6CiAgICAjICBzc2wtdGFyZ2V0LW5hbWUtb3ZlcnJpZGU6IHBlZXIwLm9yZzEuZXhhbXBsZS5jb20KICAgIHRsc0NBQ2VydHM6CiAgICAgIHBhdGg6ICR7Q1JZUFRPX1BBVEh9L3BlZXJPcmdhbml6YXRpb25zL29yZzEuZXhhbXBsZS5jb20vdGxzY2EvdGxzY2Eub3JnMS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKICBwZWVyMS5vcmcxLmV4YW1wbGUuY29tOgogICAgdXJsOiBwZWVyMS5vcmcxLmV4YW1wbGUuY29tOjcxNTEKICAgICNncnBjT3B0aW9uczoKICAgICMgIHNzbC10YXJnZXQtbmFtZS1vdmVycmlkZTogcGVlcjEub3JnMS5leGFtcGxlLmNvbQogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMS5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcxLmV4YW1wbGUuY29tLWNlcnQucGVtCgogIHBlZXIwLm9yZzIuZXhhbXBsZS5jb206CiAgICB1cmw6IHBlZXIwLm9yZzIuZXhhbXBsZS5jb206ODA1MQogICAgI2dycGNPcHRpb25zOgogICAgIyAgc3NsLXRhcmdldC1uYW1lLW92ZXJyaWRlOiBwZWVyMC5vcmcyLmV4YW1wbGUuY29tCiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9wZWVyT3JnYW5pemF0aW9ucy9vcmcyLmV4YW1wbGUuY29tL3Rsc2NhL3Rsc2NhLm9yZzIuZXhhbXBsZS5jb20tY2VydC5wZW0KCiAgcGVlcjEub3JnMi5leGFtcGxlLmNvbToKICAgIHVybDogcGVlcjEub3JnMi5leGFtcGxlLmNvbTo5MDUxCiAgICAjZ3JwY09wdGlvbnM6CiAgICAjICBzc2wtdGFyZ2V0LW5hbWUtb3ZlcnJpZGU6IHBlZXIxLm9yZzIuZXhhbXBsZS5jb20KICAgIHRsc0NBQ2VydHM6CiAgICAgIHBhdGg6ICR7Q1JZUFRPX1BBVEh9L3BlZXJPcmdhbml6YXRpb25zL29yZzIuZXhhbXBsZS5jb20vdGxzY2EvdGxzY2Eub3JnMi5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKY2VydGlmaWNhdGVBdXRob3JpdGllczoKICBjYS5vcmcxLmV4YW1wbGUuY29tOgogICAgdXJsOiBodHRwczovL2NhLm9yZzEuZXhhbXBsZS5jb206NzA1NAogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMS5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcxLmV4YW1wbGUuY29tLWNlcnQucGVtCiAgICByZWdpc3RyYXI6CiAgICAgIGVucm9sbElkOiBhZG1pbgogICAgICBlbnJvbGxTZWNyZXQ6IGFkbWlucHcKICAgIGNhTmFtZTogY2Eub3JnMS5leGFtcGxlLmNvbQoKICBjYS5vcmcyLmV4YW1wbGUuY29tOgogICAgdXJsOiBodHRwczovL2NhLm9yZzIuZXhhbXBsZS5jb206ODA1NAogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMi5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcyLmV4YW1wbGUuY29tLWNlcnQucGVtCiAgICByZWdpc3RyYXI6CiAgICAgIGVucm9sbElkOiBhZG1pbgogICAgICBlbnJvbGxTZWNyZXQ6IGFkbWlucHcKICAgIGNhTmFtZTogY2Eub3JnMi5leGFtcGxlLmNvbQo="
+                                                "content": "data:application/x-yaml;base64,bmFtZTogbXljaGFubmVsCnZlcnNpb246IDEuMC4wCgpjbGllbnQ6CiAgb3JnYW5pemF0aW9uOiBvcmcxCiAgY3J5cHRvY29uZmlnOgogICAgcGF0aDogJHtDUllQVE9fUEFUSH0KCmNoYW5uZWxzOgogIG15Y2hhbm5lbDoKICAgIHBlZXJzOgogICAgICBwZWVyMC5vcmcxLmV4YW1wbGUuY29tOgogICAgICAgIGVuZG9yc2luZ1BlZXI6IHRydWUKICAgICAgICBjaGFpbmNvZGVRdWVyeTogdHJ1ZQogICAgICAgIGxlZGdlclF1ZXJ5OiB0cnVlCiAgICAgICAgZXZlbnRTb3VyY2U6IHRydWUKCiAgICAgIHBlZXIwLm9yZzIuZXhhbXBsZS5jb206CiAgICAgICAgZW5kb3JzaW5nUGVlcjogdHJ1ZQogICAgICAgIGNoYWluY29kZVF1ZXJ5OiB0cnVlCiAgICAgICAgbGVkZ2VyUXVlcnk6IHRydWUKICAgICAgICBldmVudFNvdXJjZTogdHJ1ZQoKb3JnYW5pemF0aW9uczoKICBvcmcxOgogICAgbXNwaWQ6IE9yZzFNU1AKICAgIGNyeXB0b1BhdGg6ICBwZWVyT3JnYW5pemF0aW9ucy9vcmcxLmV4YW1wbGUuY29tL3VzZXJzL3t1c2VybmFtZX1Ab3JnMS5leGFtcGxlLmNvbS9tc3AKICAgIHBlZXJzOgogICAgICAtIHBlZXIwLm9yZzEuZXhhbXBsZS5jb20KICAgIGNlcnRpZmljYXRlQXV0aG9yaXRpZXM6CiAgICAgIC0gY2Eub3JnMS5leGFtcGxlLmNvbQoKICBvcmcyOgogICAgbXNwaWQ6IE9yZzJNU1AKICAgIGNyeXB0b1BhdGg6ICBwZWVyT3JnYW5pemF0aW9ucy9vcmcyLmV4YW1wbGUuY29tL3VzZXJzL3t1c2VybmFtZX1Ab3JnMi5leGFtcGxlLmNvbS9tc3AKICAgIHBlZXJzOgogICAgICAtIHBlZXIwLm9yZzIuZXhhbXBsZS5jb20KICAgIGNlcnRpZmljYXRlQXV0aG9yaXRpZXM6CiAgICAgIC0gY2Eub3JnMi5leGFtcGxlLmNvbQoKb3JkZXJlcnM6CiAgb3JkZXJlci5leGFtcGxlLmNvbToKICAgIHVybDogb3JkZXJlci5leGFtcGxlLmNvbTo3MDUwCiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9vcmRlcmVyT3JnYW5pemF0aW9ucy9leGFtcGxlLmNvbS9tc3AvdGxzY2FjZXJ0cy90bHNjYS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKcGVlcnM6CiAgcGVlcjAub3JnMS5leGFtcGxlLmNvbToKICAgIHVybDogcGVlcjAub3JnMS5leGFtcGxlLmNvbTo3MDUxCiAgICAjZ3JwY09wdGlvbnM6CiAgICAjICBzc2wtdGFyZ2V0LW5hbWUtb3ZlcnJpZGU6IHBlZXIwLm9yZzEuZXhhbXBsZS5jb20KICAgIHRsc0NBQ2VydHM6CiAgICAgIHBhdGg6ICR7Q1JZUFRPX1BBVEh9L3BlZXJPcmdhbml6YXRpb25zL29yZzEuZXhhbXBsZS5jb20vdGxzY2EvdGxzY2Eub3JnMS5leGFtcGxlLmNvbS1jZXJ0LnBlbQoKICBwZWVyMC5vcmcyLmV4YW1wbGUuY29tOgogICAgdXJsOiBwZWVyMC5vcmcyLmV4YW1wbGUuY29tOjkwNTEKICAgICNncnBjT3B0aW9uczoKICAgICMgIHNzbC10YXJnZXQtbmFtZS1vdmVycmlkZTogcGVlcjAub3JnMi5leGFtcGxlLmNvbQogICAgdGxzQ0FDZXJ0czoKICAgICAgcGF0aDogJHtDUllQVE9fUEFUSH0vcGVlck9yZ2FuaXphdGlvbnMvb3JnMi5leGFtcGxlLmNvbS90bHNjYS90bHNjYS5vcmcyLmV4YW1wbGUuY29tLWNlcnQucGVtCgpjZXJ0aWZpY2F0ZUF1dGhvcml0aWVzOgogIGNhLm9yZzEuZXhhbXBsZS5jb206CiAgICB1cmw6IGh0dHBzOi8vY2Eub3JnMS5leGFtcGxlLmNvbTo3MDU0CiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9wZWVyT3JnYW5pemF0aW9ucy9vcmcxLmV4YW1wbGUuY29tL3Rsc2NhL3Rsc2NhLm9yZzEuZXhhbXBsZS5jb20tY2VydC5wZW0KICAgIHJlZ2lzdHJhcjoKICAgICAgZW5yb2xsSWQ6IGFkbWluCiAgICAgIGVucm9sbFNlY3JldDogYWRtaW5wdwogICAgY2FOYW1lOiBjYS5vcmcxLmV4YW1wbGUuY29tCgogIGNhLm9yZzIuZXhhbXBsZS5jb206CiAgICB1cmw6IGh0dHBzOi8vY2Eub3JnMi5leGFtcGxlLmNvbTo4MDU0CiAgICB0bHNDQUNlcnRzOgogICAgICBwYXRoOiAke0NSWVBUT19QQVRIfS9wZWVyT3JnYW5pemF0aW9ucy9vcmcyLmV4YW1wbGUuY29tL3Rsc2NhL3Rsc2NhLm9yZzIuZXhhbXBsZS5jb20tY2VydC5wZW0KICAgIHJlZ2lzdHJhcjoKICAgICAgZW5yb2xsSWQ6IGFkbWluCiAgICAgIGVucm9sbFNlY3JldDogYWRtaW5wdwogICAgY2FOYW1lOiBjYS5vcmcyLmV4YW1wbGUuY29tCg=="
                                             }
                                         },
                                         {
@@ -1800,14 +1852,16 @@
                                         "smallIcon": "ic-fabconnector@2x.png",
                                         "largeIcon": "ic-fabconnector@3x.png"
                                     },
-                                    "actions": [{
-                                        "name": "Save Connector",
-                                        "display": {
-                                            "readonly": false,
-                                            "valid": true,
-                                            "visible": true
+                                    "actions": [
+                                        {
+                                            "name": "Save Connector",
+                                            "display": {
+                                                "readonly": false,
+                                                "valid": true,
+                                                "visible": true
+                                            }
                                         }
-                                    }],
+                                    ],
                                     "feature": {},
                                     "loopType": "none",
                                     "loopSettings": [],
@@ -1818,7 +1872,7 @@
                                     "iteratorAccumulate": false,
                                     "accessOutputInInput": false,
                                     "isValid": true,
-                                    "lastUpdatedTime": 1603317812082,
+                                    "lastUpdatedTime": 1604628250417,
                                     "user": "flogo",
                                     "connectorName": "equipment client",
                                     "connectorDescription": "equipment poc client for fabric sample first-network"
@@ -1882,22 +1936,26 @@
                     }
                 ],
                 "metadata": {
-                    "input": [{
-                        "name": "arguments",
-                        "type": "object",
-                        "schema": {
-                            "type": "json",
-                            "value": "{\"description\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"}}"
+                    "input": [
+                        {
+                            "name": "arguments",
+                            "type": "object",
+                            "schema": {
+                                "type": "json",
+                                "value": "{\"description\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"}}"
+                            }
                         }
-                    }],
-                    "output": [{
-                        "name": "data",
-                        "type": "object",
-                        "schema": {
-                            "type": "json",
-                            "value": "{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}}"
+                    ],
+                    "output": [
+                        {
+                            "name": "data",
+                            "type": "object",
+                            "schema": {
+                                "type": "json",
+                                "value": "{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}}"
+                            }
                         }
-                    }],
+                    ],
                     "fe_metadata": {
                         "input": "{\"type\":\"object\",\"title\":\"GraphQLTrigger\",\"properties\":{\"arguments\":{\"type\":\"object\",\"properties\":{\"description\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"location\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"}},\"required\":[]}}}",
                         "output": "{\"type\":\"object\",\"title\":\"Inputs\",\"properties\":{\"data\":{\"type\":\"object\",\"properties\":{\"FixedAsset\":{\"type\":\"object\",\"required\":[],\"properties\":{\"purchasePrice\":{\"type\":\"number\"},\"value\":{\"type\":\"number\"},\"invoiceDate\":{\"type\":\"array\",\"items\":{\"type\":\"string\"}},\"retireDate\":{\"type\":\"string\"},\"description\":{\"type\":\"string\"},\"vendor\":{\"type\":\"string\"},\"manufacturer\":{\"type\":\"string\"},\"netBookValue\":{\"type\":\"number\"},\"location\":{\"type\":\"string\"},\"acquisitionDate\":{\"type\":\"string\"},\"assetNum\":{\"type\":\"string\"},\"orgId\":{\"type\":\"string\"},\"siteId\":{\"type\":\"string\"},\"serialNum\":{\"type\":\"string\"},\"invoicePrice\":{\"type\":\"number\"},\"installDate\":{\"type\":\"string\"},\"status\":{\"type\":\"string\"},\"assetUniqueId\":{\"type\":\"string\"},\"assetTag\":{\"type\":\"string\"},\"statusDate\":{\"type\":\"string\"},\"model\":{\"type\":\"string\"},\"owner\":{\"type\":\"string\"}}}},\"required\":[]}},\"required\":[]}"
@@ -1906,7 +1964,8 @@
             }
         }
     ],
-    "properties": [{
+    "properties": [
+        {
             "name": "APPUSER",
             "type": "string",
             "value": "User1"
@@ -1923,6 +1982,6 @@
         }
     ],
     "connections": {},
-    "contrib": "W3sicmVmIjoiZ2l0aHViLmNvbS9wcm9qZWN0LWZsb2dvL2NvbnRyaWIvYWN0aXZpdHkvbG9nIiwiczNsb2NhdGlvbiI6IntVU0VSSUR9L0RlZmF1bHQvYWN0aXZpdHkvbG9nIn0seyJyZWYiOiJnaXRodWIuY29tL1RJQkNPU29mdHdhcmUvZG92ZXRhaWwtY29udHJpYi9oeXBlcmxlZGdlci1mYWJyaWMvZmFiY2xpZW50IiwiczNsb2NhdGlvbiI6IntVU0VSSUR9L2ZhYmNsaWVudCJ9XQ==",
-    "fe_metadata": "UEsDBAoAAAAIAMEDVlGrqSRGFQAAABMAAAAIAAAAYXBwLmpzb26rViopykxPTy1yy8kvL1ayio6tBQBQSwECFAAKAAAACADBA1ZRq6kkRhUAAAATAAAACAAAAAAAAAAAAAAAAAAAAAAAYXBwLmpzb25QSwUGAAAAAAEAAQA2AAAAOwAAAAAA"
+    "contrib": "W3sicmVmIjoiZ2l0aHViLmNvbS9wcm9qZWN0LWZsb2dvL2NvbnRyaWIvYWN0aXZpdHkvbG9nIiwiczNsb2NhdGlvbiI6IntVU0VSSUR9L0RlZmF1bHQvYWN0aXZpdHkvbG9nIn0seyJyZWYiOiJnaXRodWIuY29tL2RvdmV0YWlsLWxhYi9mYWJyaWMtY2xpZW50IiwiczNsb2NhdGlvbiI6IntVU0VSSUR9L2ZhYnJpYy1jbGllbnQifV0=",
+    "fe_metadata": "UEsDBAoAAAAIAJQQZlGrqSRGFQAAABMAAAAIAAAAYXBwLmpzb26rViopykxPTy1yy8kvL1ayio6tBQBQSwECFAAKAAAACACUEGZRq6kkRhUAAAATAAAACAAAAAAAAAAAAAAAAAAAAAAAYXBwLmpzb25QSwUGAAAAAAEAAQA2AAAAOwAAAAAA"
 }

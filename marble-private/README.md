@@ -29,7 +29,7 @@ make build
 make deploy
 ```
 
-The `build` script uses a `dovetail-tools` docker container to build the chaincode model into a CDS package that can be installed on any fabric network.
+The `build` script uses a `dovetail-tools` docker container to build the chaincode model into a chaincode package that can be installed on any fabric network.
 
 ## Install and test chaincode using fabric test-network
 
@@ -40,7 +40,7 @@ cd /path/to/dovetail-lab/fabric-samples/marble-private
 make start
 ```
 
-Use the `cli` docker container to install and instantiate the `marble_private_cc` chaincode.
+Use the `cli` docker container to install, approve and commit the `marble_private_cc` chaincode.
 
 ```bash
 cd /path/to/dovetail-lab/fabric-samples/marble-private
@@ -76,7 +76,7 @@ make metadata
 Following are steps to edit or view the REST service models:
 
 - Start TIBCO Flogo® Enterprise.
-- Open http://localhost:8090 in Chrome web browser.
+- Open <http://localhost:8090> in Chrome web browser.
 - Create new Flogo App and rename it to `marble_private_client` and select `Import app` to import the model [`marble_private_client.json`](marble_private_client.json)
 - You can then add or update application flows using the Web UI of the TIBCO Flogo® Enterprise.
 - Open `Connections` tab, find and edit the `marble private client` connector. Set the `Smart contract metadata file` to the [`metadata.json`](contract-metadata/metadata.json). Set the `Network configuration file` and `entity matcher file` to the corresponding files in [`testdata`](../testdata).

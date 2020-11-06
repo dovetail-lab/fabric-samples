@@ -30,24 +30,24 @@ deploy: $(BUILD_PATH)/work/$(APP_HAME)
 	-rm -rf $(CC_DEPLOY)/$(APP_NAME)
 	cp -Rf $(BUILD_PATH)/work/$(APP_NAME)/$(APP_NAME) $(CC_DEPLOY)
 	cp $(BUILD_PATH)/work/$(APP_NAME)/$(APP_NAME)_linux_amd64 $(CC_DEPLOY)/$(APP_NAME)
-	cp $(BUILD_PATH)/work/$(APP_NAME)/$(APP_NAME)_1.0.cds $(CC_DEPLOY)/$(APP_NAME)
-	cp fn-cli-init.sh $(FAB_PATH)/first-network/scripts/fn-init-equip.sh
-	cp fn-cli-test.sh $(FAB_PATH)/first-network/scripts/fn-test-equip.sh
+	cp $(BUILD_PATH)/work/$(APP_NAME)/$(APP_NAME)_1.0.tar.gz $(CC_DEPLOY)/$(APP_NAME)
+	cp fn-cli-init.sh $(FAB_PATH)/test-network/fn-init-equip.sh
+	cp fn-cli-test.sh $(FAB_PATH)/test-network/fn-test-equip.sh
 
 .PHONY: deploy-go
 deploy-go:
 	-mkdir -p $(CC_DEPLOY)/$(APP_NAME)
 	cp chaincode.go $(CC_DEPLOY)/$(APP_NAME)
-	cp fn-cli-init.sh $(FAB_PATH)/first-network/scripts/fn-init-equip.sh
-	cp fn-cli-test.sh $(FAB_PATH)/first-network/scripts/fn-test-equip.sh
+	cp fn-cli-init.sh $(FAB_PATH)/test-network/fn-init-equip.sh
+	cp fn-cli-test.sh $(FAB_PATH)/test-network/fn-test-equip.sh
 
 .PHONY: cli-init
 cli-init:
-	docker exec cli bash -c 'cd scripts; ./fn-init-equip.sh $(APP_NAME)'
+	docker exec cli bash -c './fn-init-equip.sh $(APP_NAME)'
 
 .PHONY: cli-test
 cli-test:
-	docker exec cli bash -c 'cd scripts; ./fn-test-equip.sh $(APP_NAME)'
+	docker exec cli bash -c './fn-test-equip.sh $(APP_NAME)'
 
 .PHONY: metadata
 metadata:
@@ -63,18 +63,21 @@ build-client: $(CLIENT_FILE) clean-client
 
 .PHONY: run
 run:
-	FLOGO_APP_PROP_RESOLVERS=env FLOGO_APP_PROPS_ENV=auto PORT=9898 CCNAME=equipment_cc FLOGO_LOG_LEVEL=DEBUG FLOGO_SCHEMA_SUPPORT=true FLOGO_SCHEMA_VALIDATION=false CRYPTO_PATH=$(FAB_PATH)/first-network/crypto-config $(BUILD_PATH)/work/$(CLIENT_NAME)/$(CLIENT_NAME)_$(CLIENT_OS)_amd64
+	FLOGO_APP_PROP_RESOLVERS=env FLOGO_APP_PROPS_ENV=auto PORT=9898 CCNAME=equipment_cc FLOGO_LOG_LEVEL=DEBUG FLOGO_SCHEMA_SUPPORT=true FLOGO_SCHEMA_VALIDATION=false CRYPTO_PATH=$(FAB_PATH)/test-network/organizations $(BUILD_PATH)/work/$(CLIENT_NAME)/$(CLIENT_NAME)_$(CLIENT_OS)_amd64
 
 .PHONY: build-gql
 build-gql: $(GQL_FILE) clean-client
 	$(BUILD_PATH)/build.sh client -f $(GQL_FILE) -n $(CLIENT_NAME) -s $(CLIENT_OS)
 
+.PHONY: test-network
+test-network: $(FAB_PATH)/test-network/network.sh
+	cp $(SRC_PATH)/../testdata/docker-compose-cli.yaml $(FAB_PATH)/test-network/docker
+	sed -i -e "s/COMPOSE_FILE_BASE=docker\/docker-compose-test-net.yaml.*/COMPOSE_FILE_BASE=\"docker\/docker-compose-test-net.yaml -f docker\/docker-compose-cli.yaml\"/" $(FAB_PATH)/test-network/network.sh
+
 .PHONY: start
-start:
-	cd $(FAB_PATH)/first-network && ./byfn.sh up -a -n -s couchdb -i 1.4.9
+start: test-network
+	cd $(FAB_PATH)/test-network && ./network.sh up createChannel -s couchdb
 
 .PHONY: shutdown
 shutdown:
-	cd $(FAB_PATH)/first-network && ./byfn.sh down
-	-docker rm $(docker ps -a | grep dev-peer | awk '{print $1}')
-	-docker rmi $(docker images | grep dev-peer | awk '{print $3}')
+	cd $(FAB_PATH)/test-network && ./network.sh down

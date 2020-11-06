@@ -3,31 +3,41 @@
 # install and instantiate equipment chaincode in the Fabric sample first-network
 # execute this script from the scripts folder of the cli docker container
 
-. ./utils.sh
+. ./scripts/envVar.sh
+ORDERER_ARGS="-o orderer.example.com:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile $ORDERER_CA"
+
 CCNAME=${1:-"equipment_cc"}
 CC_PATH=${GOPATH}/src/github.com/chaincode
-CDS_FILE=${CC_PATH}/${CCNAME}/${CCNAME}_1.0.cds
+CDS_FILE=${CC_PATH}/${CCNAME}/${CCNAME}_1.0.tar.gz
 
 if [ ! -f "${CDS_FILE}" ]; then
   echo "package chaincode ${CCNAME}:1.0"
-  peer chaincode package -n ${CCNAME} -v 1.0 -p github.com/chaincode/${CCNAME} ${CDS_FILE}
+  peer lifecycle chaincode package -n ${CCNAME} -v 1.0 -p github.com/chaincode/${CCNAME} ${CDS_FILE}
 fi
 
-echo "install ${CCNAME} on peer0 org1"
-peer chaincode install ${CDS_FILE}
+echo "org1 installs ${CCNAME}"
+setGlobals 1
+export CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+peer lifecycle chaincode install ${CDS_FILE}
 
-echo "install ${CCNAME} on peer1 org1"
-setGlobals 1 1
-peer chaincode install ${CDS_FILE}
+echo "org2 installs ${CCNAME}"
+setGlobals 2
+export CORE_PEER_ADDRESS=peer0.org2.example.com:9051
+peer lifecycle chaincode install ${CDS_FILE} >&log.txt
+PACKAGE_ID=$(cat log.txt | grep "Chaincode code package identifier:" | sed 's/.*Chaincode code package identifier: //')
 
-echo "install ${CCNAME} on peer0 org2"
-setGlobals 0 2
-peer chaincode install ${CDS_FILE}
+echo "org1 approves package ${PACKAGE_ID}"
+setGlobals 1
+export CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+peer lifecycle chaincode approveformyorg ${ORDERER_ARGS} --channelID mychannel --name ${CCNAME} --version 1.0 --package-id "${PACKAGE_ID}" --sequence 1
+sleep 5
 
-echo "install ${CCNAME} on peer1 org2"
-setGlobals 1 2
-peer chaincode install ${CDS_FILE}
+echo "org2 approves package ${PACKAGE_ID}"
+setGlobals 2
+export CORE_PEER_ADDRESS=peer0.org2.example.com:9051
+peer lifecycle chaincode approveformyorg ${ORDERER_ARGS} --channelID mychannel --name ${CCNAME} --version 1.0 --package-id "${PACKAGE_ID}" --sequence 1
+sleep 5
 
-echo "instantiate ${CCNAME} chaincode"
-ORDERER_ARGS="-o orderer.example.com:7050 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem"
-peer chaincode instantiate $ORDERER_ARGS -C mychannel -n ${CCNAME} -v 1.0 -c '{"Args":["init"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')"
+echo "commit chaincode ${CCNAME}"
+PEER_CONN_PARMS="--peerAddresses peer0.org1.example.com:7051 --tlsRootCertFiles $PEER0_ORG1_CA --peerAddresses peer0.org2.example.com:9051 --tlsRootCertFiles $PEER0_ORG2_CA"
+peer lifecycle chaincode commit ${ORDERER_ARGS} --channelID mychannel --name ${CCNAME} ${PEER_CONN_PARMS} --version 1.0 --sequence 1
