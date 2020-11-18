@@ -136,6 +136,7 @@ cd ./jabil-aim
 ./k8s-aim.sh shutdown
 
 # shutdown Fabric network
+./k8s-network.sh clean
 ./k8s-network.sh shutdown
 ```
 

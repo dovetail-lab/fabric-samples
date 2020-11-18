@@ -1,7 +1,7 @@
 #!/bin/bash
 # Usage: ./k8s-network.sh [ start|shutdown|clean ]
 
-OP_PATH=${HOME}/dovetail-lab/fabric-operation
+OP_PATH=${HOME}/fabric-operation
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"; echo "$(pwd)")"
 CMD=$1
 
@@ -20,7 +20,7 @@ function waitForPeers {
   # verify gossip communication established
   local gossip=$(kubectl logs peer-1 -c peer -n jabil | grep "unary call completed" | grep "peer-0" | wc -l)
   retry=1
-  until [ ${gossip} -ge 2 ] || [ ${retry} -gt 20 ]; do
+  until [ ${gossip} -gt 0 ] || [ ${retry} -gt 20 ]; do
     sleep 5s
     echo -n "."
     gossip=$(kubectl logs peer-1 -c peer -n jabil | grep "unary call completed" | grep "peer-0" | wc -l)
@@ -65,7 +65,8 @@ function shutdown {
 function clean {
   # cleanup CA data
   cd ${OP_PATH}/ca
-  ./ca-server.sh shutdown -o orderer -p jabil -d
+  ./ca-server.sh shutdown -p orderer -d
+  ./ca-server.sh shutdown -p jabil -d
 
   # cleanup old chaincode container and images
   cd ${OP_PATH}/network

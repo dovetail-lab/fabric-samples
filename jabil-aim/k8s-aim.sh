@@ -1,7 +1,7 @@
 #!/bin/bash
 # Usage: ./k8s-aim.sh [ deploy|shutdown ]
 
-OP_PATH=${HOME}/dovetail-lab/fabric-operation
+OP_PATH=${HOME}/fabric-operation
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")"; echo "$(pwd)")"
 CMD=$1
 
